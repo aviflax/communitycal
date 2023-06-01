@@ -5,8 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CommunityCal Free » New Calendar</title>
     <style type="text/css">
-        nav {
+        html, body {
+            font-family: sans-serif;
+            font-size: large;
+            padding: 0.25em 0.5em;
+        }
+
+        button, input {
+            font-size: 100%;
+        }
+
+        nav.crumbs {
             border-bottom: 1px solid black;
+        }
+
+        nav a:visited {
+            color: blue;
         }
 
         .crumbs ol {
@@ -27,12 +41,32 @@
             padding: 0 3px;
         }
 
-        label {
-            display: block;
+        fieldset {
+            margin: 1em 0;
+            max-width: 20em;
+            border-color: silver;
+            border-radius: 10px;
         }
 
-        label > input::before {
-            content: ':';
+        form > fieldset {
+            margin: 2em 0;
+        }
+
+        form > fieldset > legend {
+            font-size: x-large;
+        }
+
+        fieldset > fieldset > legend {
+            font-size: larger;
+        }
+
+        field {
+            display: block;
+            max-width: 20em;
+            padding: 0.75em;
+            margin: 1em 0 0.5em 0;
+            background-color: rgb(240, 240, 240);
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -49,18 +83,65 @@
 <h1>New Calendar</h1>
 
 <form>
-    <label>Name <input type="text" name="name" required minlength="5"></label>
+    <field>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required minlength="5">
+    </field>
 
     <fieldset>
         <legend>Events</legend>
 
         <fieldset>
             <legend>First Event</legend>
-            <label>Date <input type="date"></label>
-            <button>Delete Event</button>
+
+            <field>
+                <label for="event_01_name">Name:</label>
+                <input type="text" id="event_01_name" name="event_01_name" required minlength="3">
+            </field>
+
+
+
+            <field>
+                <label for="event_01_start_date">Starts: </label>
+                <input type="date" id="event_01_start_date" name="event_01_start_date" required>
+                <input type="time" id="event_01_start_time" name="event_01_start_time" required>
+            </field>
+
+            <field>
+                <label for="event_01_end_date">Ends: </label>
+                <input type="date" id="event_01_end_date" name="event_01_end_date" required>
+                <input type="time" id="event_01_end_time" name="event_01_end_time" required>
+            </field>
+
+            <!-- <button type="button">Delete This Event</button> -->
         </fieldset>
 
-        <button>Add Event</button>
+        <button type="button">Add Another Event</button>
+    </fieldset>
+
+    <fieldset>
+        <legend>Invitees</legend>
+
+        <fieldset>
+            <legend>First Invitee</legend>
+
+            <field>
+                <label for="invitee_01_name">Name:</label>
+                <input type="text" id="invitee_01_name" name="invitee_01_name" required minlength="5">
+            </field>
+
+            <field>
+                <label for="invitee_01_email">Email:</label>
+                <input type="email" id="invitee_01_email" name="invitee_01_email" required minlength="5">
+            </field>
+
+            <field>
+                <input type="checkbox" id="invitee_01_allow_manage" name="invitee_01_allow_manage">
+                <label for="invitee_01_allow_manage">Allow to manage calendar</label>
+            </field>
+        </fieldset>
+
+        <button type="button">Add Another Invitee</button>
     </fieldset>
 
     <button type="submit">Create Calendar</button>
