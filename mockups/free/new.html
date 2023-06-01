@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CommunityCal Free » New Calendar</title>
+    <style type="text/css">
+        nav {
+            border-bottom: 1px solid black;
+        }
+
+        .crumbs ol {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .crumbs li {
+            display: inline-block;
+        }
+
+        .crumbs a::after {
+            display: inline-block;
+            color: #000;
+            content: '>';
+            font-size: 80%;
+            font-weight: bold;
+            padding: 0 3px;
+        }
+
+        label {
+            display: block;
+        }
+
+        label > input::before {
+            content: ':';
+        }
+    </style>
+</head>
+<body>
+
+<nav class="crumbs">
+    <ol>
+        <li><a href="../index.html">CommunityCal</a></li>
+        <li><a href="index.html">Free Edition</a></li>
+        <li>New Calendar</li>
+    </ol>
+</nav>
+
+<h1>New Calendar</h1>
+
+<form>
+    <label>Name <input type="text" name="name" required minlength="5"></label>
+
+    <fieldset>
+        <legend>Events</legend>
+
+        <fieldset>
+            <legend>First Event</legend>
+            <label>Date <input type="date"></label>
+            <button>Delete Event</button>
+        </fieldset>
+
+        <button>Add Event</button>
+    </fieldset>
+
+    <button type="submit">Create Calendar</button>
+</form>
+
+
+</body>
+</html>
