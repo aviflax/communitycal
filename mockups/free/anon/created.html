@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CommunityCal Free » Calendar Created</title>
+    <style type="text/css">
+        html, body {
+            font-family: sans-serif;
+            font-size: large;
+            padding: 0 0.25em 0.5em 0.25em;
+        }
+
+        nav.crumbs {
+            border-bottom: 1px solid black;
+        }
+
+        nav.crumbs a {
+            text-decoration: none;
+        }
+
+        nav.crumbs a:visited {
+            color: blue;
+        }
+
+        .crumbs ol {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 10px 0;
+        }
+
+        .crumbs li {
+            display: inline-block;
+            margin: 0;
+        }
+
+        .crumbs a::after {
+            display: inline-block;
+            content: '»';
+            padding: 0 5px 0 10px;
+            margin: 0;
+        }
+
+        fieldset {
+            margin: 1em 0;
+            max-width: 23em;
+            border-color: silver;
+            border-radius: 10px;
+        }
+
+        form > fieldset {
+            margin: 2em 0;
+        }
+
+        form > fieldset > legend {
+            font-size: large;
+        }
+
+        field {
+            display: block;
+            max-width: 20em;
+            padding: 0.75em;
+            margin: 1em 0 0.5em 0;
+            background-color: rgb(240, 240, 240);
+            border-radius: 10px;
+        }
+
+        button, input {
+            font-size: 100%;
+        }
+
+        button {
+            border-radius: 3px;
+            background: linear-gradient(#eee, #DCDCDC);
+            border: 1px solid #ccc;
+            padding: 5px 6px;
+        }
+
+        textarea {
+            display: block;
+            width: 100%;
+            height: 3em;
+        }
+
+        section {
+            margin: 2em 0;
+            border-top: 1px solid black;
+        }
+
+        body > section > h1 {
+            font-size: large
+        }
+    </style>
+</head>
+<body>
+
+<nav class="crumbs">
+    <ol>
+        <li><a href="../index.html">CommunityCal</a></li>
+        <li><a href="index.html">Free Edition</a></li>
+        <li>Calendar Created!</li>
+    </ol>
+</nav>
+
+<h1>Calendar Created!</h1>
+
+<p>Your calendar <i>WDS Girls Basketball 22–23</i> has been created!</p>
+
+<p>Before we activate your calendar, we need to validate your email address.</p>
+
+<p>We’ve sent an email with an activation code to <code>ham@burger.yum</code>.</p>
+
+<p>Please enter the activation code below to proceed:
+
+<form>
+    <field>
+        <label for="verification_code">Verification Code:</label>
+        <input type="text" id="verification_code" name="verification_code" required
+            minlength="5" maxlength="5">
+    </field>
+
+    <button type="submit" onclick="document.location='../known/share.html'">
+        Verify Email and Proceed to Share Calendar
+    </button>
+</form>
+
+<section>
+    <h1>No Verification Email?</h1>
+
+    <p>If more than a couple of minutes has passed and you don’t seem to have received the email with
+       the verification code, then please double-check that the email address you entered
+       (<code>ham@burger.yum</code>) is correct. If it is, try:
+       <button>Resend Verification Email</button> — but if not, then you may re-enter your email
+       address below.</p>
+
+<form>
+    <fieldset>
+        <legend>Re-Enter Your Email Address</legend>
+        <field>
+            <label for="owner_email">Your Email:</label>
+            <input type="email" id="owner_email" name="owner_email" required minlength="5">
+        </field>
+        <button type="submit" onclick="document.location='created.html'">Send Verification Email</button>
+    </fieldset>
+</form>
+
+</section>
+
+</body>
+</html>
