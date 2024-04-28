@@ -18,27 +18,15 @@
 
 <h1>Calendar Created!</h1>
 
-<p>Your calendar <i>WDS Girls Basketball 22–23</i> has been created!</p>
+<p><b>Your calendar <i>WDS Girls Basketball 22–23</i> has been created!</b></p>
 
-<p>Before we activate your calendar, we need to validate your email address.</p>
+<ul class="info">
+  <li>Before we activate your calendar, we need to validate your email address
+  <li>We’ve sent an email with a verification code to <code>ham@burger.yum</code>
+  <li>Click the link in the email to proceed
+</ul>
 
-<p>We’ve sent an email with a verification code to <code>ham@burger.yum</code>.</p>
-
-<p>Please enter the verification code below to proceed:
-
-<form>
-    <field>
-        <label for="verification_code">Verification Code:</label>
-        <input type="text" id="verification_code" name="verification_code" required
-            minlength="5" maxlength="5">
-    </field>
-
-    <button type="submit" onclick="document.location='../known/share.html'">
-        Verify Email and Proceed to Share Calendar
-    </button>
-</form>
-
-<section id="no-email">
+<section class="secondary-path">
     <h1>No Verification Email?</h1>
 
     <p>If more than a couple of minutes has passed and you don’t seem to have received the email with
@@ -49,15 +37,19 @@
 
     <form>
         <fieldset>
-            <legend>Re-Enter Your Email Address</legend>
+            <legend>Correct Your Email Address</legend>
             <field>
-                <label for="owner_email">Your Email:</label>
-                <input type="email" id="owner_email" name="owner_email" required minlength="5">
+                <label for="email">Your Email:</label>
+                <input type="email" id="email" name="email" required minlength="5">
             </field>
             <button type="submit" onclick="document.location='created.html'">Send Verification Email</button>
         </fieldset>
     </form>
 </section>
+
+<nav>
+    <a href="../known/account-activated.html">→</a>
+</nav>
 
 </body>
 </html>

@@ -27,7 +27,7 @@ nav.crumbs a:visited {
     margin: 0;
 }
 
-.crumbs a::after {
+.crumbs li:not(:last-child)::after {
     display: inline-block;
     content: '»';
     padding: 0 5px 0 10px;
@@ -84,10 +84,19 @@ section {
     border-top: 1px solid black;
 }
 
-section#no-email > h1 {
-    font-size: large
+section.secondary-path {
+    margin-top: 6em;
+
+    h1 {
+        font-size: x-large;
+    }
+
+    legend {
+        font-size: large;
+    }
 }
 
-section#no-email legend {
-    font-size: large;
+ul.info li {
+    list-style-type: "ℹ️ ";
+    margin-bottom: 0.5em;
 }

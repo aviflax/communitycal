@@ -4,18 +4,39 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CommunityCal » Choose an Edition</title>
+    <link rel="stylesheet" href="cc.css">
     <style type="text/css">
+        header h1 {
+            margin-bottom: 0.3em;
+        }
+
+        header #slogan {
+            margin-top: 0.3em;
+        }
+
+        header {
+            border-bottom: 1px solid silver;
+            margin-bottom: 2em;
+        }
+
         nav > ul > li {
             margin-top: 1em;
+        }
+
+        nav a {
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-<h1>CommunityCal</h1>
+<header>
+    <h1>CommunityCal</h1>
+    <p id="slogan">Bringing order to calendrical chaos.</p>
+</header>
 
 <nav>
-    <h2>Please choose an edition:</h2>
+    <h1>Please choose an edition to get started:</h1>
 
     <ul>
         <li>
@@ -31,11 +52,13 @@
         <li>
             <a href="pro/index.html">Pro Edition</a>
             <ul>
+                <li><b>Everything in the Free Edition</b>
                 <li>Import invitees from spreadsheets
                 <li>Collect RSVPs from invitees
                 <li>Send reminders and updates via email and/or SMS
                 <li>Maintain groups of invitees independent of specific calendars
                 <li>Attach questionnaires to calendars
+                    <!-- EG: will your child be taking the bus? Yes/no -->
                 <!-- <li>Require and accept payments -->
             </ul>
         </li>

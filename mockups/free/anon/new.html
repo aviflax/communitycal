@@ -20,8 +20,8 @@
 
 <form>
     <field>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required minlength="5">
+        <label for="name">Calendar Name:</label>
+        <input type="text" id="name" name="cal_name" required minlength="5">
     </field>
 
     <fieldset>
@@ -65,69 +65,66 @@
             <!-- <button type="button">Delete This Event</button> -->
         </fieldset>
 
-        <button type="button">Add Another Event</button>
+        <button type="button">➕ Add Another Event</button>
     </fieldset>
 
+    <!-- TODO: move this to a subsequent page. There’s too much happening on this page. -->
     <fieldset>
         <legend>Invitees</legend>
 
-        <fieldset>
-            <legend>First Invitee</legend>
+        <template id="invitee">
+            <fieldset>
+                <legend>First Invitee</legend>
 
-            <field>
-                <label for="invitee_01_name">Name:</label>
-                <input type="text" id="invitee_01_name" name="invitee_01_name" required minlength="5">
-            </field>
+                <field>
+                    <label for="invitee_01_name">Name:</label>
+                    <input type="text" id="invitee_01_name" name="invitee_01_name" required minlength="5">
+                </field>
 
-            <field>
-                <label for="invitee_01_email">Email:</label>
-                <input type="email" id="invitee_01_email" name="invitee_01_email" required minlength="5">
-            </field>
+                <field>
+                    <label for="invitee_01_email">Email:</label>
+                    <input type="email" id="invitee_01_email" name="invitee_01_email" required minlength="5">
+                </field>
 
-            <field>
-                <label for="invitee_01_phone">Phone:</label>
-                <input type="tel" id="invitee_01_phone" name="invitee_01_phone" minlength="5">
-                <span
-                  title="In the free edition, this is only for your own reference. But if you upgrade to the Pro edition, you’ll be able to enable reminders and updates via SMS.">
-                  ℹ️
-                </span>
-            </field>
-            
-            <!-- Probably going to omit this because it confuses the concept of an invitee. Instead,
-                 in the management page, post-creation, the creator will be able to add/invite
-                 additional managers.
-            <field>
-                <input type="checkbox" id="invitee_01_allow_manage" name="invitee_01_allow_manage">
-                <label for="invitee_01_allow_manage">Allow to manage calendar</label>
-            </field> -->
+                <field>
+                    <label for="invitee_01_phone">Phone:</label>
+                    <input type="tel" id="invitee_01_phone" name="invitee_01_phone" minlength="5">
+                    <span
+                      title="In the free edition, this is only for your own reference. But if you upgrade to the Pro edition, you’ll be able to enable reminders and updates via SMS.">
+                      ℹ️
+                    </span>
+                </field>
 
-            <!-- <button type="button">Delete This Invitee</button> -->
-        </fieldset>
+                <button type="button">🗑️ Delete This Invitee</button>
+            </fieldset>
+        </template>
 
-        <button type="button">Add Another Invitee</button>
+        <button type="button">➕ Add An Invitee</button>
+
+        <p>ℹ️ You can do this now or later; it’s up to you</p>
     </fieldset>
 
     <fieldset>
-        <legend>Your Info</legend>
+        <legend>About You</legend>
 
         <field>
-            <label for="owner_name">Your Name:</label>
-            <input type="text" id="owner_name" name="owner_name" required minlength="5">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" name="name" required minlength="5">
         </field>
 
         <field>
-            <label for="owner_email">Your Email:</label>
-            <input type="email" id="owner_email" name="owner_email" required minlength="5">
-            <p>We’ll send you a validation email prior to activating your calendar.</p>
+            <label for="email">Your Email:</label>
+            <input type="email" id="email" name="email" required minlength="5">
+            <p>ℹ️ We’ll send you a validation email prior to activating your calendar.</p>
         </field>
     </fieldset>
 
-    <ul>
+    <ul class="info">
         <li>Creating this calendar will <b>not</b> cause any emails to be sent to the invitees
         <li>After you create the calendar we’ll help you share it with your invitees
     </ul>
 
-    <button type="submit" onclick="document.location='created.html'">Create Calendar</button>
+    <button type="submit" onclick="document.location='created.html'">🚀 Create Calendar</button>
 </form>
 
 
