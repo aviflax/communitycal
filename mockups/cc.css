@@ -55,7 +55,7 @@ fieldset > fieldset > legend {
 
 field {
     display: block;
-    max-width: 20em;
+    max-width: 22em;
     padding: 0.75em;
     margin: 1em 0 0.5em 0;
     background-color: rgb(240, 240, 240);
@@ -97,6 +97,6 @@ section.secondary-path {
 }
 
 ul.info li {
-    list-style-type: "ℹ️ ";
+    list-style-type: "💁 ";
     margin-bottom: 0.5em;
 }
