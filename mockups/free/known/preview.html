@@ -18,104 +18,95 @@
 
 <h1>Preview <i>JV Basketball 2024–2025</i></h1>
 
-<!-- I found this approach here:
-       https://forfrontend.com/how-to-make-responsive-calendar-in-html-and-css/ -->
-
 <style>
-    div.calendar-month {
-        width: 100%;
-/*        max-width: 600px;*/
-        margin: 0 auto;
+    :root {
+        --main-accent-color: palegreen;
     }
 
-    div.calendar-month > header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        background-color: #333;
-        color: #fff;
-    }
+    .event {
+        min-width: 575px;
+        max-width: 650px;
+        font-variant-numeric: tabular-nums;
 
-    .change-month {
-        cursor: pointer;
-    }
+        border: 5px solid var(--main-accent-color);
+        border-radius: 10px;
 
-    ol.calendar-days {
-        list-style-type: none;
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 1px;
-        background-color: #333;
-    }
+        h2 {
+            background-color: var(--main-accent-color);
+            padding: 10px;
+            margin: 0;
+        }
 
-    ol.calendar-days > li {
-        list-style-type: none;
-        padding: 20px;
-        background-color: #fff;
-        text-align: left;
-    }
+        & > details {
+            margin: 1.5em 1em;
 
-    li.day-of-week {
-        font-weight: bold;
-    }
-
-    ol.calendar-days > li > ul {
-        margin: 0;
-        margin-left: 20px;
-        padding: 0;
+            summary {
+                font-size: x-large;
+                font-weight: bold;
+            }
+        }
     }
 </style>
 
-<div class="calendar-month">
-    <header>
-        <span id="month-prev" class="change-month">&lt;</span>
-        <h1 id="month">July 2023</h1>
-        <span id="month-next" class="change-month">&gt;</span>
-    </header>
+<section class="event">
+    <h2>Wednesday, 18 September 2024</h2>
 
-    <ol class="calendar-days">
-        <li class="day-of-week">Sun
-        <li class="day-of-week">Mon
-        <li class="day-of-week">Tue
-        <li class="day-of-week">Wed
-        <li class="day-of-week">Thu
-        <li class="day-of-week">Fri
-        <li class="day-of-week">Sat
-        <li>1
-        <li>2
-        <li>3
-        <li>4
-            <ul><li>Home Game @ 18:00</ul>
-        <li>5
-        <li>6
-        <li>7
-        <li>8
-        <li>9
-        <li>10
-        <li>11
-        <li>12
-        <li>13
-        <li>14
-        <li>15
-        <li>16
-        <li>17
-        <li>18
-        <li>19
-        <li>20
-        <li>21
-        <li>22
-        <li>23
-        <li>24
-        <li>25
-        <li>26
-        <li>27
-        <li>28
-        <li>29
-        <li>30
-        <li>31
-    </ol>
-</div>
+    <details>
+        <summary>08:00–09:00 &nbsp;&nbsp; Practice</summary>
+        <i>More info coming soon…</i>
+    </details>
+
+    <details>
+        <summary>18:30–20:00 &nbsp;&nbsp; Home Game vs Stonewall Prep</summary>
+        <i>More info coming soon…</i>
+    </details>
+</section>
+
+<section class="event">
+    <h2>Sunday, 22 September 2024</h2>
+
+    <details>
+        <summary>09:00–10:00 &nbsp;&nbsp; Practice</summary>
+        <i>More info coming soon…</i>
+    </details>
+</section>
+
+<section class="event">
+    <h2>Wednesday, 25 September 2024</h2>
+
+    <details>
+        <summary>16:00–17:00 &nbsp;&nbsp; Practice</summary>
+        <i>More info coming soon…</i>
+    </details>
+</section>
+
+<section class="event">
+    <h2>Wednesday, 2 October 2024</h2>
+
+    <details>
+        <summary>16:00–17:00 &nbsp;&nbsp; Practice</summary>
+        <i>More info coming soon…</i>
+    </details>
+</section>
+
+<section class="event">
+    <h2>Thursday, 3 October 2024</h2>
+    <details>
+        <summary>17:00–18:00 &nbsp;&nbsp; Bus to Stonewall Prep</summary>
+        <i>More info coming soon…</i>
+    </details>
+    <details>
+        <summary>18:00–19:30 &nbsp;&nbsp; Away Game @ Stonewall Prep</summary>
+        <i>More info coming soon…</i>
+    </details>
+</section>
+
+<section>
+    <h1>How’s it look?</h1>
+    <button>✏️ Not quite right, let’s edit the events</button>
+    <i>or</i>
+    <button>🚀 Looks good, let’s activate this thing!</button>
+</section>
 
 </body>
 </html>
