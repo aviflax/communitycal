@@ -18,7 +18,104 @@
 
 <h1>Preview <i>JV Basketball 2024–2025</i></h1>
 
-<h1 style="font-size: 200pt;">TO&nbsp;DO</h1>
+<!-- I found this approach here:
+       https://forfrontend.com/how-to-make-responsive-calendar-in-html-and-css/ -->
+
+<style>
+    div.calendar-month {
+        width: 100%;
+/*        max-width: 600px;*/
+        margin: 0 auto;
+    }
+
+    div.calendar-month > header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #333;
+        color: #fff;
+    }
+
+    .change-month {
+        cursor: pointer;
+    }
+
+    ol.calendar-days {
+        list-style-type: none;
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 1px;
+        background-color: #333;
+    }
+
+    ol.calendar-days > li {
+        list-style-type: none;
+        padding: 20px;
+        background-color: #fff;
+        text-align: left;
+    }
+
+    li.day-of-week {
+        font-weight: bold;
+    }
+
+    ol.calendar-days > li > ul {
+        margin: 0;
+        margin-left: 20px;
+        padding: 0;
+    }
+</style>
+
+<div class="calendar-month">
+    <header>
+        <span id="month-prev" class="change-month">&lt;</span>
+        <h1 id="month">July 2023</h1>
+        <span id="month-next" class="change-month">&gt;</span>
+    </header>
+
+    <ol class="calendar-days">
+        <li class="day-of-week">Sun
+        <li class="day-of-week">Mon
+        <li class="day-of-week">Tue
+        <li class="day-of-week">Wed
+        <li class="day-of-week">Thu
+        <li class="day-of-week">Fri
+        <li class="day-of-week">Sat
+        <li>1
+        <li>2
+        <li>3
+        <li>4
+            <ul><li>Home Game @ 18:00</ul>
+        <li>5
+        <li>6
+        <li>7
+        <li>8
+        <li>9
+        <li>10
+        <li>11
+        <li>12
+        <li>13
+        <li>14
+        <li>15
+        <li>16
+        <li>17
+        <li>18
+        <li>19
+        <li>20
+        <li>21
+        <li>22
+        <li>23
+        <li>24
+        <li>25
+        <li>26
+        <li>27
+        <li>28
+        <li>29
+        <li>30
+        <li>31
+    </ol>
+</div>
 
 </body>
 </html>
