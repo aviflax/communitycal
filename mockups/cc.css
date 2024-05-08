@@ -36,7 +36,7 @@ nav.crumbs a:visited {
 
 fieldset {
     margin: 1em 0;
-    max-width: 23em;
+    max-width: 26em;
     border-color: silver;
     border-radius: 10px;
 }
@@ -55,7 +55,7 @@ fieldset > fieldset > legend {
 
 field {
     display: block;
-    max-width: 22em;
+    max-width: 24em;
     padding: 0.75em;
     margin: 1em 0 0.5em 0;
     background-color: rgb(240, 240, 240);
@@ -64,6 +64,10 @@ field {
 
 button, input {
     font-size: 100%;
+}
+
+input[type="text"], input[type="email"] {
+    width: 16em;
 }
 
 button {
