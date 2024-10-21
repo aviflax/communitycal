@@ -5,6 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CommunityCal » Choose an Edition</title>
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <style>
+        header {
+            #tagline {
+                margin: 0;
+                font-weight: normal;
+                font-size: larger;
+            }
+        }
+
+        main {
+            #pitch {
+                /* margin: 2em 0;
+                padding-left: 0;
+                font-size: larger; */
+
+                li {
+                  margin-bottom: 1rem;
+                  /* ❡ */
+                  list-style-type: "📅";
+                  padding-left: 0.5rem;
+                    /* padding-left: 0;
+                    margin-left: 0;
+                    list-style: none;
+                    margin-bottom: 1em; */
+                }
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -13,80 +41,31 @@
     <h2 id="tagline">Bringing order to calendrical chaos.</h2>
 </header>
 
-<ul class="pitch">
-    <li>Do you or your kids participate in community programs like sports teams or theater groups?
-    <li>Are you tired of getting the schedules for your programs via emails, PDFs, and spreadsheets?
-    <li>Are you tired of getting updates to those schedules via sporadic emails, in random formats?
-    <li>It’s 2024! We all have digital calendars in our pockets! Our community program schedules
-        should be right there!
-    <li><b>CommunityCal</b> lets <b>anyone</b> create digital schedules for community
-        programs — schedules that are <b>easily added</b> to the calendar app on your phone, and
-        <b>automatically update</b> when they’re changed
-    <li>And all our basic features are <b>free, forever</b>
-</ul>
-
-
-<nav>
-    <h1>Get Started</h1>
-
-    <h3>Please choose an edition:</h3>
-
-    <ul>
-        <li>
-            <a href="free/index.html">Free Edition</a>
-            <ul>
-                <li>Unlimited calendars, events, and invitees
-                <li>Seamless integration with calendar apps on phones, tablets, and laptops
-                <li>Email updates to all invitees
-                <li>
-                    <details><summary>Web pages…</summary>
-                    <ul>
-                        <li>One listing all your calendars, e.g. <a class="example" href="">free.communitycal.app/riverdalehigh</a>
-                        <li>And one for each calendar, e.g. <a class="example" href="">free.communitycal.app/riverdalehigh/jv-bball-24-25</a>
-                    </ul></details>
-                </li>
-            </ul>
-        </li>
-
-        <li>
-            🔜 <a href="pro/index.html">Pro Edition</a> (coming soon)
-            <!-- ($10/month or $100/year) -->
-            <!-- Something about a free trial for Pro? -->
-            <ul>
-                <li><b>Everything in the Free Edition</b>
-                <li>Import invitees from spreadsheets or your address book
-                <li>Collect RSVPs from invitees
-                <li>Send updates via SMS (in addition to email)
-                <li>Send reminders via email and/or SMS
-                <li>
-                    <details>
-                        <summary>Use your own domain name, e.g. <a class="example" href="">calendars.riverdalehigh.edu</a></summary>
-                        <ul><li>Or use our short domain name, e.g. <a class="example" href="">ccal.app/riverdalehigh</a></ul>
-                    </details>
-                </li>
-                <li>Premium support
-                <li>Maintain groups of invitees independent of specific calendars
-                <li>Attach questionnaires to calendars
-                    <!-- EG: will your child be taking the bus? Yes/no -->
-                <li>🔜 Take payments (coming soon)
-                    <!-- EG: pay for the bus right here with Apple Pay or whatever -->
-            </ul>
-        </li>
+<main>
+    <ul id="pitch">
+        <li>Do you or any kids in your life participate in community programs like <nobr>⚽️ sports
+            teams</nobr> or <nobr>🎭 theater groups</nobr>?
+        <li>Are you sick of getting the schedules for those programs via <nobr>🤦 emails</nobr>,
+            <nobr>🤦 PDFs</nobr>, and <nobr>🤦 spreadsheets?</nobr>
+        <li>Are you tired of getting updates to those schedules via <nobr>🤦 sporadic</nobr> emails,
+            in <nobr>🤦 random</nobr> formats?
+        <li><b>CommunityCal</b> lets <b>anyone</b> create digital calendars for community programs,
+            <b>quickly and easily</b>
+        <li>These calendars are <b>easy to add</b> to the calendar app on <b>any <nobr>📱 phone</nobr></b>
+        <li>And they <b>automatically update</b> when they’re changed
+        <li>And all our basic features are <b>free, forever</b>
     </ul>
 
-    <p>💁 Not sure? Start with the <a href="free/index.html">Free Edition</a>; you can upgrade to
-       <a href="pro/index.html">Pro</a> any time.</p>
-    <!-- Something about a free trial for Pro? Something about being able to downgrade any time? -->
-</nav>
-
-<nav>
-    <h2>Been here before?</h2>
-    <h3>If so, log in:</h3>
-    <form action="" method="get">
-        <input type="email" name="email" placeholder="greta.grappler@riverdalehigh.edu">
-        <button>📧 Send login link 📧</button>
-    </form>
-</nav>
+    <section>
+        <h1>🚀 Let’s Go!</h1>
+        <p>Do you already have an account?</p>
+        <p><a class="button" href="" onclick="alert('coming soon'); return false;"><b>Yes</b>, I’d
+            like to log in</a></p>
+        <p><a class="button" href="free/anon/new.html"><b>No</b>, let’s create one</a></p>
+        <p><a class="button" href="" onclick="alert('coming soon'); return false;"><b>Maybe,</b> I’m
+            not sure</a></p>
+    </section>
+</main>
 
 </body>
 </html>
