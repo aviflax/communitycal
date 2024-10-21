@@ -4,40 +4,26 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CommunityCal » Free Edition</title>
-    <link rel="stylesheet" href="../cc.css">
-    <style type="text/css">
-        nav.top {
-            padding-bottom: 0.5em;
-            border-bottom: 1px solid black;
-        }
-
-        nav > ul > li {
-            margin-top: 1em;
-            a:visited {
-                color: blue;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
 </head>
 <body>
 
-<nav class="crumbs">
-    <ol>
-        <li><a href="../index.html">CommunityCal</a></li>
-        <li><a href="index.html">Free Edition</a></li>
-        <li>Get Started</li>
-    </ol>
-</nav>
+<header>
+    <nav>
+        <a href="../index.html">CommunityCal</a>
+        <a href="index.html">Free Edition</a>
+        <a class="current" href="#">Get Started</a>
+    </nav>
+    <h1>Let’s Get Started</h1>
+</header>
 
-<h1>Get Started</h1>
+<main>
+    Do you already have an account?
 
-<nav>
-    Either:
-    <ul>
-        <li><a href="anon/new.html">Create a new account and a new calendar</a>
-        <li>or <a href="../log-in.html">Log In</a> to use your existing account
-    </ul>
-</nav>
+    <p><a class="button" href="../log-in.html">Yes</a></p>
+    <p><a class="button" href="anon/new.html">No</a></p>
+    <p><a class="button" href="" onclick="alert('coming soon')">Not sure</a></p>
+</main>
 
 </body>
 </html>
