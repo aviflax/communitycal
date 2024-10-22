@@ -10,7 +10,7 @@
 <body>
 
 <header>
-    <nav class="crumbs">
+    <nav>
         <a href="../../index.html">CommunityCal</a>
         <a href="../index.html">Free Edition</a>
     </nav>
@@ -19,127 +19,23 @@
 
 <main>
 
-<form>
+<form method="GET" action="add-events.html">
     <field>
-        Account Name:
-        <input type="text" required minlength="5" placeholder="Riverdale High">
-        <p>💁 Don’t stress; you can change this any time!</p>
-    </field>
-
-    <field>
-        <label for="name">Calendar Name:</label>
+        <label for="name">Calendar Name</label>
         <input type="text" id="name" name="cal_name" required minlength="5" placeholder="JV Basketball 2024–2025">
-        <p>💁 You can change this any time as well!</p>
     </field>
 
-    <fieldset>
-        <legend>Events</legend>
+    <field>
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" required minlength="5" placeholder="Greta Grappler">
+    </field>
 
-        <fieldset>
-            <legend>First Event</legend>
+    <field>
+        <label for="email">Your Email</label>
+        <input type="email" id="email" name="email" required placeholder="g.grappler@riverdalehigh.edu">
+    </field>
 
-            <field>
-                <label for="event_01_name">Name:</label>
-                <input type="text" id="event_01_name" name="event_01_name" required minlength="3">
-            </field>
-
-            <field>
-                <label for="event_01_location">Location:</label>
-                <input type="text" id="event_01_location" name="event_01_location" required minlength="3">
-            </field>
-
-            <field>
-                <input type="checkbox" id="event_01_all_day" name="event_01_all_day">
-                <label for="event_01_all_day">All Day</label>
-            </field>
-
-            <field>
-                <label for="event_01_start_date">Starts: </label>
-                <input type="date" id="event_01_start_date" name="event_01_start_date" required>
-                <input type="time" id="event_01_start_time" name="event_01_start_time" required>
-            </field>
-
-            <field>
-                <label for="event_01_end_date">Ends: </label>
-                <input type="date" id="event_01_end_date" name="event_01_end_date" required>
-                <input type="time" id="event_01_end_time" name="event_01_end_time" required>
-            </field>
-
-            <field>
-                <input type="checkbox" id="event_01_recurring" name="event_01_recurring">
-                <label for="event_01_recurring">Recurring</label>
-            </field>
-
-            <field>
-                <label for="notes">Notes: </label>
-                <textarea id="notes" name="notes"></textarea>
-            </field>
-
-            <!-- <button type="button">Delete This Event</button> -->
-        </fieldset>
-
-        <button type="button">➕ Add Another Event</button>
-    </fieldset>
-
-    <!-- TODO: move this to a subsequent page. There’s too much happening on this page. -->
-    <!--
-    <fieldset>
-        <legend>Invitees</legend>
-
-        <template id="invitee">
-            <fieldset>
-                <legend>First Invitee</legend>
-
-                <field>
-                    <label for="invitee_01_name">Name:</label>
-                    <input type="text" id="invitee_01_name" name="invitee_01_name" required minlength="5">
-                </field>
-
-                <field>
-                    <label for="invitee_01_email">Email:</label>
-                    <input type="email" id="invitee_01_email" name="invitee_01_email" required minlength="5">
-                </field>
-
-                <field>
-                    <label for="invitee_01_phone">Phone:</label>
-                    <input type="tel" id="invitee_01_phone" name="invitee_01_phone" minlength="5">
-                    <span
-                      title="In the free edition, this is only for your own reference. But if you upgrade to the Pro edition, you’ll be able to enable reminders and updates via SMS.">
-                      ℹ️
-                    </span>
-                </field>
-
-                <button type="button">🗑️ Delete This Invitee</button>
-            </fieldset>
-        </template>
-
-        <button type="button">➕ Add An Invitee</button>
-
-        <p>💁 You can do this now or later; it’s up to you</p>
-    </fieldset>
-     -->
-
-    <fieldset>
-        <legend>About You</legend>
-
-        <field>
-            <label for="name">Your Name:</label>
-            <input type="text" id="name" name="name" required minlength="5" placeholder="Greta Grappler">
-        </field>
-
-        <field>
-            <label for="email">Your Email:</label>
-            <input type="email" id="email" name="email" required placeholder="g.grappler@riverdalehigh.edu">
-            <!-- Probably don’t need this anymore:
-                <p>💁 We’ll send you a validation email prior to activating your calendar.</p> -->
-        </field>
-    </fieldset>
-
-    <ul class="info">
-        <li>After you preview and activate the calendar we’ll help you share it!
-    </ul>
-
-    <button type="submit" onclick="document.location='preview.html'">➡ Next step: 👀 Preview Calendar</button>
+    <button type="submit">Next Step: Add an Event!</button>
 </form>
 
 </main>
