@@ -4,58 +4,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CommunityCal Free » Preview Calendar</title>
-    <link rel="stylesheet" type="text/css" href="../../cc.css">
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <link rel="stylesheet" type="text/css" href="../../tweaks.css">
 </head>
 <body>
 
-<nav class="crumbs">
-    <ol>
-        <li><a href="../../index.html">CommunityCal</a></li>
-        <li><a href="../index.html">Free Edition</a></li>
-        <li>Preview Calendar</li>
-    </ol>
-</nav>
+<header>
+    <nav>
+        <a href="../../index.html">CommunityCal</a>
+        <a href="../index.html">Free Edition</a>
+    </nav>
+    <h1>Preview <i>JV Basketball 2024–2025</i></h1>
+</header>
 
-<h1>Preview <i>JV Basketball 2024–2025</i></h1>
-
-<style>
-    :root {
-        --main-accent-color: palegreen;
-    }
-
-    section.day {
-        min-width: 575px;
-        max-width: 850px;
-        font-variant-numeric: tabular-nums;
-
-        border: 5px solid var(--main-accent-color);
-        border-radius: 10px;
-
-        h2 {
-            font-size: x-large;
-            background-color: var(--main-accent-color);
-            padding: 10px;
-            margin: 0;
-        }
-
-        details.event {
-            margin: 1.5em 1em;
-
-            summary {
-                font-size: larger;
-                font-weight: bold;
-
-                & .event-headline {
-                  display: inline-grid;
-                  grid-template-columns: 160px 350px 200px;
-                }
-            }
-        }
-    }
-</style>
+<main>
 
 <section class="day">
-    <h2>Wednesday, 18 September 2024</h2>
+    <h2>Wednesday, 18 November 2024</h2>
 
     <details class="event">
         <summary>
@@ -95,7 +60,7 @@
 </section>
 
 <section class="day">
-    <h2>Sunday, 22 September 2024</h2>
+    <h2>Sunday, 22 November 2024</h2>
 
     <details class="event">
         <summary>
@@ -111,7 +76,7 @@
 </section>
 
 <section class="day">
-    <h2>Wednesday, 25 September 2024</h2>
+    <h2>Wednesday, 25 November 2024</h2>
 
     <details class="event">
         <summary>
@@ -171,9 +136,12 @@
 
 <section>
     <h1>How’s it look?</h1>
-    <button>✏️ Not quite right, let’s edit the events</button>
-    <button>🚀 Looks good, let’s activate and then share it!</button>
+    <a class="button">✏️ Not quite right, let’s edit the events</a>
+    <br><br>
+    <a class="button">🚀 Looks good, let’s activate and then share it!</a>
 </section>
+
+</main>
 
 </body>
 </html>
