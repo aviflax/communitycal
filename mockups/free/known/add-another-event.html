@@ -14,7 +14,7 @@
         <a href="../../index.html">CommunityCal</a>
         <a href="../index.html">JV Basketball 2024–2025</a>
     </nav>
-    <h1>Add Event</h1>
+    <h1>Add Another Event</h1>
 </header>
 
 <main>
@@ -22,12 +22,21 @@
 <form method="GET" action="../known/add-another-event.html">
     <field>
         <label for="event_01_name">Name</label>
-        <input type="text" id="event_01_name" name="event_01_name" required minlength="3" value="Practice">
+        <select>
+            <option selected>Choose a name or enter a new one</option>
+            <option>Practice</option>
+            <option>Enter a new name</option>
+        </select>
     </field>
 
     <field>
         <label for="event_01_location">Location</label>
-        <input type="text" id="event_01_location" name="event_01_location" required minlength="3" value="Riverdale High gym">
+        <select>
+            <option selected>Choose a location or enter a new one</option>
+            <option>Riverdale High gym</option>
+            <option>Enter a new location</option>
+        </select>
+
     </field>
 
     <field>
@@ -57,7 +66,7 @@
         <textarea id="notes" name="notes"></textarea>
     </field>
 
-    <a class="button" href="add-another-event.html">Save &amp; Add Another Event</a>
+    <a class="button" href="add-event.html">Save &amp; Add Another Event</a>
     <br><b>or</b><br>
     <a class="button" href="preview.html">Save &amp; Review Events</a>
 </form>
