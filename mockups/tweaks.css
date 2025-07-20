@@ -9,6 +9,16 @@ header {
 form {
     field {
         display: block;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    label {
+        font-weight: bold;
+    }
+}
+
+section.day {
+    h2 {
+        font-size: larger;
     }
 }
