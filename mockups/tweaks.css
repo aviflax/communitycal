@@ -11,7 +11,7 @@ form {
         display: block;
         margin-bottom: 1.5rem;
     }
-    
+
     label {
         font-weight: bold;
     }
@@ -21,4 +21,8 @@ section.day {
     h2 {
         font-size: larger;
     }
+}
+
+.larger {
+    font-size: larger;
 }
