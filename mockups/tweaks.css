@@ -23,6 +23,6 @@ section.day {
     }
 }
 
-.larger {
+.button b:first-child, button b:first-child {
     font-size: larger;
 }
