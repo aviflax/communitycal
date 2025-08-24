@@ -26,3 +26,17 @@ section.day {
 .button b:first-child, button b:first-child {
     font-size: larger;
 }
+
+ul.info-desk {
+    padding-left: 1em;
+
+    li {
+        list-style-type: "💁";
+        margin-bottom: 1em;
+        padding-left: 0.25em;
+    }
+}
+
+a.url {
+    text-decoration: none;
+}
