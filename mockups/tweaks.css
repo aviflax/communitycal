@@ -1,0 +1,42 @@
+header {
+    #tagline {
+        margin: 0;
+        font-weight: normal;
+        font-size: larger;
+    }
+}
+
+form {
+    field {
+        display: block;
+        margin-bottom: 1.5rem;
+    }
+
+    label {
+        font-weight: bold;
+    }
+}
+
+section.day {
+    h2 {
+        font-size: larger;
+    }
+}
+
+.button b:first-child, button b:first-child {
+    font-size: larger;
+}
+
+ul.info-desk {
+    padding-left: 1em;
+
+    li {
+        list-style-type: "💁";
+        margin-bottom: 1em;
+        padding-left: 0.25em;
+    }
+}
+
+a.url {
+    text-decoration: none;
+}

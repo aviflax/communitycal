@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add an Event « JV Basketball 25–26 « Riverdale High Athletics « CommunityCal Free</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <link rel="stylesheet" type="text/css" href="../../tweaks.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <a href="../../index.html">Riverdale High Athletics</a>
+        <a href="review.html">JV Basketball 25–26</a>
+    </nav>
+    <h1>Add an Event</h1>
+</header>
+
+<main>
+
+<form method="GET" action="add-another-event.html">
+    <field>
+        <label for="event_01_name">Name</label>
+        <input type="text" id="event_01_name" name="event_01_name" required minlength="3" value="Practice">
+    </field>
+
+    <field>
+        <label for="event_01_location">Location</label>
+        <input type="text" id="event_01_location" name="event_01_location" required minlength="3" value="Riverdale High Gym">
+    </field>
+
+    <field>
+        <label for="event_01_start_date">Starts</label>
+        <input type="date" id="event_01_start_date" name="event_01_start_date" required>
+        <input type="time" id="event_01_start_time" name="event_01_start_time" required>
+    </field>
+
+    <field>
+        <input type="checkbox" id="event_01_all_day" name="event_01_all_day">
+        <label for="event_01_all_day">All Day</label>
+    </field>
+
+    <field>
+        <label for="event_01_end_date">Ends</label>
+        <input type="date" id="event_01_end_date" name="event_01_end_date" required>
+        <input type="time" id="event_01_end_time" name="event_01_end_time" required>
+    </field>
+
+    <field>
+        <input type="checkbox" id="event_01_recurring" name="event_01_recurring">
+        <label for="event_01_recurring">Recurring</label>
+    </field>
+
+    <field>
+        <label for="notes">Notes</label>
+        <textarea id="notes" name="notes"></textarea>
+    </field>
+
+    <section>
+        <h2>What Now?</h2>
+        <a class="button" href="add-another-event.html"><b>+</b> Add Another Event</a>
+        <br><br>
+        <a class="button" href="review.html">📅 Review Events</a>
+    </section>
+</form>
+
+</main>
+
+</body>
+</html>
