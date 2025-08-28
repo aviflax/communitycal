@@ -1,4 +1,4 @@
-(ns communitycal.server
+(ns communitycal.webserver
   (:gen-class)
   (:require
    [communitycal.http-handlers :as h]
@@ -24,9 +24,14 @@
     (wrap-not-modified)))
 
 
+(defn handle-with-db
+  [req handler]
+  (:response (handler req)))
+
+
 (def routes
   (router/routes
-    "POST /accounts" req (h/post-accounts req)))
+    "POST /accounts" req (handle-with-db req h/post-accounts)))
 
 
 (def main-handler
