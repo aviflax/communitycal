@@ -15,6 +15,7 @@
 
 
 (def static-handler
+  "Initially for CSS, images, things like that. But also for static HTML pages such as the home page."
   (-> not-found
     (wrap-file "static")
     (wrap-content-type)
