@@ -1,10 +1,12 @@
 (ns communitycal.server
   (:gen-class)
   (:require
+   [communitycal.http-handlers :as h]
    [ring.adapter.jetty :refer [run-jetty]]
    [ring.middleware.file :refer [wrap-file]]
    [ring.middleware.content-type :refer [wrap-content-type]]
    [ring.middleware.not-modified :refer [wrap-not-modified]]
+   [ring.middleware.params :refer [wrap-params]]
    [clj-simple-router.core :as router]))
 
 
@@ -22,8 +24,19 @@
     (wrap-not-modified)))
 
 
+(def routes
+  (router/routes
+    "POST /accounts" req (h/post-accounts req)))
+
+
+(def main-handler
+  (-> static-handler
+      (router/wrap-routes routes)
+      wrap-params))
+
+
 (defn -main [& _args]
-  (run-jetty static-handler {:port 3000}))
+  (run-jetty main-handler {:port 3000}))
 
 
 
@@ -31,7 +44,7 @@
   (require '[ring.middleware.reload :refer [wrap-reload]])
 
   (def dev-handler
-    (wrap-reload #'static-handler))
+    (wrap-reload #'main-handler))
 
   (def dev-server (run-jetty dev-handler {:port 3000 :join? false}))
 
