@@ -33,6 +33,11 @@
        :cardinality :db.cardinality/one})
 
 
+(defn- unique
+  [attr]
+  (assoc attr :db/unique :db.unique/identity))
+
+
 (def schemata
   {:init [(ref     :history/created-by)
           (instant :history/created-at)
@@ -41,9 +46,10 @@
           (str :community/name)
    
           (id :calendar/id)
+          (ref :calendar/community)
           (str :calendar/name)
    
           (id :user/id)
+          (ref :user/community)
           (str :user/name)
-          (-> (str :user/email)
-              (assoc :db/unique :db.unique/identity))]})
+          (-> (str :user/email) unique)]})

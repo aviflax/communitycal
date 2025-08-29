@@ -28,6 +28,10 @@
   (init)
   (d/delete-database client config)
 
-
-  (d/pull (d/db (connect client)) '[*] [:user/email "foo@bar"])
+  (let [conn (connect client)
+        db (d/db conn)]
+    (d/pull
+      db
+      '[* {:user/community [*]}]
+      [:user/email "g.grappler@riverdalehigh.edu"]))
   )

@@ -13,21 +13,25 @@
 
 (defn post-accounts
   [{{:strs [community-name calendar-name user-name user-email]} :params :as _req}]
-  (let [temp-user-id "foo"
+  (let [temp-user-id "user"
+        temp-community-id "community"
         now (java.util.Date.)]
     {:response {:status 303 :headers {"location" "add-event"}}
      :txs [{:db/id temp-user-id
             :user/name user-name
             :user/email user-email
+            :user/community temp-community-id
             :user/id (d/squuid)
             :history/created-at now}
 
-           {:community/name community-name
+           {:db/id temp-community-id
+            :community/name community-name
             :community/id (d/squuid)
             :history/created-by temp-user-id
             :history/created-at now}
 
            {:calendar/name calendar-name
+            :calendar/community temp-community-id
             :calendar/id (d/squuid)
             :history/created-by temp-user-id
             :history/created-at now}]}))
