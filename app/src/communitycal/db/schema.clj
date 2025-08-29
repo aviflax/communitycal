@@ -3,26 +3,23 @@
 
 
 (defn- str
-  "Construct a schema map for a string with a cardinality of one."
-  ([ident] (str ident nil))
-  ([ident doc]
+  ([ident]
    #:db{:ident       ident
         :valueType   :db.type/string
-        :cardinality :db.cardinality/one
-        :doc         doc}))
+        :cardinality :db.cardinality/one})
+  ([ident doc]
+   (assoc (str ident) :doc doc)))
 
 
 (defn- id
-  "id"
   [ident]
   #:db{:ident       ident
        :valueType   :db.type/uuid
-       :unique      :db.unique/identity
-       :cardinality :db.cardinality/one})
+       :cardinality :db.cardinality/one
+       :unique      :db.unique/identity})
 
 
 (defn- instant
-  "instant"
   [ident]
   #:db{:ident       ident
        :valueType   :db.type/instant
@@ -30,7 +27,6 @@
 
 
 (defn- ref
-  "reference"
   [ident]
   #:db{:ident       ident
        :valueType   :db.type/ref
@@ -41,11 +37,13 @@
   {:init [(ref     :history/created-by)
           (instant :history/created-at)
 
-          (id :external/id)
-
+          (id :community/id)
           (str :community/name)
    
+          (id :calendar/id)
           (str :calendar/name)
    
+          (id :user/id)
           (str :user/name)
-          (str :user/email)]})
+          (-> (str :user/email)
+              (assoc :db/unique :db.unique/identity))]})

@@ -9,28 +9,28 @@
    response map."
   (:require
    [clojure.pprint :refer [pprint]]
-   [datomic.api :as d])
-  (:import [java.time Instant]))
+   [datomic.api :as d]))
 
 
 (defn post-accounts
   [{{:strs [community-name calendar-name user-name user-email]} :params :as req}]
-  (let [temp-user-id (d/tempid :db.part/user)
+  (let [temp-user-id "foo"
+        now (java.util.Date.)
         txs [{:db/id temp-user-id
               :user/name user-name
               :user/email user-email
-              :external/id (d/squuid)
-              :history/created-at (Instant/now)}
+              :user/id (d/squuid)
+              :history/created-at now}
 
              {:community/name community-name
-              :external/id (d/squuid)
+              :community/id (d/squuid)
               :history/created-by temp-user-id
-              :history/created-at (Instant/now)}
+              :history/created-at now}
 
              {:calendar/name calendar-name
-              :external/id (d/squuid)
+              :calendar/id (d/squuid)
               :history/created-by temp-user-id
-              :history/created-at (Instant/now)}]]
+              :history/created-at now}]]
     {:response {:status 200
                 :headers {"Content-Type" "text/plain"}
                 :body (with-out-str
