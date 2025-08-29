@@ -1,6 +1,6 @@
 (ns communitycal.db
   (:require
-   [communitycal.db.schema :as s]
+   [communitycal.db.schemata :as s]
    [datomic.client.api :as d]))
 
 

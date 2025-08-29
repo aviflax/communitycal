@@ -1,4 +1,4 @@
-(ns communitycal.http-handlers
+(ns communitycal.http-handlers.onboarding
   "Each handler accepts a request and returns a map with [:response :txs].
 
    If :txs is present and a non-nil seqable of maps, then the transactions will be commited before
@@ -35,3 +35,8 @@
             :calendar/id (d/squuid)
             :history/created-by temp-user-id
             :history/created-at now}]}))
+
+
+(defn post-add-event
+   [_req]
+   {:response {:status 200 :body "TODO"}})

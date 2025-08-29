@@ -3,7 +3,7 @@
   (:require
    [clj-simple-router.core :as router]
    [communitycal.db :as db]
-   [communitycal.http-handlers :as h]
+   [communitycal.http-handlers.onboarding :as ho]
    [datomic.client.api :as d]
    [ring.adapter.jetty :refer [run-jetty]]
    [ring.middleware.content-type :refer [wrap-content-type]]
@@ -17,7 +17,6 @@
 
 
 (def static-handler
-  "Initially for CSS, images, things like that. But also for static HTML pages such as the home page."
   (-> not-found
     (wrap-file "static")
     (wrap-content-type)
@@ -38,8 +37,9 @@
 (def routes
   (router/routes
     "GET  /onboarding/start"      req (static-handler (update req :uri #(str % ".html")))
-    "POST /onboarding/accounts"   req (handle-with-db req h/post-accounts)
-    "GET  /onboarding/add-event"  req (static-handler (update req :uri #(str % ".html")))))
+    "POST /onboarding/accounts"   req (handle-with-db req ho/post-accounts)
+    "GET  /onboarding/add-event"  req (static-handler (update req :uri #(str % ".html")))
+    "POST /onboarding/add-event"  req (handle-with-db req ho/post-add-event)))
 
 
 (def main-handler

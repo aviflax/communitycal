@@ -1,4 +1,4 @@
-(ns communitycal.db.schema
+(ns communitycal.db.schemata
   (:refer-clojure :exclude [ref str]))
 
 
@@ -52,4 +52,12 @@
           (id :user/id)
           (ref :user/community)
           (str :user/name)
-          (-> (str :user/email) unique)]})
+          (-> (str :user/email) unique)
+
+          (id :event/id)
+          (ref :event/calendar)
+          (str :event/name)
+          (str :event/location)
+          (instant :event/start)
+          (instant :event/end)
+          (str :event/notes)]})
