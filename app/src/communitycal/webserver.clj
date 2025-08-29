@@ -6,8 +6,8 @@
    [communitycal.http-handlers :as h]
    [datomic.client.api :as d]
    [ring.adapter.jetty :refer [run-jetty]]
-   [ring.middleware.file :refer [wrap-file]]
    [ring.middleware.content-type :refer [wrap-content-type]]
+   [ring.middleware.file :refer [wrap-file]]
    [ring.middleware.not-modified :refer [wrap-not-modified]]
    [ring.middleware.params :refer [wrap-params]]))
 
@@ -39,7 +39,8 @@
 
 (def routes
   (router/routes
-    "POST /accounts" req (handle-with-db req h/post-accounts)))
+    "GET /new-account" req (static-handler (update req :uri #(str % ".html")))
+    "POST /accounts"   req (handle-with-db req h/post-accounts)))
 
 
 (def main-handler
