@@ -13,9 +13,7 @@
 
 
 (def not-found
-  (constantly {:status 404
-               :headers {"Content-Type" "text/plain"}
-               :body "Not Found"}))
+  (constantly {:status 404 :headers {"Content-Type" "text/plain"} :body "Not Found"}))
 
 
 (def static-handler
@@ -39,8 +37,9 @@
 
 (def routes
   (router/routes
-    "GET /new-account" req (static-handler (update req :uri #(str % ".html")))
-    "POST /accounts"   req (handle-with-db req h/post-accounts)))
+    "GET  /onboarding/start"      req (static-handler (update req :uri #(str % ".html")))
+    "POST /onboarding/accounts"   req (handle-with-db req h/post-accounts)
+    "GET  /onboarding/add-event"  req (static-handler (update req :uri #(str % ".html")))))
 
 
 (def main-handler
