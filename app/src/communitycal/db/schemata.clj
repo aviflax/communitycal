@@ -50,7 +50,6 @@
           (str :calendar/name)
    
           (id :user/id)
-          (ref :user/community)
           (str :user/name)
           (-> (str :user/email) unique)
 

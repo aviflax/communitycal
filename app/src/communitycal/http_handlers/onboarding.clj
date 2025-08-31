@@ -20,7 +20,6 @@
      :txs [{:db/id temp-user-id
             :user/name user-name
             :user/email user-email
-            :user/community temp-community-id
             :user/id (d/squuid)
             :history/created-at now}
 
