@@ -18,9 +18,9 @@
         now (java.util.Date.)]
     {:response {:status 303 :headers {"location" "add-event"}}
      :txs [{:db/id temp-user-id
-            :user/name user-name
-            :user/email user-email
-            :user/id (d/squuid)
+            :person/name user-name
+            :person/email user-email
+            :person/id (d/squuid)
             :history/created-at now}
 
            {:db/id temp-community-id

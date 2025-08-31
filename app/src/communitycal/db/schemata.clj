@@ -49,9 +49,9 @@
           (ref :calendar/community)
           (str :calendar/name)
    
-          (id :user/id)
-          (str :user/name)
-          (-> (str :user/email) unique)
+          (id :person/id)
+          (str :person/name)
+          (-> (str :person/email) unique)
 
           (id :event/id)
           (ref :event/calendar)

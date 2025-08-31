@@ -32,6 +32,6 @@
         db (d/db conn)]
     (d/pull
       db
-      '[* {:user/community [*]}]
-      [:user/email "g.grappler@riverdalehigh.edu"]))
+      '[* {:person/community [*]}]
+      [:person/email "g.grappler@riverdalehigh.edu"]))
   )
