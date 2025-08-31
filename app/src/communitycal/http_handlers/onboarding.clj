@@ -8,7 +8,10 @@
    If a handler needs to do I/O, the value of response should be a future that will return a
    response map."
   (:require
-   [datomic.api :as d])
+   [communitycal.db :as db]
+   [communitycal.db.queries :as q]
+   [datomic.api :as d]
+   [hiccup2.core :as h])
   (:import
    [java.time LocalDateTime ZoneId]))
 
@@ -66,3 +69,25 @@
               :event/recurring (boolean recurring)}]]
     {:response {:status 303 :headers {"location" next-page}}
      :txs txs}))
+
+
+
+(defn get-fragments-inputs-location
+  [_req]
+  {:response
+   (future 
+     (let [db (db/get-db)
+           locations (q/get-all-locations db)
+           frag [:input {:type :text
+                         :id :location
+                         :name :location
+                         :list :locations
+                         :required true
+                         :minlength 3
+                         :placeholder (first locations)}
+                 [:datalist {:id :locations}
+                  (for [loc locations]
+                    [:option {:value loc}])]]]
+       {:status 200
+        :headers {"content-type" "text/html"}
+        :body (str (h/html frag))}))})

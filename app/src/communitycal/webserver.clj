@@ -16,14 +16,14 @@
   (constantly {:status 404 :headers {"Content-Type" "text/plain"} :body "Not Found"}))
 
 
-(def static-handler
+(def handle-static
   (-> not-found
     (wrap-file "static")
     (wrap-content-type)
     (wrap-not-modified)))
 
 
-(defn handle-with-db
+(defn handle-dynamic
   [req handler]
   (let [{:keys [response txs]} (handler req)]
     (when txs
@@ -31,19 +31,22 @@
         (d/transact (db/connect db/client) {:tx-data txs})
         (catch clojure.lang.ExceptionInfo e
           (throw (ex-info (.getMessage e) (assoc (ex-data e) :txs txs) e)))))
-    response))
+    (if (future? response)
+      @response
+      response)))
 
 
 (def routes
   (router/routes
-    "GET  /onboarding/start"      req (static-handler (update req :uri #(str % ".html")))
-    "POST /onboarding/accounts"   req (handle-with-db req ho/post-accounts)
-    "GET  /onboarding/add-event"  req (static-handler (update req :uri #(str % ".html")))
-    "POST /onboarding/add-event"  req (handle-with-db req ho/post-add-event)))
+    "GET  /onboarding/start"      req (handle-static (update req :uri #(str % ".html")))
+    "POST /onboarding/accounts"   req (handle-dynamic req ho/post-accounts)
+    "GET  /onboarding/add-event"  req (handle-static (update req :uri #(str % ".html")))
+    "POST /onboarding/add-event"  req (handle-dynamic req ho/post-add-event)
+    "GET  /onboarding/add-event/fragments/inputs/location" req (handle-dynamic req ho/get-fragments-inputs-location)))
 
 
 (def main-handler
-  (-> static-handler
+  (-> handle-static
     (router/wrap-routes routes)
     wrap-params))
 

@@ -6,6 +6,7 @@
     <title>Add an Event « JV Basketball 25–26 « Riverdale High Athletics « CommunityCal Free</title>
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
     <link rel="stylesheet" type="text/css" href="../tweaks.css">
+    <script src="../js/vendored/htmx.2.0.6.min.js"></script>
 </head>
 <body>
 
@@ -27,7 +28,16 @@
 
     <field>
         <label for="location">Location</label>
-        <input type="text" id="location" name="location" required minlength="3" placeholder="Riverdale High Gym">
+        <input
+          type="text"
+          id="location"
+          name="location"
+          required
+          minlength="3"
+          placeholder="Riverdale High Gym"
+          hx-trigger="load"
+          hx-get="add-event/fragments/inputs/location"
+          hx-swap="outerHTML">
     </field>
 
     <field>
