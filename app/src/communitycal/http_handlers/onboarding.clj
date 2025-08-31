@@ -51,7 +51,7 @@
 
 (defn post-add-event
   [{{:strs [event-name location timezone-id start-date start-time all-day end-date end-time
-            recurring notes]}
+            recurring notes next-page]}
     :params
     :as _req}]
   (let [start (strs->date start-date start-time timezone-id)
@@ -64,7 +64,5 @@
               :event/notes notes
               :event/all-day (boolean all-day)
               :event/recurring (boolean recurring)}]]
-    {:response {:status 200
-                :headers {"Content-Type" "text/plain"}
-                :body (with-out-str (clojure.pprint/pprint txs))}
+    {:response {:status 303 :headers {"location" next-page}}
      :txs txs}))
