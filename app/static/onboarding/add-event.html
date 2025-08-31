@@ -21,35 +21,42 @@
 
 <form method="POST" action="add-event">
     <field>
-        <label for="event-01-name">Name</label>
-        <input type="text" id="event-01-name" name="event-01-name" required minlength="3" placeholder="Practice">
+        <label for="event-name">Name</label>
+        <input type="text" id="event-name" name="event-name" required minlength="3" placeholder="Practice">
     </field>
 
     <field>
-        <label for="event-01-location">Location</label>
-        <input type="text" id="event-01-location" name="event-01-location" required minlength="3" placeholder="Riverdale High Gym">
+        <label for="location">Location</label>
+        <input type="text" id="location" name="location" required minlength="3" placeholder="Riverdale High Gym">
     </field>
 
     <field>
-        <label for="event-01-start-date">Starts</label>
-        <input type="date" id="event-01-start-date" name="event-01-start-date" required>
-        <input type="time" id="event-01-start-time" name="event-01-start-time" required>
+        <label for="timezone-id">Time Zone</label>
+        <select id="timezone-id" name="timezone-id">
+            <option selected value="America/New_York">Eastern Time</option>
+        </select>
     </field>
 
     <field>
-        <input type="checkbox" id="event-01-all-day" name="event-01-all-day">
-        <label for="event-01-all-day">All Day</label>
+        <label for="start-date">Starts</label>
+        <input type="date" id="start-date" name="start-date" required>
+        <input type="time" id="start-time" name="start-time" required>
     </field>
 
     <field>
-        <label for="event-01-end-date">Ends</label>
-        <input type="date" id="event-01-end-date" name="event-01-end-date" required>
-        <input type="time" id="event-01-end-time" name="event-01-end-time" required>
+        <input type="checkbox" id="all-day" name="all-day">
+        <label for="all-day">All Day</label>
     </field>
 
     <field>
-        <input type="checkbox" id="event-01-recurring" name="event-01-recurring">
-        <label for="event-01-recurring">Recurring</label>
+        <label for="end-date">Ends</label>
+        <input type="date" id="end-date" name="end-date" required>
+        <input type="time" id="end-time" name="end-time" required>
+    </field>
+
+    <field>
+        <input type="checkbox" id="recurring" name="recurring" value="true">
+        <label for="recurring">Recurring</label>
     </field>
 
     <field>

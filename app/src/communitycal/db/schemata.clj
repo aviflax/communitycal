@@ -8,7 +8,14 @@
         :valueType   :db.type/string
         :cardinality :db.cardinality/one})
   ([ident doc]
-   (assoc (str ident) :doc doc)))
+   (assoc (str ident) :db/doc doc)))
+
+
+(defn- bool
+  [ident]
+  #:db{:ident       ident
+       :valueType   :db.type/boolean
+       :cardinality :db.cardinality/one})
 
 
 (defn- id
@@ -57,6 +64,9 @@
           (ref :event/calendar)
           (str :event/name)
           (str :event/location)
+          (str :event/timezone-id "IANA region-based time zone ID such as Asia/Tel_Aviv")
           (instant :event/start)
           (instant :event/end)
+          (bool :event/all-day)
+          (bool :event/recurring)
           (str :event/notes)]})

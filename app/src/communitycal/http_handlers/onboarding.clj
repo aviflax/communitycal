@@ -8,7 +8,20 @@
    If a handler needs to do I/O, the value of response should be a future that will return a
    response map."
   (:require
-   [datomic.api :as d]))
+   [datomic.api :as d])
+  (:import
+   [java.time LocalDateTime ZoneId]))
+
+
+(defn- strs->date
+  "Accepts a date string and a time string as produced by the corresponding browser form controls,
+   and an IANA time zone ID string. Returns a java.util.DateTime."
+  [date time zone-id]
+  (let [datetime (str date "T" time ":00")
+        local-datetime (LocalDateTime/parse datetime)
+        zoned-datetime (.atZone local-datetime (ZoneId/of zone-id))
+        instant (.toInstant zoned-datetime)]
+    (java.util.Date/from instant)))
 
 
 (defn post-accounts
@@ -37,5 +50,21 @@
 
 
 (defn post-add-event
-   [_req]
-   {:response {:status 200 :body "TODO"}})
+  [{{:strs [event-name location timezone-id start-date start-time all-day end-date end-time
+            recurring notes]}
+    :params
+    :as _req}]
+  (let [start (strs->date start-date start-time timezone-id)
+        end (strs->date end-date end-time timezone-id)
+        txs [{:event/name event-name
+              :event/location location
+              :event/timezone-id timezone-id
+              :event/start start
+              :event/end end
+              :event/notes notes
+              :event/all-day (boolean all-day)
+              :event/recurring (boolean recurring)}]]
+    {:response {:status 200
+                :headers {"Content-Type" "text/plain"}
+                :body (with-out-str (clojure.pprint/pprint txs))}
+     :txs txs}))
