@@ -2,7 +2,6 @@
   (:require
    [datomic.client.api :as d]))
 
-
 (defn get-all-locations
   [db]
   (->> (d/q

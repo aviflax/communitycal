@@ -1,5 +1,4 @@
 (ns communitycal.webserver
-  (:gen-class)
   (:require
    [clj-simple-router.core :as router]
    [communitycal.db :as db]
@@ -9,19 +8,17 @@
    [ring.middleware.content-type :refer [wrap-content-type]]
    [ring.middleware.file :refer [wrap-file]]
    [ring.middleware.not-modified :refer [wrap-not-modified]]
-   [ring.middleware.params :refer [wrap-params]]))
-
+   [ring.middleware.params :refer [wrap-params]])
+  (:gen-class))
 
 (def not-found
   (constantly {:status 404 :headers {"Content-Type" "text/plain"} :body "Not Found"}))
-
 
 (def handle-static
   (-> not-found
     (wrap-file "static")
     (wrap-content-type)
     (wrap-not-modified)))
-
 
 (defn handle-dynamic
   [req handler]
@@ -35,7 +32,6 @@
       @response
       response)))
 
-
 (def routes
   (router/routes
     "GET  /onboarding/start"      req (handle-static (update req :uri #(str % ".html")))
@@ -44,17 +40,13 @@
     "POST /onboarding/add-event"  req (handle-dynamic req ho/post-add-event)
     "GET  /onboarding/add-event/fragments/inputs/location" req (handle-dynamic req ho/get-fragments-inputs-location)))
 
-
 (def main-handler
   (-> handle-static
     (router/wrap-routes routes)
     wrap-params))
 
-
 (defn -main [& _args]
   (run-jetty main-handler {:port 3000}))
-
-
 
 (comment
   (require '[ring.middleware.reload :refer [wrap-reload]])
@@ -67,5 +59,4 @@
   (def dev-server (run-jetty dev-handler {:port 3000 :join? false}))
 
   (.stop dev-server)
-
-  )
+  ,)

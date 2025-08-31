@@ -13,8 +13,7 @@
    [datomic.api :as d]
    [hiccup2.core :as h])
   (:import
-   [java.time LocalDateTime ZoneId]))
-
+   (java.time LocalDateTime ZoneId)))
 
 (defn- strs->date
   "Accepts a date string and a time string as produced by the corresponding browser form controls,
@@ -25,7 +24,6 @@
         zoned-datetime (.atZone local-datetime (ZoneId/of zone-id))
         instant (.toInstant zoned-datetime)]
     (java.util.Date/from instant)))
-
 
 (defn post-accounts
   [{{:strs [community-name calendar-name user-name user-email]} :params :as _req}]
@@ -51,7 +49,6 @@
             :history/created-by temp-user-id
             :history/created-at now}]}))
 
-
 (defn post-add-event
   [{{:strs [event-name location timezone-id start-date start-time all-day end-date end-time
             recurring notes next-page]}
@@ -70,12 +67,10 @@
     {:response {:status 303 :headers {"location" next-page}}
      :txs txs}))
 
-
-
 (defn get-fragments-inputs-location
   [_req]
   {:response
-   (future 
+   (future
      (let [db (db/get-db)
            locations (q/get-all-locations db)
            frag [:input {:type :text
