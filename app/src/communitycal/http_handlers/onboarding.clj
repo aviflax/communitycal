@@ -11,7 +11,8 @@
    [communitycal.db :as db]
    [communitycal.db.queries :as q]
    [datomic.api :as d]
-   [hiccup.page :as hp])
+   [hiccup.page :as hp]
+   [hiccup2.core :as h])
   (:import
    (java.time LocalDateTime ZoneId)))
 
@@ -71,7 +72,7 @@
   [content]
   {:status 200
    :headers {"Content-Type" "text/html; charset=utf-8"}
-   :body content})
+   :body (str content)})
 
 (defn get-fragments-inputs-location
   [_req]
@@ -89,7 +90,7 @@
                  [:datalist {:id :locations}
                   (for [loc locations]
                     [:option {:value loc}])]]]
-       (html-ok-response frag)))})
+       (html-ok-response (h/html frag))))})
 
 (defn- page
   [{:keys [title header main]}]
