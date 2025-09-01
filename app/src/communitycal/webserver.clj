@@ -34,6 +34,7 @@
 
 (def routes
   (router/routes
+    "GET  /editions"              req (handle-static (update req :uri #(str % ".html")))
     "GET  /onboarding/start"      req (handle-static (update req :uri #(str % ".html")))
     "POST /onboarding/accounts"   req (handle-dynamic req ho/post-accounts)
     "GET  /onboarding/add-event"  req (handle-static (update req :uri #(str % ".html")))
