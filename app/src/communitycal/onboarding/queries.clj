@@ -1,4 +1,4 @@
-(ns communitycal.db.queries
+(ns communitycal.onboarding.queries
   (:require
    [datomic.client.api :as d]))
 

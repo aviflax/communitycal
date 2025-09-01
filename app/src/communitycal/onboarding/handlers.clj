@@ -1,4 +1,4 @@
-(ns communitycal.http-handlers.onboarding
+(ns communitycal.onboarding.handlers
   "Each handler accepts a request and returns a map with [:response :txs].
 
    If :txs is present and a non-nil seqable of maps, then the transactions will be commited before
@@ -9,7 +9,7 @@
    response map."
   (:require
    [communitycal.db :as db]
-   [communitycal.db.queries :as q]
+   [communitycal.onboarding.queries :as q]
    [communitycal.temporals :as t]
    [datomic.api :as d]
    [hiccup.page :as hp]

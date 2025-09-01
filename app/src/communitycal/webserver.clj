@@ -2,7 +2,7 @@
   (:require
    [clj-simple-router.core :as router]
    [communitycal.db :as db]
-   [communitycal.http-handlers.onboarding :as ho]
+   [communitycal.onboarding.handlers :as o]
    [datomic.client.api :as d]
    [ring.adapter.jetty :refer [run-jetty]]
    [ring.middleware.content-type :refer [wrap-content-type]]
@@ -40,12 +40,12 @@
   (router/routes
     "GET  /editions"              req (-> req add-html handle-static)
     "GET  /onboarding/start"      req (-> req add-html handle-static)
-    "POST /onboarding/accounts"   req (handle-dynamic req ho/post-accounts)
+    "POST /onboarding/accounts"   req (handle-dynamic req o/post-accounts)
     "GET  /onboarding/add-event"  req (-> req add-html handle-static)
-    "POST /onboarding/add-event"  req (handle-dynamic req ho/post-add-event)
-    "GET  /onboarding/add-event/fragments/inputs/location" req (handle-dynamic req ho/get-fragments-inputs-location)
-    "GET  /onboarding/add-event/fragments/inputs/event-name" req (handle-dynamic req ho/get-fragments-inputs-event-name)
-    "GET  /onboarding/review"     req (handle-dynamic req ho/get-review)
+    "POST /onboarding/add-event"  req (handle-dynamic req o/post-add-event)
+    "GET  /onboarding/add-event/fragments/inputs/location" req (handle-dynamic req o/get-fragments-inputs-location)
+    "GET  /onboarding/add-event/fragments/inputs/event-name" req (handle-dynamic req o/get-fragments-inputs-event-name)
+    "GET  /onboarding/review"     req (handle-dynamic req o/get-review)
     "GET  /onboarding/share"      req (-> req add-html handle-static)))
 
 (def main-handler
