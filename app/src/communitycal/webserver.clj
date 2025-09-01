@@ -20,6 +20,10 @@
     (wrap-content-type)
     (wrap-not-modified)))
 
+(defn add-html
+  [req]
+  (update req :uri #(str % ".html")))
+
 (defn handle-dynamic
   [req handler]
   (let [{:keys [response txs]} (handler req)]
@@ -34,10 +38,10 @@
 
 (def routes
   (router/routes
-    "GET  /editions"              req (handle-static (update req :uri #(str % ".html")))
-    "GET  /onboarding/start"      req (handle-static (update req :uri #(str % ".html")))
+    "GET  /editions"              req (-> req add-html handle-static)
+    "GET  /onboarding/start"      req (-> req add-html handle-static)
     "POST /onboarding/accounts"   req (handle-dynamic req ho/post-accounts)
-    "GET  /onboarding/add-event"  req (handle-static (update req :uri #(str % ".html")))
+    "GET  /onboarding/add-event"  req (-> req add-html handle-static)
     "POST /onboarding/add-event"  req (handle-dynamic req ho/post-add-event)
     "GET  /onboarding/add-event/fragments/inputs/location" req (handle-dynamic req ho/get-fragments-inputs-location)
     "GET  /onboarding/add-event/fragments/inputs/event-name" req (handle-dynamic req ho/get-fragments-inputs-event-name)
