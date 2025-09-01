@@ -144,7 +144,7 @@
       [:section
        [:h2 "How’s it look?"]
        [:a {:class "button", :href "add-event"}
-        [:b "+"] "Let’s add another event"]
+        [:b "+"] " Let’s add another event"]
        [:br]
        [:br]
        [:a {:class "button", :href "share"}
