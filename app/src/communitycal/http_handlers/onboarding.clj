@@ -119,7 +119,6 @@
       [:h1 header]]
      [:main main]]))
 
-
 (defn- review-page
   []
   (let [events-by-date (->> (db/get-db)
@@ -130,7 +129,7 @@
        :header "Review Events"
        :main (for [[date events] events-by-date]
                [:section.day
-                [:h2 date]
+                [:h2 (t/format date :review-group)]
                 (for [{:event/keys [name location start end notes]} events]
                   [:details.event
                    [:summary
