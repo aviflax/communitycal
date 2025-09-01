@@ -100,7 +100,7 @@
        (html-ok-response (h/html frag))))})
 
 (defn- page
-  [{:keys [title header main]}]
+  [{:keys [title header]} & main]
   (hp/html5
     [:head
      [:meta {:charset "utf-8"}]
@@ -117,7 +117,7 @@
        [:a {:href "../my/calendars/jv-bball-25-26"}
         "JV Basketball 25–26"]]
       [:h1 header]]
-     [:main main]]))
+     (vec (cons :main main))]))
 
 (defn- review-page
   []
@@ -126,21 +126,29 @@
                             (group-by #(t/date->local-date (:event/start %) (:event/timezone-id %))))]
     (page
       {:title "Review Events « JV Basketball 25–26 « Riverdale High Athletics « CommunityCal Free"
-       :header "Review Events"
-       :main (for [[date events] events-by-date]
-               [:section.day
-                [:h2 (t/format date :review-group)]
-                (for [{:event/keys [name location start end timezone-id notes]} events
-                      :let [zstart (t/date->zdt start timezone-id)
-                            zend   (t/date->zdt end timezone-id)]]
-                  [:details.event
-                   [:summary
-                    [:div.event-headline
-                     [:div.event-time (str (t/format zstart :time) "–" (t/format zend :time))]
-                     [:div.event-name name]
-                     [:div.event-loc location]
-                     "✏️ 🗑️"]]
-                   notes])])})))
+       :header "Review Events"}
+      (for [[date events] events-by-date]
+        [:section.day
+         [:h2 (t/format date :review-group)]
+         (for [{:event/keys [name location start end timezone-id notes]} events
+               :let [zstart (t/date->zdt start timezone-id)
+                     zend   (t/date->zdt end timezone-id)]]
+           [:details.event
+            [:summary
+             [:div.event-headline
+              [:div.event-time (str (t/format zstart :time) "–" (t/format zend :time))]
+              [:div.event-name name]
+              [:div.event-loc location]
+              "✏️ 🗑️"]]
+            notes])])
+      [:section
+       [:h2 "How’s it look?"]
+       [:a {:class "button", :href "add-event"}
+        [:b "+"] "Let’s add another event"]
+       [:br]
+       [:br]
+       [:a {:class "button", :href "share"}
+        "🚀 Looks good; let’s share it!"]])))
 
 (defn get-review
   [_req]

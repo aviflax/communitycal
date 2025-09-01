@@ -45,7 +45,8 @@
     "POST /onboarding/add-event"  req (handle-dynamic req ho/post-add-event)
     "GET  /onboarding/add-event/fragments/inputs/location" req (handle-dynamic req ho/get-fragments-inputs-location)
     "GET  /onboarding/add-event/fragments/inputs/event-name" req (handle-dynamic req ho/get-fragments-inputs-event-name)
-    "GET  /onboarding/review"     req (handle-dynamic req ho/get-review)))
+    "GET  /onboarding/review"     req (handle-dynamic req ho/get-review)
+    "GET  /onboarding/share"      req (-> req add-html handle-static)))
 
 (def main-handler
   (-> handle-static
