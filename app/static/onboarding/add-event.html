@@ -23,7 +23,16 @@
 <form method="POST" action="add-event">
     <field>
         <label for="event-name">Name</label>
-        <input type="text" id="event-name" name="event-name" required minlength="3" placeholder="Practice">
+        <input
+          type="text"
+          id="event-name"
+          name="event-name"
+          required
+          minlength="3"
+          placeholder="Practice"
+          hx-trigger="load"
+          hx-get="add-event/fragments/inputs/event-name"
+          hx-swap="outerHTML">
     </field>
 
     <field>

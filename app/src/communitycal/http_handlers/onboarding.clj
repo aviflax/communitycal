@@ -74,6 +74,24 @@
    :headers {"Content-Type" "text/html; charset=utf-8"}
    :body (str content)})
 
+(defn get-fragments-inputs-event-name
+  [_req]
+  {:response
+   (future
+     (let [db (db/get-db)
+           event-names (q/get-all-event-names db)
+           frag [:input {:type :text
+                         :id :event-name
+                         :name :event-name
+                         :list :event-names
+                         :required true
+                         :minlength 3
+                         :placeholder (first event-names)}
+                 [:datalist {:id :event-names}
+                  (for [event-name event-names]
+                    [:option {:value event-name}])]]]
+       (html-ok-response (h/html frag))))})
+
 (defn get-fragments-inputs-location
   [_req]
   {:response
