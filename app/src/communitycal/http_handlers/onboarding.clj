@@ -125,13 +125,20 @@
                             (q/get-all-events)
                             (group-by #(date->local-date (:event/start %) (:event/timezone-id %))))]
     (page
-      {:title "Review « JV Basketball 25–26 « Riverdale High Athletics « CommunityCal Free"
-       :header "Review"
+      {:title "Review Events « JV Basketball 25–26 « Riverdale High Athletics « CommunityCal Free"
+       :header "Review Events"
        :main (for [[date events] events-by-date]
                [:section.day
                 [:h2 date]
-                (for [event events]
-                  [:details [:summary (:event/name event)]])])})))
+                (for [{:event/keys [name location start end notes]} events]
+                  [:details.event
+                   [:summary
+                    [:div.event-headline
+                     [:div.event-time (str start "–" end)]
+                     [:div.event-name name]
+                     [:div.event-loc location]
+                     "✏️ 🗑️"]]
+                   notes])])})))
 
 (defn get-review
   [_req]
