@@ -4,9 +4,19 @@
 
 (defn get-all-locations
   [db]
-  (->> (d/q
-         '[:find ?location
-           :where
-           [?e :event/location ?location]]
-         db)
+  (->>
+    (d/q
+      '[:find ?location
+        :where
+        [?e :event/location ?location]]
+      db)
+    (map first)))
+
+(defn get-all-events
+  [db]
+  (->>
+    (d/q
+      '[:find (pull ?e [*])
+        :where [?e :event/name ?name]]
+      db)
     (map first)))
