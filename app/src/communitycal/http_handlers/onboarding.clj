@@ -130,11 +130,13 @@
        :main (for [[date events] events-by-date]
                [:section.day
                 [:h2 (t/format date :review-group)]
-                (for [{:event/keys [name location start end notes]} events]
+                (for [{:event/keys [name location start end timezone-id notes]} events
+                      :let [zstart (t/date->zdt start timezone-id)
+                            zend   (t/date->zdt end timezone-id)]]
                   [:details.event
                    [:summary
                     [:div.event-headline
-                     [:div.event-time (str start "–" end)]
+                     [:div.event-time (str (t/format zstart :time) "–" (t/format zend :time))]
                      [:div.event-name name]
                      [:div.event-loc location]
                      "✏️ 🗑️"]]

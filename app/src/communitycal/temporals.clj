@@ -1,8 +1,10 @@
 (ns communitycal.temporals
   (:refer-clojure :exclude [format])
   (:import
-   (java.time LocalDateTime ZoneId)
-   (java.time.format DateTimeFormatter)))
+   (java.time Instant LocalDateTime ZoneId)
+   (java.time.format DateTimeFormatter)
+   (java.time.temporal Temporal)
+   (java.util Date)))
 
 (defn strs->date
   "Accepts a date string and a time string as produced by the corresponding browser form controls,
@@ -14,16 +16,27 @@
         instant (.toInstant zoned-datetime)]
     (java.util.Date/from instant)))
 
-(defn date->local-date
-  [^java.util.Date date zone-id]
+(defn inst->zdt
+  [^Instant inst zone-id]
+  (.atZone inst (ZoneId/of zone-id)))
+
+(defn date->zdt
+  [^Date date zone-id]
   (-> date
-    .toInstant
-    (.atZone (ZoneId/of zone-id))
-    .toLocalDate))
+      .toInstant
+      (inst->zdt zone-id)))
+
+(defn date->local-date
+  [^Date date zone-id]
+  (-> date
+      .toInstant
+      (inst->zdt zone-id)
+      .toLocalDate))
 
 (def formatters
-  {:review-group (DateTimeFormatter/ofPattern "EEEE, d MMM ’yy")})
+  {:review-group  (DateTimeFormatter/ofPattern "EEEE, d MMM ’yy")
+   :time          (DateTimeFormatter/ofPattern "HH:MM")})
 
 (defn format
-  [temporal formatter-name]
+  [^Temporal temporal formatter-name]
   (.format temporal (get formatters formatter-name)))
