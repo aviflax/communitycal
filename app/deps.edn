@@ -3,8 +3,4 @@
   com.datomic/peer  {:mvn/version "1.0.7387"}  ;; for squuid
   ring/ring         {:mvn/version "1.14.2"}
   io.github.weavejester/hiccup {:git/tag "2.0.0" :git/sha "b6b1209"}
-  io.github.tonsky/clj-simple-router {:git/tag "0.1.2" :git/sha "28163e2"}}
-
- :aliases
- {:dev
-  {:extra-deps {ring/ring-devel {:mvn/version "1.6.3"}}}}}
+  io.github.tonsky/clj-simple-router {:git/tag "0.1.2" :git/sha "28163e2"}}}
