@@ -111,15 +111,26 @@
       [:h1 header]]
      [:main main]]))
 
+(defn- date->local-date
+  [^java.util.Date date zone-id]
+  (-> date
+      .toInstant
+      (.atZone (ZoneId/of zone-id))
+      .toLocalDate))
+
 (defn- review-page
   []
-  (let [db (db/get-db)
-        events (q/get-all-events db)]
+  (let [events-by-date (->> (db/get-db)
+                            (q/get-all-events)
+                            (group-by #(date->local-date (:event/start %) (:event/timezone-id %))))]
     (page
       {:title "Review « JV Basketball 25–26 « Riverdale High Athletics « CommunityCal Free"
        :header "Review"
-       :main (for [event events]
-               [:details [:summary (:event/name event)]])})))
+       :main (for [[date events] events-by-date]
+               [:section.day
+                [:h2 date]
+                (for [event events]
+                  [:details [:summary (:event/name event)]])])})))
 
 (defn get-review
   [_req]
