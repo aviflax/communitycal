@@ -8,8 +8,7 @@
   (->>
     (d/q
       '[:find ?location
-        :where
-        [?e :event/location ?location]]
+        :where [?e :event/location ?location]]
       db)
     (map first)))
 
@@ -19,8 +18,7 @@
   (->>
     (d/q
       '[:find ?name
-        :where
-        [?e :event/name ?name]]
+        :where [?e :event/name ?name]]
       db)
     (map first)))
 
@@ -31,6 +29,6 @@
     (d/q
       '[:find (pull ?e [*])
         :where [?e :event/name ?name]]
-      db
-      {:order-by [[:event/start :asc]]})
-    (map first)))
+      db)
+    (map first)
+    (sort-by :event/start)))
