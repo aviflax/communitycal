@@ -10,21 +10,10 @@
   (:require
    [communitycal.db :as db]
    [communitycal.db.queries :as q]
+   [communitycal.temporals :as t]
    [datomic.api :as d]
    [hiccup.page :as hp]
-   [hiccup2.core :as h])
-  (:import
-   (java.time LocalDateTime ZoneId)))
-
-(defn- strs->date
-  "Accepts a date string and a time string as produced by the corresponding browser form controls,
-   and an IANA time zone ID string. Returns a java.util.DateTime."
-  [date time zone-id]
-  (let [datetime (str date "T" time ":00")
-        local-datetime (LocalDateTime/parse datetime)
-        zoned-datetime (.atZone local-datetime (ZoneId/of zone-id))
-        instant (.toInstant zoned-datetime)]
-    (java.util.Date/from instant)))
+   [hiccup2.core :as h]))
 
 (defn post-accounts
   [{{:strs [community-name calendar-name user-name user-email]} :params :as _req}]
@@ -55,8 +44,8 @@
             recurring notes next-page]}
     :params
     :as _req}]
-  (let [start (strs->date start-date start-time timezone-id)
-        end (strs->date end-date end-time timezone-id)
+  (let [start (t/strs->date start-date start-time timezone-id)
+        end (t/strs->date end-date end-time timezone-id)
         txs [{:event/name event-name
               :event/location location
               :event/timezone-id timezone-id
@@ -130,18 +119,12 @@
       [:h1 header]]
      [:main main]]))
 
-(defn- date->local-date
-  [^java.util.Date date zone-id]
-  (-> date
-      .toInstant
-      (.atZone (ZoneId/of zone-id))
-      .toLocalDate))
 
 (defn- review-page
   []
   (let [events-by-date (->> (db/get-db)
                             (q/get-all-events)
-                            (group-by #(date->local-date (:event/start %) (:event/timezone-id %))))]
+                            (group-by #(t/date->local-date (:event/start %) (:event/timezone-id %))))]
     (page
       {:title "Review Events « JV Basketball 25–26 « Riverdale High Athletics « CommunityCal Free"
        :header "Review Events"
