@@ -35,19 +35,19 @@
             :person/name user-name
             :person/email user-email
             :person/id (d/squuid)
-            :history/created-at now}
+            :provenance/created-at now}
 
            {:db/id temp-community-id
             :community/name community-name
             :community/id (d/squuid)
-            :history/created-by temp-user-id
-            :history/created-at now}
+            :provenance/created-by temp-user-id
+            :provenance/created-at now}
 
            {:calendar/name calendar-name
             :calendar/community temp-community-id
             :calendar/id (d/squuid)
-            :history/created-by temp-user-id
-            :history/created-at now}]}))
+            :provenance/created-by temp-user-id
+            :provenance/created-at now}]}))
 
 (defn post-add-event
   [{{:strs [event-name location timezone-id start-date start-time all-day end-date end-time

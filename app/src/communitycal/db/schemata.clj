@@ -39,18 +39,24 @@
   (assoc attr :db/unique :db.unique/identity))
 
 (def schemata
-  {:init [(ref     :history/created-by)
-          (instant :history/created-at)
+  {:init [(ref     :provenance/created-by)
+          (instant :provenance/created-at)
 
+          ;; Community
           (id :community/id)
           (str :community/name)
+
+          ;; Calendar
           (id :calendar/id)
           (ref :calendar/community)
           (str :calendar/name)
+
+          ;; Person
           (id :person/id)
           (str :person/name)
           (-> (str :person/email) unique)
 
+          ;; Event
           (id :event/id)
           (ref :event/calendar)
           (str :event/name)
