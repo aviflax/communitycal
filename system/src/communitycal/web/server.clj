@@ -52,7 +52,7 @@
     "/onboarding/review"     [[:get req (handle-dynamic req o/get-review)]]
     "/onboarding/share"      [[:get req (-> req add-html handle-static)]]
 
-    "GET  /public/calendar/*/*"  [[:get req (handle-dynamic req c/get-calendar-page)]]))
+    "/public/calendar/*/*"   [[:get req (handle-dynamic req c/get-calendar-page)]]))
 
 (def main-handler
   (-> handle-static
@@ -69,7 +69,7 @@
     (require '[ring.middleware.reload :refer [wrap-reload]])
 
     (def dev-handler
-      (wrap-reload #'main-handler))  
+      (wrap-reload #'main-handler))
 
     (def dev-server (run-jetty dev-handler {:port 3000 :join? false})))
 
