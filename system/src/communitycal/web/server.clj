@@ -17,7 +17,7 @@
 
 (def handle-static
   (-> not-found
-    (wrap-file "static")
+    (wrap-file "resources/web/static/")
     (wrap-content-type)
     (wrap-not-modified)))
 
