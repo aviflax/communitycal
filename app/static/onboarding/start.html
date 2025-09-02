@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CommunityCal Free » New Calendar</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <link rel="stylesheet" type="text/css" href="../tweaks.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <a href="../">CommunityCal</a>
+    </nav>
+    <h1>New Account &amp; Calendar</h1>
+</header>
+
+<main>
+
+<form method="POST" action="./accounts">
+    <field>
+        <label for="community-name">Community Name</label>
+        <input type="text" id="community-name" name="community-name" required minlength="5"
+               placeholder="Riverdale High Athletics">
+    </field>
+
+    <field>
+        <label for="calendar-name">Calendar Name</label>
+        <input type="text" id="calendar-name" name="calendar-name" required minlength="5"
+               placeholder="JV Basketball 25–26">
+    </field>
+
+    <field>
+        <label for="user-name">Your Name</label>
+        <input type="text" id="user-name" name="user-name" required minlength="5"
+               placeholder="Greta Grappler">
+    </field>
+
+    <field>
+        <label for="user-email">Your Email</label>
+        <input type="email" id="user-email" name="user-email" required
+               placeholder="g.grappler@riverdalehigh.edu">
+    </field>
+
+    <button type="submit">Next Step: Add an Event!</button>
+</form>
+
+</main>
+
+</body>
+</html>

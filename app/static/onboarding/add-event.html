@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add an Event « JV Basketball 25–26 « Riverdale High Athletics « CommunityCal Free</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <link rel="stylesheet" type="text/css" href="../tweaks.css">
+    <script src="../js/vendored/htmx.2.0.6.min.js"></script>
+</head>
+<body>
+
+<header>
+    <nav>
+        <a href="../my/communities/riverdale-high-athletics">Riverdale High Athletics</a>
+        <a href="../my/calendars/jv-bball-25-26">JV Basketball 25–26</a>
+    </nav>
+    <h1>Add an Event</h1>
+</header>
+
+<main>
+
+<form method="POST" action="add-event">
+    <field>
+        <label for="event-name">Name</label>
+        <input
+          type="text"
+          id="event-name"
+          name="event-name"
+          required
+          minlength="3"
+          placeholder="Practice"
+          hx-trigger="load"
+          hx-get="add-event/fragments/inputs/event-name"
+          hx-swap="outerHTML">
+    </field>
+
+    <field>
+        <label for="location">Location</label>
+        <input
+          type="text"
+          id="location"
+          name="location"
+          required
+          minlength="3"
+          placeholder="Riverdale High Gym"
+          hx-trigger="load"
+          hx-get="add-event/fragments/inputs/location"
+          hx-swap="outerHTML">
+    </field>
+
+    <field>
+        <label for="timezone-id">Time Zone</label>
+        <select id="timezone-id" name="timezone-id">
+            <option selected value="America/New_York">Eastern Time</option>
+        </select>
+    </field>
+
+    <field>
+        <label for="start-date">Starts</label>
+        <input type="date" id="start-date" name="start-date" required>
+        <input type="time" id="start-time" name="start-time" required>
+    </field>
+
+    <field>
+        <input type="checkbox" id="all-day" name="all-day">
+        <label for="all-day">All Day</label>
+    </field>
+
+    <field>
+        <label for="end-date">Ends</label>
+        <input type="date" id="end-date" name="end-date" required>
+        <input type="time" id="end-time" name="end-time" required>
+    </field>
+
+    <field>
+        <input type="checkbox" id="recurring" name="recurring" value="true">
+        <label for="recurring">Recurring</label>
+    </field>
+
+    <field>
+        <label for="notes">Notes</label>
+        <textarea id="notes" name="notes"></textarea>
+    </field>
+
+    <section>
+        <h2>What Now?</h2>
+        <button type="submit" name="next-page" value="add-event"><b>+</b> Add Another Event</button>
+        <br><br>
+        <button type="submit" name="next-page" value="review"><b>📅</b> Review Events</button>
+    </section>
+</form>
+
+</main>
+
+</body>
+</html>
