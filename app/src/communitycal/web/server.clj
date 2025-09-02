@@ -1,8 +1,8 @@
-(ns communitycal.webserver
+(ns communitycal.web.server
   (:require
    [clj-simple-router.core :as router]
    [communitycal.db :as db]
-   [communitycal.onboarding.handlers :as o]
+   [communitycal.web.onboarding.handlers :as o]
    [communitycal.web.public.calendar :as c]
    [datomic.client.api :as d]
    [ring.adapter.jetty :refer [run-jetty]]
