@@ -11,8 +11,8 @@
    [communitycal.db :as db]
    [communitycal.onboarding.queries :as q]
    [communitycal.temporals :as t]
+   [communitycal.web.html :as html]
    [datomic.api :as d]
-   [hiccup.page :as hp]
    [hiccup2.core :as h]))
 
 (defn post-accounts
@@ -57,12 +57,6 @@
     {:response {:status 303 :headers {"location" next-page}}
      :txs txs}))
 
-(defn- html-ok-response
-  [content]
-  {:status 200
-   :headers {"Content-Type" "text/html; charset=utf-8"}
-   :body (str content)})
-
 (defn get-fragments-inputs-event-name
   [_req]
   {:response
@@ -79,7 +73,7 @@
                  [:datalist {:id :event-names}
                   (for [event-name event-names]
                     [:option {:value event-name}])]]]
-       (html-ok-response (h/html frag))))})
+       (html/ok-response (h/html frag))))})
 
 (defn get-fragments-inputs-location
   [_req]
@@ -97,34 +91,14 @@
                  [:datalist {:id :locations}
                   (for [loc locations]
                     [:option {:value loc}])]]]
-       (html-ok-response (h/html frag))))})
-
-(defn- page
-  [{:keys [title header]} & main]
-  (hp/html5
-    [:head
-     [:meta {:charset "utf-8"}]
-     [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
-     [:title title]
-     [:link {:rel "stylesheet" :href "https://cdn.simplecss.org/simple.min.css"}]
-     [:link {:rel "stylesheet" :type "text/css" :href "../tweaks.css"}]
-     [:script {:src "../js/vendored/htmx.2.0.6.min.js"}]]
-    [:body
-     [:header
-      [:nav
-       [:a {:href "../my/communities/riverdale-high-athletics"}
-        "Riverdale High Athletics"]
-       [:a {:href "../my/calendars/jv-bball-25-26"}
-        "JV Basketball 25–26"]]
-      [:h1 header]]
-     (vec (cons :main main))]))
+       (html/ok-response (h/html frag))))})
 
 (defn- review-page
   []
   (let [events-by-date (->> (db/get-db)
                             (q/get-all-events)
                             (group-by #(t/date->local-date (:event/start %) (:event/timezone-id %))))]
-    (page
+    (html/page
       {:title "Review Events « JV Basketball 25–26 « Riverdale High Athletics « CommunityCal Free"
        :header "Review Events"}
       (for [[date events] events-by-date]
@@ -152,4 +126,4 @@
 
 (defn get-review
   [_req]
-  {:response (future (html-ok-response (review-page)))})
+  {:response (future (html/ok-response (review-page)))})
