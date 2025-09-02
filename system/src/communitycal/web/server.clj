@@ -61,14 +61,15 @@
   (run-jetty main-handler {:port 3000}))
 
 (comment
-  (require '[ring.middleware.reload :refer [wrap-reload]])
-
   (db/init)
 
-  (def dev-handler
-    (wrap-reload #'main-handler))
+  (do
+    (require '[ring.middleware.reload :refer [wrap-reload]])
 
-  (def dev-server (run-jetty dev-handler {:port 3000 :join? false}))
+    (def dev-handler
+      (wrap-reload #'main-handler))  
+
+    (def dev-server (run-jetty dev-handler {:port 3000 :join? false})))
 
   (.stop dev-server)
   ,)
