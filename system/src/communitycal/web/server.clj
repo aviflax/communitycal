@@ -4,6 +4,7 @@
    [communitycal.db :as db]
    [communitycal.web.onboarding.handlers :as o]
    [communitycal.web.public.calendar :as c]
+   [communitycal.web.routing :as routing]
    [datomic.client.api :as d]
    [ring.adapter.jetty :refer [run-jetty]]
    [ring.middleware.content-type :refer [wrap-content-type]]
@@ -38,19 +39,20 @@
       response)))
 
 (def routes
-  (router/routes
-    "GET  /editions"              req (-> req add-html handle-static)
+  #_:clj-kondo/ignore  ;; TEMP TEMP
+  (routing/resources
+    "/editions"              [[:get req (-> req add-html handle-static)]]
 
-    "GET  /onboarding/start"      req (-> req add-html handle-static)
-    "POST /onboarding/accounts"   req (handle-dynamic req o/post-accounts)
-    "GET  /onboarding/add-event"  req (-> req add-html handle-static)
-    "POST /onboarding/add-event"  req (handle-dynamic req o/post-add-event)
-    "GET  /onboarding/add-event/fragments/inputs/location" req (handle-dynamic req o/get-fragments-inputs-location)
-    "GET  /onboarding/add-event/fragments/inputs/event-name" req (handle-dynamic req o/get-fragments-inputs-event-name)
-    "GET  /onboarding/review"     req (handle-dynamic req o/get-review)
-    "GET  /onboarding/share"      req (-> req add-html handle-static)
+    "/onboarding/start"      [[:get req (-> req add-html handle-static)]]
+    "/onboarding/accounts"   [[:post req (handle-dynamic req o/post-accounts)]]
+    "/onboarding/add-event"  [[:get  req (-> req add-html handle-static)]
+                              [:post req (handle-dynamic req o/post-add-event)]]
+    "/onboarding/add-event/fragments/inputs/location"   [[:get req (handle-dynamic req o/get-fragments-inputs-location)]]
+    "/onboarding/add-event/fragments/inputs/event-name" [[:get req (handle-dynamic req o/get-fragments-inputs-event-name)]]
+    "/onboarding/review"     [[:get req (handle-dynamic req o/get-review)]]
+    "/onboarding/share"      [[:get req (-> req add-html handle-static)]]
 
-    "GET  /public/calendar/*/*"   req (handle-dynamic req c/get-calendar-page)))
+    "/public/calendar/*/*"   [[:get req (handle-dynamic req c/get-calendar-page)]]))
 
 (def main-handler
   (-> handle-static
@@ -67,7 +69,7 @@
     (require '[ring.middleware.reload :refer [wrap-reload]])
 
     (def dev-handler
-      (wrap-reload #'main-handler))  
+      (wrap-reload #'main-handler))
 
     (def dev-server (run-jetty dev-handler {:port 3000 :join? false})))
 
