@@ -19,7 +19,7 @@
       (.withProperty (XProperty. "X-WR-CALNAME" nom))
       (.getFluentTarget)))
 
-(defn make-event
+(defn event->vevent
   [{:event/keys [name start end timezone-id notes]}]
   (-> (VEvent.
         (date->zdt start timezone-id)
@@ -31,9 +31,9 @@
 (comment
   (make-calendar "Foo Bar")
 
-  (make-event #:event{:name "Foo"
-                      :notes "Bar"
-                      :start (java.util.Date.)
-                      :end (java.util.Date.)
-                      :timezone-id "America/New_York"})
+  (event->vevent #:event{:name "Foo"
+                         :notes "Bar"
+                         :start (java.util.Date.)
+                         :end (java.util.Date.)
+                         :timezone-id "America/New_York"})
   ,)
