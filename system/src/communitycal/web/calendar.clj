@@ -26,5 +26,5 @@
        (doseq [event events]
          (.add calendar (event->vevent event)))
        {:status 200
-        :headers {"Content-Type" "text/calendar"}
+        :headers {"Content-Type" "text/calendar; charset=utf-8"}
         :body (str calendar)}))})
