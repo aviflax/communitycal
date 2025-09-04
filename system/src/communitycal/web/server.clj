@@ -2,8 +2,8 @@
   (:require
    [clj-simple-router.core :as router]
    [communitycal.db :as db]
-   [communitycal.web.onboarding :as o]
    [communitycal.web.calendar :as c]
+   [communitycal.web.onboarding :as o]
    [communitycal.web.routing :as routing]
    [datomic.client.api :as d]
    [ring.adapter.jetty :refer [run-jetty]]
