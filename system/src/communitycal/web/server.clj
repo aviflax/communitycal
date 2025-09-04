@@ -27,8 +27,8 @@
   (update req :uri #(str % ".html")))
 
 (defn handle-dynamic
-  [req handler]
-  (let [{:keys [response txs]} (handler req)]
+  [req handler & args]
+  (let [{:keys [response txs]} (apply handler (cons req args))]
     (when txs
       (try
         (d/transact (db/connect db/client) {:tx-data txs})
@@ -52,8 +52,12 @@
     "/onboarding/review"     [[:get req (handle-dynamic req o/get-review)]]
     "/onboarding/share"      [[:get req (-> req add-html handle-static)]]
 
-    "/calendar/*/*"          [[:get req (handle-dynamic req c/get-calendar-page)]]
-    "/ical/*/*"              [[:get req (handle-dynamic req c/get-calendar-ical)]]))
+    "/calendar/*/*"          [[:get
+                               [community-slug calendar-slug :as req]
+                               (handle-dynamic req c/get-calendar-page community-slug calendar-slug)]]
+    "/ical/*/*"              [[:get
+                               [community-slug calendar-slug :as req]
+                               (handle-dynamic req c/get-calendar-ical community-slug calendar-slug)]]))
 
 (def main-handler
   (-> handle-static
