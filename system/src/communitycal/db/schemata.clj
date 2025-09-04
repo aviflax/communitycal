@@ -45,11 +45,13 @@
           ;; Community
           (id :community/id)
           (str :community/name)
+          (-> (str :community/slug) unique)
 
           ;; Calendar
           (id :calendar/id)
           (ref :calendar/community)
           (str :calendar/name)
+          (-> (str :calendar/slug) unique)
 
           ;; Person
           (id :person/id)

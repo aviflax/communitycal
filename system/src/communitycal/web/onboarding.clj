@@ -13,7 +13,8 @@
    [communitycal.temporals :as t]
    [communitycal.web.html :as html]
    [datomic.api :as d]
-   [hiccup2.core :as h]))
+   [hiccup2.core :as h]
+   [sluj.core :refer [sluj]]))
 
 (defn post-accounts
   [{{:strs [community-name calendar-name user-name user-email]} :params :as _req}]
@@ -29,11 +30,13 @@
 
            {:db/id temp-community-id
             :community/name community-name
+            :community/slug (sluj community-name)
             :community/id (d/squuid)
             :provenance/created-by temp-user-id
             :provenance/created-at now}
 
            {:calendar/name calendar-name
+            :calendar/slug (sluj calendar-name)
             :calendar/community temp-community-id
             :calendar/id (d/squuid)
             :provenance/created-by temp-user-id
