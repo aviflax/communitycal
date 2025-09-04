@@ -1,6 +1,10 @@
 {:deps
- {com.datomic/local {:mvn/version "1.0.291"}
-  com.datomic/peer  {:mvn/version "1.0.7387"}  ;; for squuid
-  ring/ring         {:mvn/version "1.14.2"}
+ {;; Maven Deps
+  com.datomic/local        {:mvn/version "1.0.291"}
+  com.datomic/peer         {:mvn/version "1.0.7387"}  ;; for squuid
+  org.mnode.ical4j/ical4j  {:mvn/version "4.1.1"}
+  ring/ring                {:mvn/version "1.14.2"}
+
+  ;; Git Deps
   io.github.weavejester/hiccup {:git/tag "2.0.0" :git/sha "b6b1209"}
   io.github.tonsky/clj-simple-router {:git/tag "0.1.2" :git/sha "28163e2"}}}

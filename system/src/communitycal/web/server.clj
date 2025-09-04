@@ -2,8 +2,8 @@
   (:require
    [clj-simple-router.core :as router]
    [communitycal.db :as db]
-   [communitycal.web.onboarding.handlers :as o]
-   [communitycal.web.public.calendar :as c]
+   [communitycal.web.onboarding :as o]
+   [communitycal.web.calendar :as c]
    [communitycal.web.routing :as routing]
    [datomic.client.api :as d]
    [ring.adapter.jetty :refer [run-jetty]]
@@ -52,7 +52,8 @@
     "/onboarding/review"     [[:get req (handle-dynamic req o/get-review)]]
     "/onboarding/share"      [[:get req (-> req add-html handle-static)]]
 
-    "/public/calendar/*/*"   [[:get req (handle-dynamic req c/get-calendar-page)]]))
+    "/calendar/*/*"          [[:get req (handle-dynamic req c/get-calendar-page)]]
+    "/ical/*/*"              [[:get req (handle-dynamic req c/get-calendar-ical)]]))
 
 (def main-handler
   (-> handle-static
@@ -74,4 +75,5 @@
     (def dev-server (run-jetty dev-handler {:port 3000 :join? false})))
 
   (.stop dev-server)
+
   ,)
