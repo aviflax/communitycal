@@ -1,4 +1,4 @@
-(ns communitycal.web.public.calendar
+(ns communitycal.web.calendar
   (:require
    [communitycal.db :as db]
    [communitycal.db.queries :refer [get-all-events]]
