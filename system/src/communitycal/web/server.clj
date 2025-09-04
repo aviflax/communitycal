@@ -39,7 +39,7 @@
       response)))
 
 (def routes
-  #_:clj-kondo/ignore  ;; TEMP TEMP
+  #_:clj-kondo/ignore  ; TODO: teach clj-kondo how to lint this macro
   (routing/resources
     "/editions"              [[:get req (-> req add-html handle-static)]]
 
@@ -53,11 +53,8 @@
     "/onboarding/share"      [[:get req (-> req add-html handle-static)]]
 
     "/calendar/*/*"          [[:get
-                               [community-slug calendar-slug :as req]
-                               (handle-dynamic req c/get-calendar-page community-slug calendar-slug)]]
-    "/ical/*/*"              [[:get
-                               [community-slug calendar-slug :as req]
-                               (handle-dynamic req c/get-calendar-ical community-slug calendar-slug)]]))
+                               [comm-slug cal-slug :as req]
+                               (handle-dynamic req c/get comm-slug cal-slug)]]))
 
 (def main-handler
   (-> handle-static
