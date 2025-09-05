@@ -98,8 +98,8 @@ applications:
       build: |
         set -eux
 
-        # Add build steps here.
-        # echo 'I am a build step'
+        # Compute classpath and cache it, and download all dependencies
+        clojure -P
 
       # The deploy hook is run after the app container has been started, but before it has started accepting requests.
       # More information: https://docs.upsun.com/create-apps/hooks/hooks-comparison.html#deploy-hook
