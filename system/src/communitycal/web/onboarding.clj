@@ -10,6 +10,7 @@
   (:require
    [communitycal.db :as db]
    [communitycal.db.queries :as q]
+   [communitycal.slugs :refer [slugify]]
    [communitycal.temporals :as t]
    [communitycal.web.html :as html]
    [datomic.api :as d]
@@ -29,11 +30,13 @@
 
            {:db/id temp-community-id
             :community/name community-name
+            :community/slug (slugify community-name)
             :community/id (d/squuid)
             :provenance/created-by temp-user-id
             :provenance/created-at now}
 
            {:calendar/name calendar-name
+            :calendar/slug (slugify calendar-name)
             :calendar/community temp-community-id
             :calendar/id (d/squuid)
             :provenance/created-by temp-user-id

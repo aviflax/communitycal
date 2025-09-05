@@ -2,8 +2,8 @@
   (:require
    [clj-simple-router.core :as router]
    [communitycal.db :as db]
-   [communitycal.web.onboarding :as o]
    [communitycal.web.calendar :as c]
+   [communitycal.web.onboarding :as o]
    [communitycal.web.routing :as routing]
    [datomic.client.api :as d]
    [ring.adapter.jetty :refer [run-jetty]]
@@ -27,8 +27,8 @@
   (update req :uri #(str % ".html")))
 
 (defn handle-dynamic
-  [req handler]
-  (let [{:keys [response txs]} (handler req)]
+  [req handler & args]
+  (let [{:keys [response txs]} (apply handler (cons req args))]
     (when txs
       (try
         (d/transact (db/connect db/client) {:tx-data txs})
@@ -39,7 +39,7 @@
       response)))
 
 (def routes
-  #_:clj-kondo/ignore  ;; TEMP TEMP
+  #_:clj-kondo/ignore  ; TODO: teach clj-kondo how to lint this macro
   (routing/resources
     "/editions"              [[:get req (-> req add-html handle-static)]]
 
@@ -52,8 +52,9 @@
     "/onboarding/review"     [[:get req (handle-dynamic req o/get-review)]]
     "/onboarding/share"      [[:get req (-> req add-html handle-static)]]
 
-    "/calendar/*/*"          [[:get req (handle-dynamic req c/get-calendar-page)]]
-    "/ical/*/*"              [[:get req (handle-dynamic req c/get-calendar-ical)]]))
+    "/calendar/*/*"          [[:get
+                               [comm-slug cal-slug :as req]
+                               (handle-dynamic req c/get comm-slug cal-slug)]]))
 
 (def main-handler
   (-> handle-static
