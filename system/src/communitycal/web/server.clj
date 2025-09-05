@@ -54,7 +54,7 @@
 
     "/calendar/*/*"          [[:get
                                [comm-slug cal-slug :as req]
-                               (handle-dynamic req c/get comm-slug cal-slug)]]))
+                               (handle-dynamic req c/get-cal comm-slug cal-slug)]]))
 
 (def main-handler
   (-> handle-static

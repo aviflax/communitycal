@@ -38,7 +38,7 @@
             :headers {"Content-Type" "text/calendar; charset=utf-8"}
             :body (str calendar)}))))})
 
-(defn get
+(defn get-cal
   [req comm-slug cal-slug]
   ;; TODO: actual content negotiation
   (if (str/ends-with? cal-slug ".ics")
