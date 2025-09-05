@@ -1,4 +1,3 @@
-# Complete list of all available properties: https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html
 applications:
   communitycal:
     # Application source code directory
@@ -10,7 +9,7 @@ applications:
     type: "composable:25.05"
 
     stack:
-      - clojure
+      - clojure@1
 
     # Choose which container profile (ratio CPU+RAM) your app will use. Default value comes from the image itself.
     # More information: https://docs.upsun.com/manage-resources/adjust-resources.html#adjust-a-container-profile
