@@ -61,8 +61,10 @@
     (router/wrap-routes routes)
     wrap-params))
 
-(defn -main [& _args]
-  (run-jetty main-handler {:port 3000}))
+(defn -main [& {port :port}]
+  (let [server (run-jetty main-handler {:port port :join? false})]
+    (println "HTTP server now listening on port" port)
+    (.join server)))
 
 (comment
   (db/init)

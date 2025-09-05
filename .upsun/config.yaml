@@ -3,11 +3,14 @@ applications:
   communitycal:
     # Application source code directory
     source:
-      root: "/"
+      root: "/system/"
 
     # The runtime the application uses.
     # Complete list of available runtimes: https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html#types
-    type: "java:19"
+    type: "composable:25.05"
+
+    stack:
+      - clojure
 
     # Choose which container profile (ratio CPU+RAM) your app will use. Default value comes from the image itself.
     # More information: https://docs.upsun.com/manage-resources/adjust-resources.html#adjust-a-container-profile
@@ -20,7 +23,7 @@ applications:
     # More information: https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html#relationships
     relationships:
       network-storage:
-      
+
 
     # Mounts define directories that are writable after the build is complete.
     # More information: https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html#mounts
@@ -37,7 +40,8 @@ applications:
       commands:
         # The command to launch your app. If it terminates, it’s restarted immediately.
         # You can use the $PORT or the $SOCKET environment variable depending on the socket family of your upstream
-        start: "echo 'Put your web server command in here! You need to listen to \"$PORT\" port. Read more about it here: https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html#web-commands'; sleep 60"
+        start: |-
+          clojure -X communitycal.web.server/-main :port "$PORT"
       # You can listen to a UNIX socket (unix) or a TCP port (tcp, default).
       # Whether your app should speak to the webserver via TCP or Unix socket. Defaults to tcp
       # More information: https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html#where-to-listen
@@ -50,8 +54,8 @@ applications:
       locations:
         "/":
           passthru: true
-          
-        
+
+
 
     # Alternate copies of the application to run as background processes.
     # More information: https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html#workers
@@ -94,16 +98,16 @@ applications:
       # More information: https://docs.upsun.com/create-apps/hooks/hooks-comparison.html#build-hook
       build: |
         set -eux
-        
+
         # Add build steps here.
         # echo 'I am a build step'
-        
+
       # The deploy hook is run after the app container has been started, but before it has started accepting requests.
       # More information: https://docs.upsun.com/create-apps/hooks/hooks-comparison.html#deploy-hook
       deploy: |
         set -eux
         # echo 'Put your deploy command here'
-        
+
 
       # The post_deploy hook is run after the app container has been started and after it has started accepting requests.
       # More information: https://docs.upsun.com/create-apps/hooks/hooks-comparison.html#deploy-hook
@@ -129,7 +133,7 @@ services:
   network-storage:
     type: network-storage:2.0 # All available versions are: 2.0
 
-  
+
 
 # The routes of the project.
 #
