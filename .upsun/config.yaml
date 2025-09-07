@@ -98,10 +98,15 @@ applications:
       build: |
         set -eux
 
+        # Clojure will try to create this but it will fail because the filesystem will be read-only. So we create it
+        # here in advance.
         mkdir /app/.clojure
 
         # Compute classpath and cache it, and download all dependencies
         clojure -P
+
+        mkdir ~/.datomic
+        echo '{:storage-dir :mem}' > ~/.datomic/local.edn
 
       # The deploy hook is run after the app container has been started, but before it has started accepting requests.
       # More information: https://docs.upsun.com/create-apps/hooks/hooks-comparison.html#deploy-hook
