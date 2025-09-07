@@ -83,7 +83,7 @@
   {:response
    (future
      (let [db (db/get-db)
-           locations (q/get-all-locations db)
+           locations (q/get-all-location-names db)
            frag [:input {:type :text
                          :id :location
                          :name :location

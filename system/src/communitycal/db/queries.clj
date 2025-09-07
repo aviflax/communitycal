@@ -3,12 +3,12 @@
    [datomic.client.api :as d]))
 
 ;; TODO: add community-id as an arg
-(defn get-all-locations
+(defn get-all-location-names
   [db]
   (->>
     (d/q
-      '[:find ?location
-        :where [?e :event/location ?location]]
+      '[:find ?name
+        :where [?e :location/name ?name]]
       db)
     (map first)))
 
