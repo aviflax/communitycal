@@ -98,6 +98,8 @@ applications:
       build: |
         set -eux
 
+        mkdir /app/.clojure
+
         # Compute classpath and cache it, and download all dependencies
         clojure -P
 
