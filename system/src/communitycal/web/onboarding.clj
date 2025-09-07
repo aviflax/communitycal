@@ -43,20 +43,33 @@
             :provenance/created-at now}]}))
 
 (defn post-add-event
-  [{{:strs [event-name location timezone-id start-date start-time all-day end-date end-time
+  [{{:strs [event-name location-name timezone-id start-date start-time all-day end-date end-time
             recurring notes next-page]}
     :params
     :as _req}]
   (let [start (t/strs->date start-date start-time timezone-id)
         end (t/strs->date end-date end-time timezone-id)
-        txs [{:event/name event-name
-              :event/location location
+        now (java.util.Date.)
+        location-tmp-id "location"
+        txs [;; TODO: add :location/community
+             {:db/id location-tmp-id
+              :location/name location-name
+              :location/id (d/squuid)
+              ;; TODO: add :provenance/created-by
+              :provenance/created-at now}
+
+             ;; TODO: add :event/calendar
+             {:event/id (d/squuid)
+              :event/name event-name
+              :event/location location-tmp-id
               :event/timezone-id timezone-id
               :event/start start
               :event/end end
               :event/notes notes
               :event/all-day (boolean all-day)
-              :event/recurring (boolean recurring)}]]
+              :event/recurring (boolean recurring)
+              ;; TODO: add :provenance/created-by
+              :provenance/created-at now}]]
     {:response {:status 303 :headers {"location" next-page}}
      :txs txs}))
 
@@ -83,10 +96,10 @@
   {:response
    (future
      (let [db (db/get-db)
-           locations (q/get-all-locations db)
+           locations (q/get-all-location-names db)
            frag [:input {:type :text
-                         :id :location
-                         :name :location
+                         :id :location-name
+                         :name :location-name
                          :list :locations
                          :required true
                          :minlength 3
