@@ -43,20 +43,31 @@
             :provenance/created-at now}]}))
 
 (defn post-add-event
-  [{{:strs [event-name location timezone-id start-date start-time all-day end-date end-time
+  [{{:strs [event-name location-name timezone-id start-date start-time all-day end-date end-time
             recurring notes next-page]}
     :params
     :as _req}]
   (let [start (t/strs->date start-date start-time timezone-id)
         end (t/strs->date end-date end-time timezone-id)
-        txs [{:event/name event-name
-              :event/location location
+        now (java.util.Date.)
+        location-tmp-id "location"
+        txs [{:db/id location-tmp-id
+              :location/name location-name
+              :location/id (d/squuid)
+              ;; TODO: add :provenance/created-by
+              :provenance/created-at now}
+
+             {:event/id (d/squuid)
+              :event/name event-name
+              :event/location location-tmp-id
               :event/timezone-id timezone-id
               :event/start start
               :event/end end
               :event/notes notes
               :event/all-day (boolean all-day)
-              :event/recurring (boolean recurring)}]]
+              :event/recurring (boolean recurring)
+              ;; TODO: add :provenance/created-by
+              :provenance/created-at now}]]
     {:response {:status 303 :headers {"location" next-page}}
      :txs txs}))
 
