@@ -61,9 +61,9 @@
     (router/wrap-routes routes)
     wrap-params))
 
-(defn -main [& _args]
+(defn -main [& {port :port, :or {port 3000}}]
   (db/init)
-  (run-jetty main-handler {:port 3000}))
+  (run-jetty main-handler {:port port}))
 
 (comment
   (db/init)
