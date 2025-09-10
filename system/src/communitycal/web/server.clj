@@ -63,7 +63,11 @@
 
 (defn -main [& {port :port, :or {port 3000}}]
   (db/init)
-  (run-jetty main-handler {:port port}))
+  (println "✅ DB initialized")
+  (let [server (run-jetty main-handler {:port port :join? false})]
+    (print "✅ HTTP server now listening on port" port)
+    (flush)
+    (.join server)))
 
 (comment
   (db/init)
