@@ -8,4 +8,8 @@
   ;; Git Deps
   io.github.weavejester/hiccup        {:git/tag "2.0.0" :git/sha "b6b1209"}
   io.github.rawleyfowler/sluj         {:git/tag "1.0.2" :git/sha "3c09caa" :deps/manifest :deps}
-  io.github.tonsky/clj-simple-router  {:git/tag "0.1.2" :git/sha "28163e2"}}}
+  io.github.tonsky/clj-simple-router  {:git/tag "0.1.2" :git/sha "28163e2"}}
+
+ :aliases
+ {:build {:deps {io.github.clojure/tools.build {:git/tag "v0.10.10" :git/sha "deedd62"}}
+          :ns-default build}}}
