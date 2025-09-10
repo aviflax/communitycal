@@ -5,10 +5,16 @@ RUN --mount=type=cache,target=/root/.m2/repository \
     --mount=type=cache,target=/root/.gitlibs \
     clojure -P
 COPY . ./
-RUN clj -T:build uber
+
+# This shouldn’t be needed just to compile and create the uberjar, but for some reason it is.
+RUN mkdir ~/.datomic && echo '{:storage-dir :mem}' > ~/.datomic/local.edn
+
+RUN --mount=type=cache,target=/root/.m2/repository \
+    --mount=type=cache,target=/root/.gitlibs \
+    clj -T:build uber
 
 
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:21-jre AS deploy
 COPY --from=build /usr/src/app/target/*.jar ./
 RUN mkdir ~/.datomic && echo '{:storage-dir :mem}' > ~/.datomic/local.edn
 EXPOSE 3000
