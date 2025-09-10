@@ -62,6 +62,7 @@
     wrap-params))
 
 (defn -main [& _args]
+  (db/init)
   (run-jetty main-handler {:port 3000}))
 
 (comment
