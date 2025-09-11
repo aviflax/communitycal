@@ -15,7 +15,9 @@ RUN --mount=type=cache,target=/root/.m2/repository \
 
 
 FROM eclipse-temurin:21-jre AS deploy
-COPY --from=build /usr/src/app/target/*.jar ./
+WORKDIR /usr/server
+COPY --from=build /usr/src/app/target/*.jar  ./
+COPY --from=build /usr/src/app/resources resources
 RUN mkdir ~/.datomic && echo '{:storage-dir :mem}' > ~/.datomic/local.edn
 EXPOSE 3000
 CMD ["java", "-jar", "communitycal-server-standalone.jar", ":port", "3000"]
