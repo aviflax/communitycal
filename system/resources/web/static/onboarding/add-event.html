@@ -31,7 +31,7 @@
           minlength="3"
           placeholder="Practice"
           hx-trigger="load"
-          hx-get="add-event/fragments/inputs/event-name"
+          hx-get="add-event/frag/input/event-name"
           hx-swap="outerHTML">
     </field>
 
@@ -41,12 +41,12 @@
           type="text"
           id="location-name"
           name="location-name"
+          list="location-names"
           required
           minlength="3"
           placeholder="Riverdale High Gym"
           hx-trigger="load"
-          hx-get="add-event/fragments/inputs/location"
-          hx-swap="outerHTML">
+          hx-get="add-event/frag/datalist/location-names">
     </field>
 
     <field>
