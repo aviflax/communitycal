@@ -91,22 +91,16 @@
                     [:option {:value event-name}])]]]
        (html/ok-response (h/html frag))))})
 
-(defn get-fragments-inputs-location
+(defn get-frag-datalist-loc-names
   [_req]
   {:response
    (future
      (let [db (db/get-db)
            locations (q/get-all-location-names db)
-           frag [:input {:type :text
-                         :id :location-name
-                         :name :location-name
-                         :list :locations
-                         :required true
-                         :minlength 3
-                         :placeholder (first locations)}
-                 [:datalist {:id :locations}
-                  (for [loc locations]
-                    [:option {:value loc}])]]]
+           frag [:datalist
+                 {:id :location-names}
+                 (for [loc locations]
+                   [:option {:value loc}])]]
        (html/ok-response (h/html frag))))})
 
 (defn- review-page
