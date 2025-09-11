@@ -27,12 +27,12 @@
           type="text"
           id="event-name"
           name="event-name"
+          list="event-names"
           required
           minlength="3"
           placeholder="Practice"
           hx-trigger="load"
-          hx-get="add-event/frag/input/event-name"
-          hx-swap="outerHTML">
+          hx-get="add-event/frag/datalist/event-names">
     </field>
 
     <field>

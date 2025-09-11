@@ -73,22 +73,15 @@
     {:response {:status 303 :headers {"location" next-page}}
      :txs txs}))
 
-(defn get-fragments-inputs-event-name
+(defn get-frag-datalist-event-names
   [_req]
   {:response
    (future
      (let [db (db/get-db)
            event-names (q/get-all-event-names db)
-           frag [:input {:type :text
-                         :id :event-name
-                         :name :event-name
-                         :list :event-names
-                         :required true
-                         :minlength 3
-                         :placeholder (first event-names)}
-                 [:datalist {:id :event-names}
-                  (for [event-name event-names]
-                    [:option {:value event-name}])]]]
+           frag [:datalist {:id :event-names}
+                 (for [event-name event-names]
+                   [:option {:value event-name}])]]
        (html/ok-response (h/html frag))))})
 
 (defn get-frag-datalist-loc-names
