@@ -39,8 +39,8 @@
   (assoc attr :db/unique :db.unique/identity))
 
 (def schemata
-  {:init [(ref     :provenance/created-by)
-          (instant :provenance/created-at)
+  {:init [(ref     :origin/created-by)
+          (instant :origin/created-at)
 
           ;; Community
           (id :community/id)
