@@ -30,7 +30,7 @@
           list="event-names"
           required
           minlength="3"
-          placeholder="Practice"
+          placeholder="Enter an event name, such as “Practice” or “Rehearsal”"
           hx-trigger="load"
           hx-get="add-event/frag/datalist/event-names">
     </field>
@@ -44,7 +44,7 @@
           list="location-names"
           required
           minlength="3"
-          placeholder="Riverdale High Gym"
+          placeholder="Enter a location name, such as “Gym” or “Stage C”"
           hx-trigger="load"
           hx-get="add-event/frag/datalist/location-names">
     </field>
@@ -80,7 +80,7 @@
 
     <field>
         <label for="notes">Notes</label>
-        <textarea id="notes" name="notes"></textarea>
+        <textarea id="notes" name="notes" placeholder="Optional notes"></textarea>
     </field>
 
     <section>
