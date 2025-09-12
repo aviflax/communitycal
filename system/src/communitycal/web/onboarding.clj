@@ -26,21 +26,21 @@
             :person/name user-name
             :person/email user-email
             :person/id (d/squuid)
-            :provenance/created-at now}
+            :origin/created-at now}
 
            {:db/id temp-community-id
             :community/name community-name
             :community/slug (slugify community-name)
             :community/id (d/squuid)
-            :provenance/created-by temp-user-id
-            :provenance/created-at now}
+            :origin/created-by temp-user-id
+            :origin/created-at now}
 
            {:calendar/name calendar-name
             :calendar/slug (slugify calendar-name)
             :calendar/community temp-community-id
             :calendar/id (d/squuid)
-            :provenance/created-by temp-user-id
-            :provenance/created-at now}]}))
+            :origin/created-by temp-user-id
+            :origin/created-at now}]}))
 
 (defn post-add-event
   [{{:strs [event-name location-name timezone-id start-date start-time all-day end-date end-time
@@ -54,8 +54,8 @@
         txs [{:db/id location-tmp-id
               :location/name location-name
               :location/id (d/squuid)
-              ;; TODO: add :provenance/created-by
-              :provenance/created-at now}
+              ;; TODO: add :origin/created-by
+              :origin/created-at now}
 
              {:event/id (d/squuid)
               :event/name event-name
@@ -66,8 +66,8 @@
               :event/notes notes
               :event/all-day (boolean all-day)
               :event/recurring (boolean recurring)
-              ;; TODO: add :provenance/created-by
-              :provenance/created-at now}]]
+              ;; TODO: add :origin/created-by
+              :origin/created-at now}]]
     {:response {:status 303 :headers {"location" next-page}}
      :txs txs}))
 
