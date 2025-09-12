@@ -61,6 +61,7 @@
           ;; Location
           (id :location/id)
           (str :location/name)
+          (ref :location/community)
 
           ;; Event
           (id :event/id)

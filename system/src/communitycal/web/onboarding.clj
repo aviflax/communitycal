@@ -51,12 +51,14 @@
         end (t/strs->date end-date end-time timezone-id)
         now (java.util.Date.)
         location-tmp-id "location"
-        txs [{:db/id location-tmp-id
+        txs [;; TODO: add :location/community
+             {:db/id location-tmp-id
               :location/name location-name
               :location/id (d/squuid)
               ;; TODO: add :origin/created-by
               :origin/created-at now}
 
+             ;; TODO: add :event/calendar
              {:event/id (d/squuid)
               :event/name event-name
               :event/location location-tmp-id
