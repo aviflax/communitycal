@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Add an Event « JV Basketball 25–26 « Riverdale High Athletics « CommunityCal Free</title>
-    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
-    <link rel="stylesheet" type="text/css" href="../tweaks.css">
+    <link rel="stylesheet" href="../css/vendored/simple.min.css">
+    <link rel="stylesheet" href="../css/tweaks.css">
     <script src="../js/vendored/htmx.2.0.6.min.js"></script>
 </head>
 <body>
@@ -27,26 +27,26 @@
           type="text"
           id="event-name"
           name="event-name"
+          list="event-names"
           required
           minlength="3"
-          placeholder="Practice"
+          placeholder="Enter an event name, such as “Practice” or “Rehearsal”"
           hx-trigger="load"
-          hx-get="add-event/fragments/inputs/event-name"
-          hx-swap="outerHTML">
+          hx-get="add-event/frag/datalist/event-names">
     </field>
 
     <field>
-        <label for="location">Location</label>
+        <label for="location-name">Location</label>
         <input
           type="text"
-          id="location"
-          name="location"
+          id="location-name"
+          name="location-name"
+          list="location-names"
           required
           minlength="3"
-          placeholder="Riverdale High Gym"
+          placeholder="Enter a location name, such as “Gym” or “Stage C”"
           hx-trigger="load"
-          hx-get="add-event/fragments/inputs/location"
-          hx-swap="outerHTML">
+          hx-get="add-event/frag/datalist/location-names">
     </field>
 
     <field>
@@ -80,7 +80,7 @@
 
     <field>
         <label for="notes">Notes</label>
-        <textarea id="notes" name="notes"></textarea>
+        <textarea id="notes" name="notes" placeholder="Optional notes"></textarea>
     </field>
 
     <section>

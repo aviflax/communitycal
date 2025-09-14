@@ -1,5 +1,6 @@
 (ns build
-  (:require [clojure.tools.build.api :as b]))
+  (:require
+   [clojure.tools.build.api :as b]))
 
 (def lib 'communitycal-server)
 ;; (def git-short-sha (b/git-process {:git-args "rev-parse --short HEAD"}))

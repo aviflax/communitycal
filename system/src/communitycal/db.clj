@@ -28,14 +28,10 @@
 
   (let [conn (connect client)
         db (d/db conn)]
-    #_(d/pull
-        db
-        '[* {:person/community [*]}]
-        [:person/email "g.grappler@riverdalehigh.edu"])
+    (d/pull
+      db
+      '[* {:person/community [*]}]
+      [:person/email "g.grappler@riverdalehigh.edu"]))
 
-    (d/q
-      '[:find [?location ...]
-        :where
-        [?e :event/location ?location]]
-      db))
+  
   ,)

@@ -47,8 +47,8 @@
     "/onboarding/accounts"   [[:post req (handle-dynamic req o/post-accounts)]]
     "/onboarding/add-event"  [[:get  req (-> req add-html handle-static)]
                               [:post req (handle-dynamic req o/post-add-event)]]
-    "/onboarding/add-event/fragments/inputs/location"   [[:get req (handle-dynamic req o/get-fragments-inputs-location)]]
-    "/onboarding/add-event/fragments/inputs/event-name" [[:get req (handle-dynamic req o/get-fragments-inputs-event-name)]]
+    "/onboarding/add-event/frag/datalist/location-names"  [[:get req (handle-dynamic req o/get-frag-datalist-loc-names)]]
+    "/onboarding/add-event/frag/datalist/event-names"     [[:get req (handle-dynamic req o/get-frag-datalist-event-names)]]
     "/onboarding/review"     [[:get req (handle-dynamic req o/get-review)]]
     "/onboarding/share"      [[:get req (-> req add-html handle-static)]]
 

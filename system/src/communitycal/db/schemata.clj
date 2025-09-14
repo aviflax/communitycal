@@ -39,8 +39,8 @@
   (assoc attr :db/unique :db.unique/identity))
 
 (def schemata
-  {:init [(ref     :provenance/created-by)
-          (instant :provenance/created-at)
+  {:init [(ref     :origin/created-by)
+          (instant :origin/created-at)
 
           ;; Community
           (id :community/id)
@@ -58,11 +58,16 @@
           (str :person/name)
           (-> (str :person/email) unique)
 
+          ;; Location
+          (id :location/id)
+          (str :location/name)
+          (ref :location/community)
+
           ;; Event
           (id :event/id)
           (ref :event/calendar)
           (str :event/name)
-          (str :event/location)
+          (ref :event/location)
           (str :event/timezone-id "IANA region-based time zone ID such as Asia/Tel_Aviv")
           (instant :event/start)
           (instant :event/end)

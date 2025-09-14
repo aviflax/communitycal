@@ -26,74 +26,74 @@
             :person/name user-name
             :person/email user-email
             :person/id (d/squuid)
-            :provenance/created-at now}
+            :origin/created-at now}
 
            {:db/id temp-community-id
             :community/name community-name
             :community/slug (slugify community-name)
             :community/id (d/squuid)
-            :provenance/created-by temp-user-id
-            :provenance/created-at now}
+            :origin/created-by temp-user-id
+            :origin/created-at now}
 
            {:calendar/name calendar-name
             :calendar/slug (slugify calendar-name)
             :calendar/community temp-community-id
             :calendar/id (d/squuid)
-            :provenance/created-by temp-user-id
-            :provenance/created-at now}]}))
+            :origin/created-by temp-user-id
+            :origin/created-at now}]}))
 
 (defn post-add-event
-  [{{:strs [event-name location timezone-id start-date start-time all-day end-date end-time
+  [{{:strs [event-name location-name timezone-id start-date start-time all-day end-date end-time
             recurring notes next-page]}
     :params
     :as _req}]
   (let [start (t/strs->date start-date start-time timezone-id)
         end (t/strs->date end-date end-time timezone-id)
-        txs [{:event/name event-name
-              :event/location location
+        now (java.util.Date.)
+        location-tmp-id "location"
+        txs [;; TODO: add :location/community
+             {:db/id location-tmp-id
+              :location/name location-name
+              :location/id (d/squuid)
+              ;; TODO: add :origin/created-by
+              :origin/created-at now}
+
+             ;; TODO: add :event/calendar
+             {:event/id (d/squuid)
+              :event/name event-name
+              :event/location location-tmp-id
               :event/timezone-id timezone-id
               :event/start start
               :event/end end
               :event/notes notes
               :event/all-day (boolean all-day)
-              :event/recurring (boolean recurring)}]]
+              :event/recurring (boolean recurring)
+              ;; TODO: add :origin/created-by
+              :origin/created-at now}]]
     {:response {:status 303 :headers {"location" next-page}}
      :txs txs}))
 
-(defn get-fragments-inputs-event-name
+(defn get-frag-datalist-event-names
   [_req]
   {:response
    (future
      (let [db (db/get-db)
            event-names (q/get-all-event-names db)
-           frag [:input {:type :text
-                         :id :event-name
-                         :name :event-name
-                         :list :event-names
-                         :required true
-                         :minlength 3
-                         :placeholder (first event-names)}
-                 [:datalist {:id :event-names}
-                  (for [event-name event-names]
-                    [:option {:value event-name}])]]]
+           frag [:datalist {:id :event-names}
+                 (for [event-name event-names]
+                   [:option {:value event-name}])]]
        (html/ok-response (h/html frag))))})
 
-(defn get-fragments-inputs-location
+(defn get-frag-datalist-loc-names
   [_req]
   {:response
    (future
      (let [db (db/get-db)
-           locations (q/get-all-locations db)
-           frag [:input {:type :text
-                         :id :location
-                         :name :location
-                         :list :locations
-                         :required true
-                         :minlength 3
-                         :placeholder (first locations)}
-                 [:datalist {:id :locations}
-                  (for [loc locations]
-                    [:option {:value loc}])]]]
+           locations (q/get-all-location-names db)
+           frag [:datalist
+                 {:id :location-names}
+                 (for [loc locations]
+                   [:option {:value loc}])]]
        (html/ok-response (h/html frag))))})
 
 (defn- review-page
@@ -106,14 +106,20 @@
        :header "Review Events"}
       (for [[date events] events-by-date]
         [:section.day
-         [:h2 (t/format date :review-group)]
+         [:h2
+          (t/format date :day-of-week-short)
+          ", "
+          [:nobr (t/format date :day-month-year-short)]]
          (for [{:event/keys [name location start end timezone-id notes]} events
                :let [zstart (t/date->zdt start timezone-id)
                      zend   (t/date->zdt end timezone-id)]]
            [:details.event
             [:summary
              [:div.event-headline
-              [:div.event-time (str (t/format zstart :time) "–" (t/format zend :time))]
+              [:div.event-time
+               (t/format zstart :time)
+               "–"
+               (t/format zend :time)]
               [:div.event-name name]
               [:div.event-loc location]
               "✏️ 🗑️"]]
