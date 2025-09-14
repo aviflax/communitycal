@@ -106,14 +106,20 @@
        :header "Review Events"}
       (for [[date events] events-by-date]
         [:section.day
-         [:h2 (t/format date :review-group)]
+         [:h2
+          (t/format date :day-of-week-short)
+          ", "
+          [:nobr (t/format date :day-month-year-short)]]
          (for [{:event/keys [name location start end timezone-id notes]} events
                :let [zstart (t/date->zdt start timezone-id)
                      zend   (t/date->zdt end timezone-id)]]
            [:details.event
             [:summary
              [:div.event-headline
-              [:div.event-time (str (t/format zstart :time) "–" (t/format zend :time))]
+              [:div.event-time
+               (t/format zstart :time)
+               "–"
+               (t/format zend :time)]
               [:div.event-name name]
               [:div.event-loc location]
               "✏️ 🗑️"]]

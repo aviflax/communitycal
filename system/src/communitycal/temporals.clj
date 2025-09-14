@@ -34,8 +34,11 @@
       .toLocalDate))
 
 (def formatters
-  {:review-group  (DateTimeFormatter/ofPattern "EEEE, d MMM ’yy")
-   :time          (DateTimeFormatter/ofPattern "HH:MM")})
+  {:review-group          (DateTimeFormatter/ofPattern "EEEE, d MMM ’yy")
+   :day-of-week-full      (DateTimeFormatter/ofPattern "EEEE")
+   :day-of-week-short     (DateTimeFormatter/ofPattern "EEE")
+   :day-month-year-short  (DateTimeFormatter/ofPattern "d MMM ’yy")
+   :time                  (DateTimeFormatter/ofPattern "HH:MM")})
 
 (defn format
   [^Temporal temporal formatter-name]
