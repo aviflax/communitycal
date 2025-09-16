@@ -1,0 +1,7 @@
+Our user has provided a plain-English description of an event, which might be recurring.
+
+Here is the description:
+
+> Practice in the school gym every Wednesday at 4:30 from 9/17 to 11/12 except Oct 29
+
+Convert the description into vCalendar format.
