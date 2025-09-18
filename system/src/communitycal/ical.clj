@@ -2,7 +2,9 @@
   (:require
    [communitycal.temporals :refer [date->zdt]])
   (:import
-   (net.fortuna.ical4j.model Calendar)
+   (java.io StringReader)
+   (net.fortuna.ical4j.data CalendarBuilder)
+   (net.fortuna.ical4j.model Calendar Component)
    (net.fortuna.ical4j.model.component VEvent)
    (net.fortuna.ical4j.model.property Description XProperty)))
 
@@ -27,6 +29,15 @@
         name)
       (.withProperty (Description. notes))
       (.getFluentTarget)))
+
+(defn parse-calendar
+  [s]
+  (-> (CalendarBuilder.)
+      (.build (StringReader. s))))
+
+(defn get-events
+  [calendar]
+  (.getComponents calendar Component/VEVENT))
 
 (comment
   (make-calendar "Foo Bar")

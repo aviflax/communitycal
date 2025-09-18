@@ -4,4 +4,4 @@ Here is the description:
 
 > %s
 
-Convert the description into vCalendar format.
+Convert the description into iCalendar format. Respond only with the iCalendar document. Do not wrap it in anything, especially not a Markdown code fence.
