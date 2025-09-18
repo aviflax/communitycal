@@ -1,4 +1,4 @@
-FROM clojure:tools-deps AS build
+FROM clojure:temurin-24-tools-deps-1.12.2.1565-trixie-slim AS build
 WORKDIR /usr/src/app
 COPY deps.edn ./
 RUN --mount=type=cache,target=/root/.m2/repository \
@@ -14,7 +14,7 @@ RUN --mount=type=cache,target=/root/.m2/repository \
     clj -T:build uber
 
 
-FROM eclipse-temurin:21-jre AS deploy
+FROM eclipse-temurin:24.0.2_12-jre-noble AS deploy
 WORKDIR /usr/server
 COPY --from=build /usr/src/app/target/*.jar  ./
 COPY --from=build /usr/src/app/resources resources
