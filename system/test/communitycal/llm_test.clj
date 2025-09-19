@@ -3,7 +3,7 @@
    [clojure.string :as str]
    [clojure.test :refer [deftest is testing]]
    [communitycal.config :refer [config]]
-   [communitycal.ical :refer [get-events parse-calendar vevent->event]]
+   [communitycal.ical :refer [get-events get-tzid parse-calendar vevent->event]]
    [communitycal.llm :refer [complete make-openai-model]])
   (:import
    (java.time Instant)
@@ -30,11 +30,10 @@
                             "School gym")
             model (modelf model-name config)
             completion (complete prompt model)
-            actual (-> completion
-                       (parse-calendar)
-                       (get-events)
-                       (first)
-                       (vevent->event))
+            _ (println "\n\n-----------\n" completion "\n-----------\n\n")
+            calendar (parse-calendar completion)
+            event (-> calendar get-events first)
+            actual (vevent->event event (get-tzid calendar))
             prep (fn [m] (update-vals m #(if (string? %)
                                            (-> % str/lower-case (str/split #" ") first)
                                            %)))]

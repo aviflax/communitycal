@@ -31,16 +31,14 @@
       (.getFluentTarget)))
 
 (defn vevent->event
-  [event]
-  (let [tz-id (or (some-> (.getStartDate event) (.orElse nil) (.getParameter Parameter/TZID) (.orElse nil) .getValue)
-                  (some-> (.getStartDate event) (.orElse nil) .getDate .getZone .getId))]
+  [event tz-id]
   (assoc
-      #:event{:name         (some-> event .getSummary .getValue)
-              :start        (some-> (.getStartDate event) (.orElse nil) (.getDate) (temporal->date tz-id))
-              :end          (some-> (.getEndDate event)   (.orElse nil) (.getDate) (temporal->date tz-id))
-              :timezone-id  tz-id
-              :notes        (some-> event .getDescription .getValue)}
-      :location/name (some-> event .getLocation .getValue))))
+    #:event{:name         (some-> event .getSummary .getValue)
+            :start        (some-> (.getStartDate event) (.orElse nil) (.getDate) (temporal->date tz-id))
+            :end          (some-> (.getEndDate event)   (.orElse nil) (.getDate) (temporal->date tz-id))
+            :timezone-id  tz-id
+            :notes        (some-> event .getDescription .getValue)}
+    :location/name (some-> event .getLocation .getValue)))
 
 (defn parse-calendar
   [s]
@@ -49,9 +47,18 @@
 
 (defn get-events
   [^Calendar calendar]
+  (filter #(= (.getName %) Component/VEVENT)
+          (.getComponents calendar)))
+
+(defn get-tzid
+  ^String
+  [^Calendar calendar]
   (->> calendar
-       (.getComponents)
-       (filter #(= (.getName %) Component/VEVENT))))
+       .getComponents
+       (filter #(= (.getName %) Component/VTIMEZONE))
+       first
+       .getTimeZoneId
+       .getValue))
 
 (comment
   (make-calendar "Foo Bar")
