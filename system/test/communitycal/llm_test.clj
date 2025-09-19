@@ -37,5 +37,6 @@
             prep (fn [m] (update-vals m #(if (string? %)
                                            (-> % str/lower-case (str/split #" ") first)
                                            %)))]
+        (is (map? actual))
         (is (= (prep expected) (prep actual)) (format "completion text was: %s" completion))
         (is (str/includes? (or (some-> actual :location/name str/lower-case) "") "gym"))))))

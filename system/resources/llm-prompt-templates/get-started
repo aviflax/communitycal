@@ -6,12 +6,14 @@ Here is the description:
 
 Convert the description into iCalendar format.
 
-Include a VTIMEZONE component with the value `%s`.
+Include a VTIMEZONE component with the value `%s`. (Make sure you start it with a BEGIN line and
+end it with an END line, as with all iCalendar components.)
 
 When constructing the VEVENT:
 
 * Make each property value highly concise
 * If the user did not specify the year then assume the current year, even if the start date is in the past
+* If the user mentioned a location then make sure to include it in a LOCATION property
 * Omit the parameter TZID from the properties DTSTART and DTEND
 * Make sure not to include the parameters `DTSTART` nor `EXDATE` in the property `RRULE`
 * Only include a DESCRIPTION property if it would contain additional information that is not in the other properties

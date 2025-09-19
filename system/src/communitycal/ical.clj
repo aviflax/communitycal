@@ -4,7 +4,7 @@
   (:import
    (java.io StringReader)
    (net.fortuna.ical4j.data CalendarBuilder)
-   (net.fortuna.ical4j.model Calendar Component Parameter)
+   (net.fortuna.ical4j.model Calendar Component)
    (net.fortuna.ical4j.model.component VEvent)
    (net.fortuna.ical4j.model.property Description XProperty)))
 
