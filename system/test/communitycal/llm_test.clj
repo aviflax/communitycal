@@ -27,7 +27,6 @@
                           "School gym")
           model (make-openai-model "gpt-4o-mini" config)
           completion (complete prompt model)
-          _ (println "\n\n-----------\n" completion "\n-----------\n\n")
           actual (-> completion
                      (parse-calendar)
                      (get-events)
@@ -36,6 +35,6 @@
           prep   (fn [m]
                    (update-vals m #(if (string? %)
                                      (-> % str/lower-case (str/split #" ") first)
-                                     %)))]
-      (is (= (prep expected) (prep actual)))
+                                     (str %))))]
+      (is (= (prep expected) (prep actual)) (format "completion text was: %s" completion))
       (is (str/includes? (-> actual :location/name str/lower-case) "gym")))))
