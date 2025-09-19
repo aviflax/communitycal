@@ -1,6 +1,6 @@
 (ns communitycal.ical
   (:require
-   [communitycal.temporals :refer [date->zdt]])
+   [communitycal.temporals :refer [date->zdt zdt->date]])
   (:import
    (java.io StringReader)
    (net.fortuna.ical4j.data CalendarBuilder)
@@ -32,8 +32,12 @@
 
 (defn vevent->event
   [event]
-  #:event{:start (some-> (.getStartDate event) (.orElse nil) (.getDate))
-          :end   (some-> (.getEndDate event)   (.orElse nil) (.getDate))})
+  #:event{:name         (some-> event .getSummary .getValue)
+          :start        (some-> (.getStartDate event) (.orElse nil) (.getDate) (zdt->date))
+          :end          (some-> (.getEndDate event)   (.orElse nil) (.getDate) (zdt->date))
+          :timezone-id  (some-> (.getStartDate event) (.orElse nil) (.getDate) .getZone .getId)
+          :location     (some-> event .getLocation .getValue)
+          :notes        (some-> event .getDescription .getValue)})
 
 (defn parse-calendar
   [s]

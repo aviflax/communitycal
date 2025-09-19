@@ -21,6 +21,7 @@
                            :start (date "2025-09-17T16:30:00-04:00")
                            :end (date "2025-09-17T17:30:00-04:00")
                            :timezone-id "America/New_York"
+                           :location "School gym"
                            :notes ""}
           model (make-openai-model "gpt-4o-mini" config)
           completion (complete prompt model)

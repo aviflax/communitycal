@@ -3,14 +3,17 @@
    [communitycal.config :refer [config]])
   (:import
    (dev.langchain4j.model.anthropic AnthropicChatModel)
-   (dev.langchain4j.model.openai OpenAiChatModel)))
+   (dev.langchain4j.model.openai OpenAiChatModel)
+   (java.time Duration)))
+
+(def timeout-secs 60)
 
 (defn make-anthropic-model
   [model-name config-get]
   (-> (AnthropicChatModel/builder)
       (.apiKey (config-get :anthropic-key))
       (.modelName model-name)
-      ; (.timeout (.ofSeconds 60))
+      (.timeout (Duration/ofSeconds timeout-secs))
       (.build)))
 
 (defn make-openai-model
@@ -18,7 +21,7 @@
   (-> (OpenAiChatModel/builder)
       (.apiKey (config-get :openai-key))
       (.modelName model-name)
-      ; (.timeout (.ofSeconds 60))
+      (.timeout (Duration/ofSeconds timeout-secs))
       (.build)))
 
 (defn complete

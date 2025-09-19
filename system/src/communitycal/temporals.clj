@@ -33,6 +33,10 @@
       (inst->zdt zone-id)
       .toLocalDate))
 
+(defn zdt->date
+  [zdt]
+  (java.util.Date/from (.toInstant zdt)))
+
 (def formatters
   {:review-group          (DateTimeFormatter/ofPattern "EEEE, d MMM ’yy")
    :day-of-week-full      (DateTimeFormatter/ofPattern "EEEE")
