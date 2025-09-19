@@ -31,4 +31,4 @@
                      (get-events)
                      (first)
                      (vevent->event))]
-         (is (= expected actual)))))
+      (is (= expected actual)))))
