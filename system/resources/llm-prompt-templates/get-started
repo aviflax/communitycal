@@ -4,4 +4,8 @@ Here is the description:
 
 > %s
 
-Convert the description into iCalendar format. Respond only with the iCalendar document. Do not wrap it in anything, especially not a Markdown code fence.
+Convert the description into iCalendar format.
+
+When generating the iCalendar document, make sure not to include the parameters `DTSTART` nor `EXDATE` in the property `RRULE`.
+
+Respond only with the iCalendar document. Do not wrap it in anything, especially not a Markdown code fence.

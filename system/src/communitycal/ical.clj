@@ -30,14 +30,21 @@
       (.withProperty (Description. notes))
       (.getFluentTarget)))
 
+(defn vevent->event
+  [event]
+  #:event{:start (some-> (.getStartDate event) (.orElse nil) (.getDate))
+          :end   (some-> (.getEndDate event)   (.orElse nil) (.getDate))})
+
 (defn parse-calendar
   [s]
   (-> (CalendarBuilder.)
       (.build (StringReader. s))))
 
 (defn get-events
-  [calendar]
-  (.getComponents calendar Component/VEVENT))
+  [^Calendar calendar]
+  (->> calendar
+       (.getComponents)
+       (filter #(= (.getName %) Component/VEVENT))))
 
 (comment
   (make-calendar "Foo Bar")
