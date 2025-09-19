@@ -4,7 +4,11 @@ Here is the description:
 
 > %s
 
-Convert the description into iCalendar format. Make each property value highly concise.
+Convert the description into iCalendar format.
+
+Make each property value highly concise.
+
+When constructing the VEVENT, only include a DESCRIPTION property if it would contain additional information that is not in the other properties.
 
 When generating the iCalendar document, make sure not to include the parameters `DTSTART` nor `EXDATE` in the property `RRULE`.
 

@@ -4,7 +4,7 @@
   (:import
    (java.io StringReader)
    (net.fortuna.ical4j.data CalendarBuilder)
-   (net.fortuna.ical4j.model Calendar Component)
+   (net.fortuna.ical4j.model Calendar Component Parameter)
    (net.fortuna.ical4j.model.component VEvent)
    (net.fortuna.ical4j.model.property Description XProperty)))
 
@@ -36,7 +36,7 @@
     #:event{:name         (some-> event .getSummary .getValue)
             :start        (some-> (.getStartDate event) (.orElse nil) (.getDate) (zdt->date))
             :end          (some-> (.getEndDate event)   (.orElse nil) (.getDate) (zdt->date))
-            :timezone-id  (some-> (.getStartDate event) (.orElse nil) (.getDate) .getZone .getId)
+            :timezone-id  (some-> (.getStartDate event) (.orElse nil) (.getParameter Parameter/TZID) (.orElse nil) .getValue)
             :notes        (some-> event .getDescription .getValue)}
     :location/name (some-> event .getLocation .getValue)))
 
