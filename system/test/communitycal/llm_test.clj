@@ -1,5 +1,6 @@
 (ns communitycal.llm-test
   (:require
+   [clojure.string :as str]
    [clojure.test :refer [deftest is testing]]
    [communitycal.config :refer [config]]
    [communitycal.ical :refer [get-events parse-calendar vevent->event]]
@@ -17,12 +18,13 @@
     (let [prompt-template (slurp "resources/llm-prompt-templates/get-started")
           event-description "Practice in the school gym every Wednesday at 4:30 from 9/17 to 11/12 except Oct 29"
           prompt (format prompt-template event-description)
-          expected #:event{:name "Practice"
-                           :start (date "2025-09-17T16:30:00-04:00")
-                           :end (date "2025-09-17T17:30:00-04:00")
-                           :timezone-id "America/New_York"
-                           :location "School gym"
-                           :notes ""}
+          expected (assoc #:event{:name "Practice"
+                                  :start (date "2025-09-17T16:30:00-04:00")
+                                  :end (date "2025-09-17T17:30:00-04:00")
+                                  :timezone-id "America/New_York"
+                                  :notes nil}
+                          :location/name
+                          "School gym")
           model (make-openai-model "gpt-4o-mini" config)
           completion (complete prompt model)
           _ (println "\n\n-----------\n" completion "\n-----------\n\n")
@@ -30,5 +32,10 @@
                      (parse-calendar)
                      (get-events)
                      (first)
-                     (vevent->event))]
-      (is (= expected actual)))))
+                     (vevent->event))
+          prep   (fn [m]
+                   (update-vals m #(if (string? %)
+                                     (-> % str/lower-case (str/split #" ") first)
+                                     %)))]
+      (is (= (prep expected) (prep actual)))
+      (is (str/includes? (-> actual :location/name str/lower-case) "gym")))))

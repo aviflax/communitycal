@@ -32,12 +32,13 @@
 
 (defn vevent->event
   [event]
-  #:event{:name         (some-> event .getSummary .getValue)
-          :start        (some-> (.getStartDate event) (.orElse nil) (.getDate) (zdt->date))
-          :end          (some-> (.getEndDate event)   (.orElse nil) (.getDate) (zdt->date))
-          :timezone-id  (some-> (.getStartDate event) (.orElse nil) (.getDate) .getZone .getId)
-          :location     (some-> event .getLocation .getValue)
-          :notes        (some-> event .getDescription .getValue)})
+  (assoc
+    #:event{:name         (some-> event .getSummary .getValue)
+            :start        (some-> (.getStartDate event) (.orElse nil) (.getDate) (zdt->date))
+            :end          (some-> (.getEndDate event)   (.orElse nil) (.getDate) (zdt->date))
+            :timezone-id  (some-> (.getStartDate event) (.orElse nil) (.getDate) .getZone .getId)
+            :notes        (some-> event .getDescription .getValue)}
+    :location/name (some-> event .getLocation .getValue)))
 
 (defn parse-calendar
   [s]
