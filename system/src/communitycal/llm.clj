@@ -6,7 +6,7 @@
    (dev.langchain4j.model.openai OpenAiChatModel)
    (java.time Duration)))
 
-(def timeout-secs 60)
+(def timeout-secs 30)
 
 (defn make-anthropic-model
   [model-name config-get]
