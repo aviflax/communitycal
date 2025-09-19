@@ -1,7 +1,7 @@
 (ns communitycal.temporals
   (:refer-clojure :exclude [format])
   (:import
-   (java.time Instant LocalDateTime ZoneId)
+   (java.time Instant LocalDateTime ZonedDateTime ZoneId)
    (java.time.format DateTimeFormatter)
    (java.time.temporal Temporal)
    (java.util Date)))
@@ -14,7 +14,7 @@
         local-datetime (LocalDateTime/parse datetime)
         zoned-datetime (.atZone local-datetime (ZoneId/of zone-id))
         instant (.toInstant zoned-datetime)]
-    (java.util.Date/from instant)))
+    (Date/from instant)))
 
 (defn inst->zdt
   [^Instant inst zone-id]
@@ -35,7 +35,14 @@
 
 (defn zdt->date
   [zdt]
-  (java.util.Date/from (.toInstant zdt)))
+  (Date/from (.toInstant zdt)))
+
+(defn temporal->date
+  [t ^String zone-id]
+  (Date/from
+  (condp instance? t
+     LocalDateTime  (.atZone t (ZoneId/of zone-id))
+     ZonedDateTime  (.toInstant t))))
 
 (def formatters
   {:review-group          (DateTimeFormatter/ofPattern "EEEE, d MMM ’yy")
