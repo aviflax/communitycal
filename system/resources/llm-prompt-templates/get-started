@@ -19,4 +19,4 @@ When constructing the VEVENT:
 * Only include a DESCRIPTION property if it would contain additional information that is not in the other properties
   * For example, do not repeat any aspect of the recurrence rule in the description
 
-Respond only with the iCalendar document. Do not wrap it in anything, especially not a Markdown code fence.
+Respond only with the iCalendar document. Ensure it contains no blank lines. Do not wrap it in anything, especially not a Markdown code fence.
