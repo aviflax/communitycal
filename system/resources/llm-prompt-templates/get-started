@@ -12,7 +12,7 @@ When constructing the VEVENT:
 
 * Make each property value extremely concise
 * If the user starts the description with “practice” or “rehearsal” then make that the value of the SUMMARY
-* If the user did not specify the year then assume the current year, even if the start date is in the past
+* If the user did not specify the year then assume %s even if that would make the start date in the past
 * If the user mentioned a location then make sure to include it in a LOCATION property
 * Make sure to include the parameter TZID in the properties DTSTART and DTEND with the value `%s`
 * Make sure not to include the parameters DTSTART nor EXDATE in the property RRULE

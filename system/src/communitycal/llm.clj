@@ -35,4 +35,7 @@
   (let [model (make-openai-model "gpt-4o-mini" config)]
     (complete "The cheese is old and moldy," model))
 
+  (let [model (make-anthropic-model "claude-sonnet-4-20250514" config)]
+    (complete "The cheese is old and moldy," model))
+
   ,)
