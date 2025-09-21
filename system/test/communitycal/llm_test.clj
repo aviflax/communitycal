@@ -19,18 +19,18 @@
     (testing (format "%s with %s" prompt-template-name model-name)
       (let [prompt-template (slurp (str "resources/llm-prompt-templates/" prompt-template-name))
             event-description "Practice in the school gym every Wednesday at 4:30 from 9/17 to 11/12 except Oct 29"
-            time-zone-id "America/New_York"
-            prompt (format prompt-template event-description time-zone-id)
+            tzid "America/New_York"
+            prompt (format prompt-template event-description tzid)
             expected #:event{:name         "Practice"
                              :start        (date "2025-09-17T16:30:00-04:00")
                              :end          (date "2025-09-17T17:30:00-04:00")
-                             :timezone-id  time-zone-id
+                             :timezone-id  tzid
                              :notes        nil
 
                              :location/name "School gym"}
             model (modelf model-name config)
             completion (complete prompt model)
-            _ (println "\n\n-----------\n" completion "\n-----------\n\n")
+            _ (println (format "\n\n-----------\n%s\n-----------\n\n" completion))
             calendar (parse-calendar completion)
             event (-> calendar get-events first)
             actual (vevent->event event (get-tzid calendar))
