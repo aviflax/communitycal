@@ -15,7 +15,7 @@
 
 (deftest prompts
   (doseq [prompt-template-name ["get-started"]
-          [model-name modelf] [["gpt-4o-mini" make-openai-model]]]
+          [model-name modelf] [["gpt-5-mini" make-openai-model]]]
     (testing (format "%s with %s" prompt-template-name model-name)
       (let [prompt-template (slurp (str "resources/llm-prompt-templates/" prompt-template-name))
             event-description "Practice in the school gym every Wednesday at 4:30 from 9/17 to 11/12 except Oct 29"
