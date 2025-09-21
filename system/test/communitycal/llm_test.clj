@@ -33,7 +33,7 @@
             _ (println (format "\n\n-----------\n%s\n-----------\n\n" completion))
             calendar (parse-calendar completion)
             event (-> calendar get-events first)
-            actual (vevent->event event (get-tzid calendar))
+            actual (vevent->event event)
             prep (fn [m] (update-vals m #(if (string? %)
                                            (-> % str/lower-case (str/split #" ") first)
                                            %)))]

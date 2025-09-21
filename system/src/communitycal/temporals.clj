@@ -37,12 +37,12 @@
   [zdt]
   (Date/from (.toInstant zdt)))
 
-(defn temporal->date
-  [t ^String zone-id]
-  (Date/from
-    (condp instance? t
-      LocalDateTime  (.atZone t (ZoneId/of zone-id))
-      ZonedDateTime  (.toInstant t))))
+; (defn temporal->date
+;   [t ^String zone-id]
+;   (Date/from
+;     (condp instance? t
+;       LocalDateTime  (.atZone t (ZoneId/of zone-id))
+;       ZonedDateTime  (.toInstant t))))
 
 (def formatters
   {:review-group          (DateTimeFormatter/ofPattern "EEEE, d MMM ’yy")

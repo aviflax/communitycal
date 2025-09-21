@@ -1,10 +1,10 @@
 (ns communitycal.ical
   (:require
-   [communitycal.temporals :refer [date->zdt temporal->date]])
+   [communitycal.temporals :refer [date->zdt zdt->date]])
   (:import
    (java.io StringReader)
    (net.fortuna.ical4j.data CalendarBuilder)
-   (net.fortuna.ical4j.model Calendar Component)
+   (net.fortuna.ical4j.model Calendar Component Parameter)
    (net.fortuna.ical4j.model.component VEvent)
    (net.fortuna.ical4j.model.property Description XProperty)))
 
@@ -31,12 +31,11 @@
       (.getFluentTarget)))
 
 (defn vevent->event
-  [^VEvent event
-   ^String tz-id]
+  [^VEvent event]
   #:event{:name         (some-> event .getSummary .getValue)
-          :start        (some-> (.getStartDate event) (.orElse nil) (.getDate) (temporal->date tz-id))
-          :end          (some-> (.getEndDate event)   (.orElse nil) (.getDate) (temporal->date tz-id))
-          :timezone-id  tz-id
+          :start        (some-> (.getStartDate event) (.orElse nil) .getDate zdt->date)
+          :end          (some-> (.getEndDate event)   (.orElse nil) .getDate zdt->date)
+          :timezone-id  (some-> (.getStartDate event) (.orElse nil) (.getParameter Parameter/TZID) (.orElse nil) .getValue)
           :notes        (some-> event .getDescription .getValue)
 
           :location/name (some-> event .getLocation .getValue)})
