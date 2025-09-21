@@ -43,7 +43,7 @@
 
 (deftest vevent->event
   (testing "A VEvent that was triggering an exception"
-   (let [doc "BEGIN:VCALENDAR
+    (let [doc "BEGIN:VCALENDAR
               VERSION:2.0
               PRODID:-//Example//EN
               BEGIN:VTIMEZONE
@@ -69,25 +69,21 @@
               DTSTAMP:20250921T120000Z
               SUMMARY:Practice
               LOCATION:School gym
-              DTSTART:20250917T163000
-              DTEND:20250917T173000
+              DTSTART;TZID=America/New_York:20250917T163000
+              DTEND;TZID=America/New_York:20250917T173000
               RRULE:FREQ=WEEKLY;BYDAY=WE;UNTIL=20251112T235959
               EXDATE:20251029T163000
               END:VEVENT
               END:VCALENDAR"
-             doc' (str/join "\n" (str/split doc #"\n +"))
-             cal (nsut/parse-calendar doc')
-             expected :TODO
-             event (first (nsut/get-events cal))
-             tzid (nsut/get-tzid cal)
-             actual (nsut/vevent->event event tzid)]
-     (is (= expected actual))
-
-
-  )))
-
-
-
-
-
-
+              doc' (str/join "\n" (str/split doc #"\n +"))
+              cal (nsut/parse-calendar doc')
+              expected #:event{:name "Practice"
+                               :start #inst "2025-09-17T20:30:00.000-00:00"
+                               :end #inst "2025-09-17T21:30:00.000-00:00"
+                               :timezone-id "America/New_York"
+                               :notes nil
+                               :location/name "School gym"}
+              event (first (nsut/get-events cal))
+              tzid (nsut/get-tzid cal)
+              actual (nsut/vevent->event event tzid)]
+      (is (= expected actual)))))
