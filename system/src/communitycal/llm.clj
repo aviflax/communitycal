@@ -7,6 +7,7 @@
    (java.time Duration)))
 
 (def timeout-secs 30)
+(def max-retries 0)
 
 (defn make-anthropic-model
   [model-name config-get]
@@ -14,6 +15,7 @@
       (.apiKey (config-get :anthropic-key))
       (.modelName model-name)
       (.timeout (Duration/ofSeconds timeout-secs))
+      (.maxRetries (int max-retries))
       (.build)))
 
 (defn make-openai-model
@@ -22,6 +24,7 @@
       (.apiKey (config-get :openai-key))
       (.modelName model-name)
       (.timeout (Duration/ofSeconds timeout-secs))
+      (.maxRetries (int max-retries))
       (.build)))
 
 (defn complete
