@@ -14,8 +14,8 @@
   [s]
   (Date/from (Instant/parse s)))
 
-(deftest get-started-prompt
-  (let [prompt-template-name "get-started"
+(deftest initial-event-prompt
+  (let [prompt-template-name "initial-event"
         prompt-template (slurp (str "resources/llm-prompt-templates/" prompt-template-name))
         tzid "America/New_York"
         prompt (interpolate
