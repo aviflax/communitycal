@@ -4,7 +4,8 @@
    [clojure.test :refer [deftest is testing]]
    [communitycal.config :refer [config]]
    [communitycal.ical :refer [get-events parse-calendar vevent->event]]
-   [communitycal.llm :refer [complete make-anthropic-model make-openai-model]])
+   [communitycal.llm :refer [complete make-anthropic-model make-openai-model]]
+   [communitycal.string :refer [interpolate]])
   (:import
    (java.time Instant)
    (java.util Date)))
@@ -16,17 +17,19 @@
 (deftest get-started-prompt
   (let [prompt-template-name "get-started"
         prompt-template (slurp (str "resources/llm-prompt-templates/" prompt-template-name))
-        event-description "Practice in the school gym every Wednesday at 4:30 from 9/17 to 11/12 except Oct 29"
-        current-year "2025"
         tzid "America/New_York"
-        prompt (format prompt-template event-description current-year tzid)
+        prompt (interpolate
+                 prompt-template
+                 {:event-description "Practice in the school gym every Wednesday at 4:30 from 9/17 to 11/12 except Oct 29"
+                  :current-year "2025"
+                  :timezone-id tzid})
         expected #:event{:name           "Practice"
                          :start          (date "2025-09-17T16:30:00-04:00")
                          :end            (date "2025-09-17T17:30:00-04:00")
                          :timezone-id    tzid
                          :notes          nil
                          :location/name  "School gym"}]
-    (printf prompt)
+    (println prompt)
     (doseq [[model-name modelf] [["gpt-5-nano" make-openai-model]
                                  ["claude-sonnet-4-20250514" make-anthropic-model]]]
       (testing model-name
