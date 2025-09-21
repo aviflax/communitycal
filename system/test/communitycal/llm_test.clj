@@ -3,7 +3,7 @@
    [clojure.string :as str]
    [clojure.test :refer [deftest is testing]]
    [communitycal.config :refer [config]]
-   [communitycal.ical :refer [get-events get-tzid parse-calendar vevent->event]]
+   [communitycal.ical :refer [get-events parse-calendar vevent->event]]
    [communitycal.llm :refer [complete make-openai-model]])
   (:import
    (java.time Instant)

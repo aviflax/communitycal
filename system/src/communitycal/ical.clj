@@ -50,16 +50,6 @@
   (filter #(= (.getName %) Component/VEVENT)
           (.getComponents calendar)))
 
-(defn get-tzid
-  ^String
-  [^Calendar calendar]
-  (->> calendar
-       .getComponents
-       (filter #(= (.getName %) Component/VTIMEZONE))
-       first
-       .getTimeZoneId
-       .getValue))
-
 (comment
   (make-calendar "Foo Bar")
 
