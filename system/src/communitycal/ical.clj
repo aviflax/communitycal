@@ -31,14 +31,15 @@
       (.getFluentTarget)))
 
 (defn vevent->event
-  [event tz-id]
-  (assoc
-    #:event{:name         (some-> event .getSummary .getValue)
-            :start        (some-> (.getStartDate event) (.orElse nil) (.getDate) (temporal->date tz-id))
-            :end          (some-> (.getEndDate event)   (.orElse nil) (.getDate) (temporal->date tz-id))
-            :timezone-id  tz-id
-            :notes        (some-> event .getDescription .getValue)}
-    :location/name (some-> event .getLocation .getValue)))
+  [^VEvent event
+   ^String tz-id]
+  #:event{:name         (some-> event .getSummary .getValue)
+          :start        (some-> (.getStartDate event) (.orElse nil) (.getDate) (temporal->date tz-id))
+          :end          (some-> (.getEndDate event)   (.orElse nil) (.getDate) (temporal->date tz-id))
+          :timezone-id  tz-id
+          :notes        (some-> event .getDescription .getValue)
+
+          :location/name (some-> event .getLocation .getValue)})
 
 (defn parse-calendar
   [s]

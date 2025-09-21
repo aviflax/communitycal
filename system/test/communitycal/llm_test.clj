@@ -21,13 +21,13 @@
             event-description "Practice in the school gym every Wednesday at 4:30 from 9/17 to 11/12 except Oct 29"
             time-zone-id "America/New_York"
             prompt (format prompt-template event-description time-zone-id)
-            expected (assoc #:event{:name "Practice"
-                                    :start (date "2025-09-17T16:30:00-04:00")
-                                    :end (date "2025-09-17T17:30:00-04:00")
-                                    :timezone-id time-zone-id
-                                    :notes nil}
-                            :location/name
-                            "School gym")
+            expected #:event{:name         "Practice"
+                             :start        (date "2025-09-17T16:30:00-04:00")
+                             :end          (date "2025-09-17T17:30:00-04:00")
+                             :timezone-id  time-zone-id
+                             :notes        nil
+
+                             :location/name "School gym"}
             model (modelf model-name config)
             completion (complete prompt model)
             _ (println "\n\n-----------\n" completion "\n-----------\n\n")
