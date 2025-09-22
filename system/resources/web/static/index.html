@@ -52,8 +52,14 @@
     <section>
         <h1>🚀 Try it for free!</h1>
         <h4>Describe one of your events:</h4>
-        <textarea cols="30" rows="4" placeholder="Try something like: “Practice in the school gym every Wednesday at 4:30 from 9/17 to 11/12 except Oct 29”"></textarea>
-        <input type="button" value="⬆️">
+        <form method="POST" action="onboarding/init">
+            <textarea
+              name="event-description"
+              placeholder="Try something like: “Practice in the school gym every Wednesday at 4:30 from 9/17 to 11/12 except Oct 29”"
+              cols="30"
+              rows="4"></textarea>
+            <button type="submit">⬆️</button>
+        </form>
     </section>
 </main>
 

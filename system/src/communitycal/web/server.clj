@@ -43,6 +43,7 @@
   (routing/resources
     "/editions"              [[:get req (-> req add-html handle-static)]]
 
+    "/onboarding/init"       [[:post req (handle-dynamic req o/post-init)]]
     "/onboarding/start"      [[:get req (-> req add-html handle-static)]]
     "/onboarding/accounts"   [[:post req (handle-dynamic req o/post-accounts)]]
     "/onboarding/add-event"  [[:get  req (-> req add-html handle-static)]

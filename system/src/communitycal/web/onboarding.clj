@@ -8,13 +8,52 @@
    If a handler needs to do I/O, the value of response should be a future that will return a
    response map."
   (:require
+   [communitycal.config :refer [config]]
    [communitycal.db :as db]
    [communitycal.db.queries :as q]
+   [communitycal.ical :refer [get-events parse-calendar vevent->event]]
+   [communitycal.llm :refer [complete make-anthropic-model]]
    [communitycal.slugs :refer [slugify]]
+   [communitycal.string :refer [interpolate]]
    [communitycal.temporals :as t]
    [communitycal.web.html :as html]
    [datomic.api :as d]
    [hiccup2.core :as h]))
+
+(def model-name "claude-sonnet-4-20250514")
+
+(defn post-init
+  [{{:strs [event-description]} :params :as _req}]
+  (let [prompt-template-name "initial-event"
+        prompt-template (slurp (str "resources/llm-prompt-templates/" prompt-template-name))
+        tzid "America/New_York" ;; TODO: get from browser
+        prompt (interpolate prompt-template {:event-description event-description
+                                             :current-year "2025"
+                                             :timezone-id tzid})
+        model (make-anthropic-model model-name config)
+        completion (complete prompt model)
+        event (-> completion parse-calendar get-events first vevent->event)
+        {:event/keys [name timezone-id start end all-day recurring notes]} event
+        now (java.util.Date.)
+        loc-name (:location/name event)
+        tmp-loc-id "location"]
+    {:response {:status 303 :headers {"location" "/onboarding/review"}}
+     :txs [(merge #:event{:id (d/squuid)
+                          :name name
+                          :timezone-id timezone-id
+                          :start start
+                          :end end
+                          :all-day (boolean all-day)
+                          :recurring (boolean recurring)
+                          ;; TODO: add :origin/created-by
+                          :origin/created-at now}
+                  (when loc-name {:event/location tmp-loc-id})
+                  (when notes {:event/notes notes}))
+           (when loc-name
+             {:db/id tmp-loc-id
+              :location/name loc-name
+              :location/id (d/squuid)
+              :origin/created-at now})]}))
 
 (defn post-accounts
   [{{:strs [community-name calendar-name user-name user-email]} :params :as _req}]
@@ -44,8 +83,7 @@
 
 (defn post-add-event
   [{{:strs [event-name location-name timezone-id start-date start-time all-day end-date end-time
-            recurring notes next-page]}
-    :params
+            recurring notes next-page]} :params
     :as _req}]
   (let [start (t/strs->date start-date start-time timezone-id)
         end (t/strs->date end-date end-time timezone-id)
