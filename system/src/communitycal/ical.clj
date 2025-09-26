@@ -1,10 +1,11 @@
 (ns communitycal.ical
   (:require
-   [communitycal.temporals :refer [date->zdt zdt->date]])
+   [communitycal.temporals :refer [date->zdt zdt->date]]
+   [java-time.api :as jt])
   (:import
    (java.io StringReader)
    (net.fortuna.ical4j.data CalendarBuilder)
-   (net.fortuna.ical4j.model Calendar Component Parameter Property)
+   (net.fortuna.ical4j.model Calendar Component Parameter Period Property)
    (net.fortuna.ical4j.model.component VEvent)
    (net.fortuna.ical4j.model.property Description XProperty)))
 
@@ -52,6 +53,21 @@
   [^Calendar calendar]
   (filter #(= (.getName %) Component/VEVENT)
           (.getComponents calendar)))
+
+(defn get-ocurrences
+  [event]
+  (let [now (jt/local-date)
+        start (jt/minus now (jt/years 1))
+        end (jt/plus now (jt/years 1))
+        vevent (if (instance? VEvent event) event (event->vevent event))]
+    (.getOccurrences vevent (Period. start end))))
+
+(defn recurring?
+  [event]
+  (boolean
+    (cond
+      (instance? VEvent event) (some-> event (.getProperty Property/RRULE) (.orElse nil) .getValue)
+      (map? event) (:event/recurrence event))))
 
 (comment
   (make-calendar "Foo Bar")

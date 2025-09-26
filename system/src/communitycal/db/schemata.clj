@@ -72,5 +72,5 @@
           (instant :event/start)
           (instant :event/end)
           (bool :event/all-day)
-          (bool :event/recurring)
+          (str :event/recurrence)
           (str :event/notes)]})

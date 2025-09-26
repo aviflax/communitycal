@@ -12,6 +12,7 @@
   ;; Git Deps
   io.github.weavejester/environ       {:git/tag "1.2.0" :git/sha "bd355e6" :deps/manifest :deps :deps/root "environ"}
   io.github.weavejester/hiccup        {:git/tag "2.0.0" :git/sha "b6b1209"}
+  io.github.dm3/clojure.java-time     {:git/tag "1.4.3" :git/sha "e54eccc"}
   io.github.rawleyfowler/sluj         {:git/tag "1.0.2" :git/sha "3c09caa" :deps/manifest :deps}
   io.github.tonsky/clj-simple-router  {:git/tag "0.1.2" :git/sha "28163e2"}}
 

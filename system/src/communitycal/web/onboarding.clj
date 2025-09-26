@@ -11,7 +11,7 @@
    [communitycal.config :refer [config]]
    [communitycal.db :as db]
    [communitycal.db.queries :as q]
-   [communitycal.ical :refer [get-events parse-calendar vevent->event]]
+   [communitycal.ical :refer [get-events get-ocurrences parse-calendar recurring? vevent->event]]
    [communitycal.llm :refer [complete make-anthropic-model]]
    [communitycal.slugs :refer [slugify]]
    [communitycal.string :refer [interpolate]]
@@ -33,7 +33,7 @@
         model (make-anthropic-model model-name config)
         completion (complete prompt model)
         event (-> completion parse-calendar get-events first vevent->event)
-        {:event/keys [name timezone-id start end all-day recurring notes]} event
+        {:event/keys [name timezone-id start end all-day recurrence notes]} event
         now (java.util.Date.)
         loc-name (:location/name event)
         tmp-loc-id "location"]
@@ -44,7 +44,7 @@
                           :start start
                           :end end
                           :all-day (boolean all-day)
-                          :recurring (boolean recurring)
+                          :recurrence recurrence
                           ;; TODO: add :origin/created-by
                           :origin/created-at now}
                   (when loc-name {:event/location tmp-loc-id})
@@ -138,6 +138,11 @@
   []
   (let [events-by-date (->> (db/get-db)
                             (q/get-all-events)
+                            (reduce (fn [events event]
+                                      (if (recurring? event)
+                                        (apply conj events (get-ocurrences event))
+                                        (conj events event)))
+                                    [])
                             (group-by #(t/date->local-date (:event/start %) (:event/timezone-id %))))]
     (html/page
       {:title "Review Events « JV Basketball 25–26 « Riverdale High Athletics « CommunityCal Free"
