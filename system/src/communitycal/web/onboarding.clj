@@ -11,7 +11,7 @@
    [communitycal.config :refer [config]]
    [communitycal.db :as db]
    [communitycal.db.queries :as q]
-   [communitycal.ical :refer [get-events get-ocurrences parse-calendar recurring? vevent->event]]
+   [communitycal.ical :refer [get-events get-occurrences parse-calendar recurring? vevent->event]]
    [communitycal.llm :refer [complete make-anthropic-model]]
    [communitycal.slugs :refer [slugify]]
    [communitycal.string :refer [interpolate]]
@@ -140,7 +140,7 @@
                             (q/get-all-events)
                             (reduce (fn [events event]
                                       (if (recurring? event)
-                                        (apply conj events (get-ocurrences event))
+                                        (apply conj events (get-occurrences event))
                                         (conj events event)))
                                     [])
                             (group-by #(t/date->local-date (:event/start %) (:event/timezone-id %))))]

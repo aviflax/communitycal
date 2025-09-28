@@ -26,6 +26,20 @@
             actual (nsut/parse-calendar doc')]
         (is (= Calendar (type actual)))))))
 
+(deftest event->vevent
+  (testing "basic case happy path"
+    (let [event #:event{:name           "Practice"
+                        :start          #inst "2025-09-17T20:30:00.000-00:00"
+                        :end            #inst "2025-09-17T21:30:00.000-00:00"
+                        :timezone-id    "America/New_York"
+                        :recurrence     "FREQ=WEEKLY;UNTIL=20251112T235959;BYDAY=WE"
+                        :location/name  "School gym"}
+          vevent (nsut/event->vevent event)]
+      (is (= (:event/name event)
+             (some-> vevent .getSummary .getValue)))
+      (is (= (:location/name event)
+             (some-> vevent .getLocation .getValue))))))
+
 (deftest vevent->event
   (testing "A VEvent that was triggering an exception"
     (let [doc "BEGIN:VCALENDAR
@@ -53,3 +67,18 @@
               event (first (nsut/get-events cal))
               actual (nsut/vevent->event event)]
       (is (= expected actual) (take 2 (diff expected actual))))))
+
+(deftest get-ocurrences
+  (let [event #:event{:name           "Practice"
+                      :start          #inst "2025-09-17T20:30:00.000-00:00"
+                      :end            #inst "2025-09-17T21:30:00.000-00:00"
+                      :timezone-id    "America/New_York"
+                      :recurrence     "FREQ=WEEKLY;UNTIL=20250925T235959;BYDAY=WE"
+                      :location/name  "School gym"}
+        expected [(dissoc event :event/recurrence)
+                  (merge event #:event{:start #inst "2025-09-24T20:30:00.000-00:00"
+                                       :end   #inst "2025-09-24T21:30:00.000-00:00"})]
+        actual (->> (nsut/get-occurrences event)
+                    (map nsut/vevent->event))]
+    (is (= (count expected) (count actual)))
+    (is (= expected actual) (take 2 (diff expected actual)))))
