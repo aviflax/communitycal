@@ -5,7 +5,7 @@
    [clojure.test :refer [deftest is testing]]
    [communitycal.ical :as nsut])
   (:import
-   (net.fortuna.ical4j.model Calendar)))
+   (net.fortuna.ical4j.model Calendar Property)))
 
 (deftest parse-calendar
   (testing "Valid iCalendar Documents"
@@ -35,10 +35,13 @@
                         :recurrence     "FREQ=WEEKLY;UNTIL=20251112T235959;BYDAY=WE"
                         :location/name  "School gym"}
           vevent (nsut/event->vevent event)]
+      ;; TODO: add at least one assertion for each property
       (is (= (:event/name event)
              (some-> vevent .getSummary .getValue)))
       (is (= (:location/name event)
-             (some-> vevent .getLocation .getValue))))))
+             (some-> vevent .getLocation .getValue)))
+      (is (= (:event/recurrence event)
+             (some-> vevent (.getProperty Property/RRULE) (.orElse nil) .getValue))))))
 
 (deftest vevent->event
   (testing "A VEvent that was triggering an exception"
@@ -73,9 +76,9 @@
                       :start          #inst "2025-09-17T20:30:00.000-00:00"
                       :end            #inst "2025-09-17T21:30:00.000-00:00"
                       :timezone-id    "America/New_York"
-                      :recurrence     "FREQ=WEEKLY;UNTIL=20250925T235959;BYDAY=WE"
+                      :recurrence     "FREQ=WEEKLY;COUNT=2;BYDAY=WE"
                       :location/name  "School gym"}
-        expected [(dissoc event :event/recurrence)
+        expected [event
                   (merge event #:event{:start #inst "2025-09-24T20:30:00.000-00:00"
                                        :end   #inst "2025-09-24T21:30:00.000-00:00"})]
         actual (->> (nsut/get-occurrences event)

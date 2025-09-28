@@ -7,7 +7,7 @@
    (net.fortuna.ical4j.data CalendarBuilder)
    (net.fortuna.ical4j.model Calendar Component Parameter Period Property)
    (net.fortuna.ical4j.model.component VEvent)
-   (net.fortuna.ical4j.model.property Description Location XProperty)))
+   (net.fortuna.ical4j.model.property Description Location RRule XProperty)))
 
 (def company-name "Calendrical")
 (def product-name "CommunityCal")
@@ -23,7 +23,7 @@
       (.getFluentTarget)))
 
 (defn event->vevent
-  [{:event/keys [name start end timezone-id notes]
+  [{:event/keys [name start end timezone-id recurrence notes]
     loc-name    :location/name}]
   (-> (VEvent.
         (date->zdt start timezone-id)
@@ -31,6 +31,7 @@
         name)
       (.withProperty (Description. notes))
       (.withProperty (Location. loc-name))
+      (.withProperty (RRule. recurrence))
       (.getFluentTarget)))
 
 (defn vevent->event
