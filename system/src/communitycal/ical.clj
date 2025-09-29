@@ -2,6 +2,8 @@
   (:require
    [clojure.string :as str]
    [communitycal.temporals :refer [date->zdt zdt->date]]
+   [event :as-alias e]
+   [icalendar :as-alias ical]
    [java-time.api :as jt])
   (:import
    (java.io StringReader)
@@ -25,7 +27,7 @@
 
 (defn event->vevent
   [{:event/keys [name start end timezone-id notes]
-    recurrence  :icalendar/rrule
+    recurrence  ::ical/rrule
     loc-name    :location/name}]
   (-> (VEvent.
         (date->zdt start timezone-id)
@@ -45,7 +47,7 @@
          (when-let [loc-name (-> event .getLocation .getValue)]
            {:location/name loc-name})
          (when-let [rrule (some-> event (.getProperty Property/RRULE) (.orElse nil) .getValue)]
-           {:icalendar/rrule rrule})
+           {::ical/rrule rrule})
          (when-let [notes (some-> event .getDescription .getValue)]
            {:event/notes notes})))
 
@@ -80,7 +82,7 @@
   (boolean
     (cond
       (instance? VEvent event) (some-> event (.getProperty Property/RRULE) (.orElse nil) .getValue)
-      (map? event) (some-> event :icalendar/rrule not-blank?))))
+      (map? event) (some-> event ::ical/rrule not-blank?))))
 
 (comment
   (make-calendar "Foo Bar")

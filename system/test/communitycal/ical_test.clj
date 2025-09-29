@@ -3,7 +3,8 @@
    [clojure.data :as data :refer [diff]]
    [clojure.string :as str]
    [clojure.test :refer [deftest is testing]]
-   [communitycal.ical :as nsut])
+   [communitycal.ical :as nsut]
+   [icalendar :as-alias ical])
   (:import
    (net.fortuna.ical4j.model Calendar Property)))
 
@@ -32,7 +33,7 @@
                         :start          #inst "2025-09-17T20:30:00.000-00:00"
                         :end            #inst "2025-09-17T21:30:00.000-00:00"
                         :timezone-id    "America/New_York"
-                        :recurrence     "FREQ=WEEKLY;UNTIL=20251112T235959;BYDAY=WE"
+                        ::ical/rrule    "FREQ=WEEKLY;UNTIL=20251112T235959;BYDAY=WE"
                         :location/name  "School gym"}
           vevent (nsut/event->vevent event)]
       ;; TODO: add at least one assertion for each property
@@ -40,7 +41,7 @@
              (some-> vevent .getSummary .getValue)))
       (is (= (:location/name event)
              (some-> vevent .getLocation .getValue)))
-      (is (= (:icalendar/rrule event)
+      (is (= (::ical/rrule event)
              (some-> vevent (.getProperty Property/RRULE) (.orElse nil) .getValue))))))
 
 (deftest vevent->event
@@ -65,7 +66,7 @@
                                :start          #inst "2025-09-17T20:30:00.000-00:00"
                                :end            #inst "2025-09-17T21:30:00.000-00:00"
                                :timezone-id    "America/New_York"
-                               :icalendar/rrule "FREQ=WEEKLY;UNTIL=20251112T235959;BYDAY=WE"
+                               ::ical/rrule    "FREQ=WEEKLY;UNTIL=20251112T235959;BYDAY=WE"
                                :location/name  "School gym"}
               event (first (nsut/get-events cal))
               actual (nsut/vevent->event event)]
@@ -76,7 +77,7 @@
                       :start          #inst "2025-09-17T20:30:00.000-00:00"
                       :end            #inst "2025-09-17T21:30:00.000-00:00"
                       :timezone-id    "America/New_York"
-                      :icalendar/rrule     "FREQ=WEEKLY;COUNT=2;BYDAY=WE"
+                      ::ical/rrule    "FREQ=WEEKLY;COUNT=2;BYDAY=WE"
                       :location/name  "School gym"}
         expected [event
                   (merge event #:event{:start #inst "2025-09-24T20:30:00.000-00:00"

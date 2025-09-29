@@ -45,7 +45,7 @@
                           :origin/created-at now}
                   (select-keys event
                                [::e/name ::e/timezone-id ::e/start ::e/end ::e/notes ::ical/rrule])
-                  (when loc-name {:event/location tmp-loc-id}))
+                  (when loc-name {::e/location tmp-loc-id}))
            (when loc-name
              {:db/id tmp-loc-id
               :location/name loc-name
