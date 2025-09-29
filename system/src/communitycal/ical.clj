@@ -1,5 +1,6 @@
 (ns communitycal.ical
   (:require
+   [clojure.string :as str]
    [communitycal.temporals :refer [date->zdt zdt->date]]
    [java-time.api :as jt])
   (:import
@@ -23,7 +24,8 @@
       (.getFluentTarget)))
 
 (defn event->vevent
-  [{:event/keys [name start end timezone-id recurrence notes]
+  [{:event/keys [name start end timezone-id notes]
+    recurrence  :icalendar/rrule
     loc-name    :location/name}]
   (-> (VEvent.
         (date->zdt start timezone-id)
@@ -43,7 +45,7 @@
          (when-let [loc-name (-> event .getLocation .getValue)]
            {:location/name loc-name})
          (when-let [rrule (some-> event (.getProperty Property/RRULE) (.orElse nil) .getValue)]
-           {:event/recurrence rrule})
+           {:icalendar/rrule rrule})
          (when-let [notes (some-> event .getDescription .getValue)]
            {:event/notes notes})))
 
@@ -71,12 +73,14 @@
                                        :end (-> period .getEnd zdt->date)}))
                 v))))
 
+(def ^:private not-blank? (complement str/blank?))
+
 (defn recurring?
   [event]
   (boolean
     (cond
       (instance? VEvent event) (some-> event (.getProperty Property/RRULE) (.orElse nil) .getValue)
-      (map? event) (:event/recurrence event))))
+      (map? event) (some-> event :icalendar/rrule not-blank?))))
 
 (comment
   (make-calendar "Foo Bar")

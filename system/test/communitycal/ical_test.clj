@@ -40,7 +40,7 @@
              (some-> vevent .getSummary .getValue)))
       (is (= (:location/name event)
              (some-> vevent .getLocation .getValue)))
-      (is (= (:event/recurrence event)
+      (is (= (:icalendar/rrule event)
              (some-> vevent (.getProperty Property/RRULE) (.orElse nil) .getValue))))))
 
 (deftest vevent->event
@@ -65,7 +65,7 @@
                                :start          #inst "2025-09-17T20:30:00.000-00:00"
                                :end            #inst "2025-09-17T21:30:00.000-00:00"
                                :timezone-id    "America/New_York"
-                               :recurrence     "FREQ=WEEKLY;UNTIL=20251112T235959;BYDAY=WE"
+                               :icalendar/rrule "FREQ=WEEKLY;UNTIL=20251112T235959;BYDAY=WE"
                                :location/name  "School gym"}
               event (first (nsut/get-events cal))
               actual (nsut/vevent->event event)]
@@ -76,7 +76,7 @@
                       :start          #inst "2025-09-17T20:30:00.000-00:00"
                       :end            #inst "2025-09-17T21:30:00.000-00:00"
                       :timezone-id    "America/New_York"
-                      :recurrence     "FREQ=WEEKLY;COUNT=2;BYDAY=WE"
+                      :icalendar/rrule     "FREQ=WEEKLY;COUNT=2;BYDAY=WE"
                       :location/name  "School gym"}
         expected [event
                   (merge event #:event{:start #inst "2025-09-24T20:30:00.000-00:00"

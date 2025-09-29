@@ -63,6 +63,9 @@
           (str :location/name)
           (ref :location/community)
 
+          ;; iCalendar
+          (str :icalendar/rrule "Recurrence Rule")
+
           ;; Event
           (id :event/id)
           (ref :event/calendar)
@@ -72,5 +75,4 @@
           (instant :event/start)
           (instant :event/end)
           (bool :event/all-day)
-          (str :event/recurrence)
           (str :event/notes)]})

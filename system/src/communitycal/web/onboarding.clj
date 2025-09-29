@@ -18,7 +18,9 @@
    [communitycal.temporals :as t]
    [communitycal.web.html :as html]
    [datomic.api :as d]
-   [hiccup2.core :as h]))
+   [event :as-alias e]
+   [hiccup2.core :as h]
+   [icalendar :as-alias ical]))
 
 (def model-name "claude-sonnet-4-20250514")
 
@@ -33,22 +35,17 @@
         model (make-anthropic-model model-name config)
         completion (complete prompt model)
         event (-> completion parse-calendar get-events first vevent->event)
-        {:event/keys [name timezone-id start end all-day recurrence notes]} event
+        {:event/keys [all-day]
+         loc-name    :location/name} event
         now (java.util.Date.)
-        loc-name (:location/name event)
         tmp-loc-id "location"]
     {:response {:status 303 :headers {"location" "/onboarding/review"}}
-     :txs [(merge #:event{:id (d/squuid)
-                          :name name
-                          :timezone-id timezone-id
-                          :start start
-                          :end end
+     :txs [(merge #:event{:id (d/squuid)  ;; TODO: add :origin/created-by
                           :all-day (boolean all-day)
-                          :recurrence recurrence
-                          ;; TODO: add :origin/created-by
                           :origin/created-at now}
-                  (when loc-name {:event/location tmp-loc-id})
-                  (when notes {:event/notes notes}))
+                  (select-keys event
+                               [::e/name ::e/timezone-id ::e/start ::e/end ::e/notes ::ical/rrule])
+                  (when loc-name {:event/location tmp-loc-id}))
            (when loc-name
              {:db/id tmp-loc-id
               :location/name loc-name
