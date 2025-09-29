@@ -4,6 +4,7 @@
    [clojure.string :as str]
    [clojure.test :refer [deftest is testing]]
    [communitycal.ical :as nsut]
+   [event :as-alias e]
    [icalendar :as-alias ical])
   (:import
    (net.fortuna.ical4j.model Calendar Property)))
@@ -33,8 +34,8 @@
                         :start          #inst "2025-09-17T20:30:00.000-00:00"
                         :end            #inst "2025-09-17T21:30:00.000-00:00"
                         :timezone-id    "America/New_York"
-                        ::ical/rrule    "FREQ=WEEKLY;UNTIL=20251112T235959;BYDAY=WE"
-                        ::ical/exdate   "20251029T163000"
+                        ::ical/rrule    "FREQ=WEEKLY;COUNT=3;BYDAY=WE"
+                        ::ical/exdate   [#inst "2025-09-24T20:30:00.000-00:00"]
                         :location/name  "School gym"}
           vevent (nsut/event->vevent event)]
       ;; TODO: add at least one assertion for each property
@@ -44,7 +45,7 @@
              (some-> vevent .getLocation .getValue)))
       (is (= (::ical/rrule event)
              (some-> vevent (.getProperty Property/RRULE) (.orElse nil) .getValue)))
-      (is (= (::ical/exdate event)
+      (is (= "20250924T163000"
              (some-> vevent (.getProperty Property/EXDATE) (.orElse nil) .getValue))))))
 
 (deftest vevent->event-test
@@ -66,14 +67,13 @@
               doc' (str/join "\n" (str/split doc #"\n +"))
               cal (nsut/parse-calendar doc')
               expected #:event{:name           "Practice"
-                               :start          #inst "2025-09-17T20:30:00.000-00:00"
-                               :end            #inst "2025-09-17T21:30:00.000-00:00"
+                               :start          #inst "2025-09-17T20:30:00"
+                               :end            #inst "2025-09-17T21:30:00"
                                :timezone-id    "America/New_York"
                                ::ical/rrule    "FREQ=WEEKLY;UNTIL=20251112T235959;BYDAY=WE"
-                               ::ical/exdate   "20251029T163000"
+                               ::ical/exdate   [#inst "2025-10-29T20:30:00"]
                                :location/name  "School gym"}
-              event (first (nsut/get-events cal))
-              actual (nsut/vevent->event event)]
+              event (first (nsut/get-events cal))              actual (nsut/vevent->event event)]
       (is (= expected actual) (take 2 (diff expected actual))))))
 
 (deftest get-ocurrences-test
@@ -82,11 +82,13 @@
                         :start          #inst "2025-09-17T20:30:00.000-00:00"
                         :end            #inst "2025-09-17T21:30:00.000-00:00"
                         :timezone-id    "America/New_York"
-                        ::ical/rrule    "FREQ=WEEKLY;COUNT=2;BYDAY=WE"
+                        ::ical/rrule    "FREQ=WEEKLY;COUNT=3;BYDAY=WE"
+                        ::ical/exdate   [#inst "2025-09-24T20:30:00.000-00:00"]
                         :location/name  "School gym"}
           expected [event
-                    (merge event #:event{:start #inst "2025-09-24T20:30:00.000-00:00"
-                                         :end   #inst "2025-09-24T21:30:00.000-00:00"})]
+                    ;; omitting the middle Wednesday on Sep 24 as per the exdate
+                    (merge event #:event{:start #inst "2025-10-01T20:30:00.000-00:00"
+                                         :end   #inst "2025-10-01T21:30:00.000-00:00"})]
           actual (nsut/get-occurrences event)]
       (is (= (count expected) (count actual)))
-      (is (= expected actual) (take 2 (diff expected actual))))))
+      (is (= expected actual) (str "ACTUAL START DATES:" (mapv ::e/start actual))))))
