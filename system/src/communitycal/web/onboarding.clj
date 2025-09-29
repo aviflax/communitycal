@@ -35,16 +35,15 @@
         model (make-anthropic-model model-name config)
         completion (complete prompt model)
         event (-> completion parse-calendar get-events first vevent->event)
-        {:event/keys [all-day]
-         loc-name    :location/name} event
+        loc-name (:location/name event)
         now (java.util.Date.)
         tmp-loc-id "location"]
     {:response {:status 303 :headers {"location" "/onboarding/review"}}
      :txs [(merge #:event{:id (d/squuid)  ;; TODO: add :origin/created-by
-                          :all-day (boolean all-day)
+                          :all-day (boolean (::e/all-day event))
                           :origin/created-at now}
-                  (select-keys event
-                               [::e/name ::e/timezone-id ::e/start ::e/end ::e/notes ::ical/rrule])
+                  (select-keys event [::e/name ::e/timezone-id ::e/start ::e/end ::e/notes
+                                      ::ical/rrule ::ical/exdate])
                   (when loc-name {::e/location tmp-loc-id}))
            (when loc-name
              {:db/id tmp-loc-id

@@ -10,7 +10,7 @@
    (net.fortuna.ical4j.data CalendarBuilder)
    (net.fortuna.ical4j.model Calendar Component Parameter Period Property)
    (net.fortuna.ical4j.model.component VEvent)
-   (net.fortuna.ical4j.model.property Description Location RRule XProperty)))
+   (net.fortuna.ical4j.model.property Description ExDate Location RRule XProperty)))
 
 (def company-name "Calendrical")
 (def product-name "CommunityCal")
@@ -27,15 +27,18 @@
 
 (defn event->vevent
   [{:event/keys [name start end timezone-id notes]
-    recurrence  ::ical/rrule
+    ::ical/keys [rrule exdate]
     loc-name    :location/name}]
+  (println "RRULE:" rrule "\nEXDATE:" exdate)
   (-> (VEvent.
         (date->zdt start timezone-id)
         (date->zdt end timezone-id)
         name)
       (.withProperty (Description. notes))
       (.withProperty (Location. loc-name))
-      (.withProperty (RRule. recurrence))
+      (.withProperty (RRule. rrule))
+      ; Passing the value to the constructor does not seem to construct the property correctly.
+      (.withProperty (doto (ExDate.) (.setValue exdate)))
       (.getFluentTarget)))
 
 (defn vevent->event
@@ -48,6 +51,8 @@
            {:location/name loc-name})
          (when-let [rrule (some-> event (.getProperty Property/RRULE) (.orElse nil) .getValue)]
            {::ical/rrule rrule})
+         (when-let [exdate (some-> event (.getProperty Property/EXDATE) (.orElse nil) .getValue)]
+           {::ical/exdate exdate})
          (when-let [notes (some-> event .getDescription .getValue)]
            {:event/notes notes})))
 
@@ -72,7 +77,7 @@
           (.calculateRecurrenceSet v period)
           (mapv (fn [period]
                   (merge event #:event{:start (-> period .getStart zdt->date)
-                                       :end (-> period .getEnd zdt->date)}))
+                                       :end   (-> period .getEnd   zdt->date)}))
                 v))))
 
 (def ^:private not-blank? (complement str/blank?))

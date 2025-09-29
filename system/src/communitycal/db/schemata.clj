@@ -65,6 +65,7 @@
 
           ;; iCalendar
           (str :icalendar/rrule "Recurrence Rule")
+          (str :icalendar/exdate "Exception Date(s)")
 
           ;; Event
           (id :event/id)
