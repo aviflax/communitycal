@@ -62,9 +62,14 @@
   (let [now (jt/zoned-date-time) ;; TODO: use time zone id from event
         start (jt/minus now (jt/years 1))
         end (jt/plus now (jt/years 1))
-        period (Period. start end)
-        vevent (if (instance? VEvent event) event (event->vevent event))]
-    (.getOccurrences vevent period)))
+        period (Period. start end)]
+    (as-> event v
+          (event->vevent v)
+          (.calculateRecurrenceSet v period)
+          (mapv (fn [period]
+                  (merge event #:event{:start (-> period .getStart zdt->date)
+                                       :end (-> period .getEnd zdt->date)}))
+                v))))
 
 (defn recurring?
   [event]

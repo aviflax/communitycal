@@ -81,7 +81,6 @@
         expected [event
                   (merge event #:event{:start #inst "2025-09-24T20:30:00.000-00:00"
                                        :end   #inst "2025-09-24T21:30:00.000-00:00"})]
-        actual (->> (nsut/get-occurrences event)
-                    (map nsut/vevent->event))]
+        actual (nsut/get-occurrences event)]
     (is (= (count expected) (count actual)))
     (is (= expected actual) (take 2 (diff expected actual)))))
