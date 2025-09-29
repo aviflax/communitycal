@@ -1,6 +1,7 @@
 (ns communitycal.web.server
   (:require
    [clj-simple-router.core :as router]
+   [communitycal.config :as config]
    [communitycal.db :as db]
    [communitycal.web.calendar :as c]
    [communitycal.web.onboarding :as o]
@@ -63,6 +64,7 @@
     wrap-params))
 
 (defn -main [& {port :port, :or {port 3000}}]
+  (config/validate!)
   (db/init)
   (println "✅ DB initialized")
   (let [server (run-jetty main-handler {:port port :join? false})]
@@ -74,6 +76,7 @@
   (db/init)
 
   (do
+    (config/validate!)
     (require '[ring.middleware.reload :refer [wrap-reload]])
 
     (def dev-handler
