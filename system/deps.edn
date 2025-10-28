@@ -1,13 +1,13 @@
 {:deps
  {;; Maven Deps
   com.datomic/local        {:mvn/version "1.0.291"}
-  com.datomic/peer         {:mvn/version "1.0.7387"}  ;; for squuid
+  com.datomic/peer         {:mvn/version "1.0.7469"}  ;; for squuid
 
-  dev.langchain4j/langchain4j-anthropic  {:mvn/version "1.5.0"}
-  dev.langchain4j/langchain4j-open-ai    {:mvn/version "1.5.0"}
+  dev.langchain4j/langchain4j-anthropic  {:mvn/version "1.8.0"}
+  dev.langchain4j/langchain4j-open-ai    {:mvn/version "1.8.0"}
 
-  org.mnode.ical4j/ical4j  {:mvn/version "4.1.1"}
-  ring/ring                {:mvn/version "1.14.2"}
+  org.mnode.ical4j/ical4j  {:mvn/version "4.2.0"}
+  ring/ring                {:mvn/version "1.15.3"}
 
   ;; Git Deps
   io.github.weavejester/environ       {:git/tag "1.2.0" :git/sha "bd355e6" :deps/manifest :deps :deps/root "environ"}
@@ -17,5 +17,5 @@
   io.github.tonsky/clj-simple-router  {:git/tag "0.1.2" :git/sha "28163e2"}}
 
  :aliases
- {:build {:deps {io.github.clojure/tools.build {:git/tag "v0.10.10" :git/sha "deedd62"}}
+ {:build {:deps {io.github.clojure/tools.build {:git/tag "v0.10.11" :git/sha "c6c670a"}}
           :ns-default build}}}
