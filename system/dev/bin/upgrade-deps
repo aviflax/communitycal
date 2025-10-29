@@ -1,0 +1,7 @@
+#!/bin/sh
+
+#### First install antq:
+####
+#### clojure -Ttools install-latest :lib com.github.liquidz/antq :as antq
+
+clojure -Tantq outdated :upgrade true
