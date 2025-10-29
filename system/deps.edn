@@ -17,8 +17,9 @@
   io.github.tonsky/clj-simple-router  {:git/tag "0.1.2" :git/sha "28163e2"}}
 
  :aliases
- {:test   {:main-opts ["-m" "kaocha.runner"]
-           :extra-deps {lambdaisland/kaocha {:mvn/version "1.91.1392"}}}
+ {:dev        {:extra-deps {lambdaisland/kaocha {:mvn/version "1.91.1392"}}}
+
+  :run-tests  {:main-opts ["-m" "kaocha.runner"]}
 
   :build  {:deps {io.github.clojure/tools.build {:git/tag "v0.10.11" :git/sha "c6c670a"}}
            :ns-default build}}}
