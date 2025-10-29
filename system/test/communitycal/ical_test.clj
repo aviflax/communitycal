@@ -92,3 +92,10 @@
           actual (nsut/get-occurrences event)]
       (is (= (count expected) (count actual)))
       (is (= expected actual) (str "ACTUAL START DATES:" (mapv ::e/start actual))))))
+
+(comment
+  (require '[kaocha.repl :as k])
+
+  (k/run)
+
+  ,)

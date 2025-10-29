@@ -47,6 +47,13 @@
                                              (-> % str/lower-case (str/split #" ") first)
                                              %)))]
           (is (map? actual))
-          (is (= (prep expected) (prep actual)) (take 2 (diff expected actual)))
+          (is (= (prep expected) (prep actual)))
           (is (str/includes? (or (some-> actual :location/name str/lower-case) "") "gym"))
           (is (< duration-ms (* max-duration-secs 1000))))))))
+
+(comment
+  (require '[kaocha.repl :as k])
+
+  (k/run)
+
+  ,)
