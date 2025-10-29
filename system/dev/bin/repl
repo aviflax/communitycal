@@ -1,0 +1,4 @@
+#!/bin/sh
+
+clj "-J-Dclojure.server.repl={:port 4242 :accept clojure.core.server/repl :server-daemon false}" \
+    -M -e '(println "Listening on port 4242")' -r

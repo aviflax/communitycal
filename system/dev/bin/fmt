@@ -1,0 +1,17 @@
+#!/bin/sh
+
+### First create standard-clj executable:
+###
+### ## clone repo
+### git clone https://github.com/oakmac/standard-clojure-style-js && cd standard-clojure-style-js
+###
+### ## create a binary for Standard Clojure Style
+### bun install && bun build ./cli.mjs --compile --outfile standard-clj
+###
+### ## run your binary
+### ./standard-clj check /home/user1/my-project/src
+###
+### ## move the binary to somewhere on your path
+### mv standard-clj ~/bin
+
+standard-clj fix .
