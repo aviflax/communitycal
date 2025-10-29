@@ -13,7 +13,7 @@
   [model-name config-get]
   (-> (AnthropicChatModel/builder)
       (.apiKey (config-get :anthropic-key))
-      (.modelName model-name)
+      (.modelName (name model-name))
       (.timeout (Duration/ofSeconds timeout-secs))
       (.maxRetries (int max-retries))
       (.build)))
@@ -22,12 +22,12 @@
   [model-name config-get]
   (-> (OpenAiChatModel/builder)
       (.apiKey (config-get :openai-key))
-      (.modelName model-name)
+      (.modelName (name model-name))
       (.timeout (Duration/ofSeconds timeout-secs))
       (.maxRetries (int max-retries))
       (.build)))
 
-(defn complete
+(defn complete!
   [prompt model]
   (let [start (System/nanoTime)
         completion (.chat model prompt)
@@ -36,10 +36,10 @@
      :duration-ms (/ duration 1e6)}))
 
 (comment
-  (let [model (make-openai-model "gpt-4o-mini" config)]
-    (complete "The cheese is old and moldy," model))
+  (let [model (make-openai-model :gpt-4o-mini config)]
+    (complete! "The cheese is old and moldy," model))
 
   (let [model (make-anthropic-model "claude-sonnet-4-20250514" config)]
-    (complete "The cheese is old and moldy," model))
+    (complete! "The cheese is old and moldy," model))
 
   ,)
