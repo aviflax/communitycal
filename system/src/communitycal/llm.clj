@@ -6,8 +6,8 @@
    (dev.langchain4j.model.openai OpenAiChatModel)
    (java.time Duration)))
 
-(def timeout-secs 30)
-(def max-retries 0)
+(def timeout-secs 90)
+(def max-retries 2)
 
 (defn make-anthropic-model
   [model-name config-get]
@@ -29,7 +29,11 @@
 
 (defn complete
   [prompt model]
-  (.chat model prompt))
+  (let [start (System/nanoTime)
+        completion (.chat model prompt)
+        duration (- (System/nanoTime) start)]
+    {:completion completion
+     :duration-ms (/ duration 1e6)}))
 
 (comment
   (let [model (make-openai-model "gpt-4o-mini" config)]
