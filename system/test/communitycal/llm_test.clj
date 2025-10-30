@@ -2,9 +2,9 @@
   (:require
    [clojure.string :as str]
    [clojure.test :refer [deftest is testing]]
-   [communitycal.config :refer [config]]
+   [communitycal.config :as config :refer [config]]
    [communitycal.ical :refer [get-events parse-calendar vevent->event]]
-   [communitycal.llm :refer [complete! make-anthropic-model make-openai-model]]
+   [communitycal.llm :as llm :refer [complete! make-anthropic-model make-openai-model]]
    [communitycal.string :refer [interpolate]])
   (:import
    (java.time Instant)
@@ -15,7 +15,8 @@
   (Date/from (Instant/parse s)))
 
 (deftest initial-event-prompt
-  (let [models {:gpt-5-nano                {:f make-openai-model     :max-duration-secs 60}
+  (config/validate!)
+  (let [models {:gpt-5-nano                {:f make-openai-model     :max-duration-secs 6}
                 :claude-sonnet-4-20250514  {:f make-anthropic-model  :max-duration-secs 6}}
         prompt-template-name "initial-event"
         prompt-template (slurp (str "resources/llm-prompt-templates/" prompt-template-name))
@@ -31,8 +32,9 @@
                          :timezone-id       tzid
                          :notes             nil
                          :location/name     "School gym"
-                         :icalendar/rrule   "FREQ=WEEKLY;BYDAY=WE;UNTIL=20251112T235959"
-                         :icalendar/exdate  #inst "2025-10-29T20:30:00.000-00:00"}]
+                         :icalendar/rrule   "FREQ=WEEKLY;UNTIL=20251112T235959;BYDAY=WE"
+                         :icalendar/exdate  [#inst "2025-10-29T20:30:00.000-00:00"]}]
+    (println prompt)
     ;; TODO: change this to do the I/O concurrently
     (doseq [[model-name {:keys [f max-duration-secs]}] models]
       (testing model-name

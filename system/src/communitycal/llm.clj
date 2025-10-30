@@ -3,7 +3,7 @@
    [communitycal.config :refer [config]])
   (:import
    (dev.langchain4j.model.anthropic AnthropicChatModel)
-   (dev.langchain4j.model.openai OpenAiChatModel)
+   (dev.langchain4j.model.openai OpenAiChatModel OpenAiChatRequestParameters)
    (java.time Duration)))
 
 (def timeout-secs 30)
@@ -18,11 +18,19 @@
       (.maxRetries (int max-retries))
       (.build)))
 
+(defn- make-openai-chat-request-params
+  []
+  (-> (OpenAiChatRequestParameters/builder)
+      (.reasoningEffort "minimal")
+      (.customParameters {"verbosity" "low"})
+      (.build)))
+
 (defn make-openai-model
   [model-name config-get]
   (-> (OpenAiChatModel/builder)
       (.apiKey (config-get :openai-key))
       (.modelName (name model-name))
+      (.defaultRequestParameters (make-openai-chat-request-params))
       (.timeout (Duration/ofSeconds timeout-secs))
       (.maxRetries (int max-retries))
       (.build)))
@@ -36,7 +44,7 @@
      :duration-ms (/ duration 1e6)}))
 
 (comment
-  (let [model (make-openai-model :gpt-4o-mini config)]
+  (let [model (make-openai-model :gpt-5-nano config)]
     (complete! "The cheese is old and moldy," model))
 
   (let [model (make-anthropic-model "claude-sonnet-4-20250514" config)]

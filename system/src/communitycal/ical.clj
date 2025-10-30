@@ -45,15 +45,14 @@
     (merge #:event{:name        (-> event .getSummary .getValue)
                    :start       (-> event .getStartDate .get .getDate temporal->date)
                    :end         (-> event .getEndDate   .get .getDate temporal->date)
-                   :timezone-id tzid}
+                   :timezone-id tzid
+                   :notes       (some-> event .getDescription .getValue)}
            (when-let [loc-name (-> event .getLocation .getValue)]
              {:location/name loc-name})
            (when-let [rrule (some-> event (.getProperty Property/RRULE) (.orElse nil) .getValue)]
              {::ical/rrule rrule})
            (when-let [exdate (some-> event (.getProperty Property/EXDATE) (.orElse nil))]
-             {::ical/exdate (mapv #(temporal->date % tzid) (.getDates exdate))})
-           (when-let [notes (some-> event .getDescription .getValue)]
-             {:event/notes notes}))))
+             {::ical/exdate (mapv #(temporal->date % tzid) (.getDates exdate))}))))
 
 (defn parse-calendar
   [s]
