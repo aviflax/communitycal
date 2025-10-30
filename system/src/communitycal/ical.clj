@@ -1,7 +1,7 @@
 (ns communitycal.ical
   (:require
    [clojure.string :as str]
-   [communitycal.temporals :refer [date->zdt zdt->date]]
+   [communitycal.temporals :refer [date->zdt temporal->date]]
    [event :as-alias e]
    [icalendar :as-alias ical]
    [java-time.api :as jt])
@@ -41,18 +41,19 @@
 
 (defn vevent->event
   [^VEvent event]
-  (merge #:event{:name        (-> event .getSummary .getValue)
-                 :start       (-> event .getStartDate .get .getDate zdt->date)
-                 :end         (-> event .getEndDate   .get .getDate zdt->date)
-                 :timezone-id (-> event .getStartDate .get (.getParameter Parameter/TZID) .get .getValue)}
-         (when-let [loc-name (-> event .getLocation .getValue)]
-           {:location/name loc-name})
-         (when-let [rrule (some-> event (.getProperty Property/RRULE) (.orElse nil) .getValue)]
-           {::ical/rrule rrule})
-         (when-let [exdate (some-> event (.getProperty Property/EXDATE) (.orElse nil))]
-           {::ical/exdate (map zdt->date (.getDates exdate))}) ;; TODO: need temporal->date instead of zdt->date
-         (when-let [notes (some-> event .getDescription .getValue)]
-           {:event/notes notes})))
+  (let [tzid (-> event .getStartDate .get (.getParameter Parameter/TZID) .get .getValue)]
+    (merge #:event{:name        (-> event .getSummary .getValue)
+                   :start       (-> event .getStartDate .get .getDate temporal->date)
+                   :end         (-> event .getEndDate   .get .getDate temporal->date)
+                   :timezone-id tzid}
+           (when-let [loc-name (-> event .getLocation .getValue)]
+             {:location/name loc-name})
+           (when-let [rrule (some-> event (.getProperty Property/RRULE) (.orElse nil) .getValue)]
+             {::ical/rrule rrule})
+           (when-let [exdate (some-> event (.getProperty Property/EXDATE) (.orElse nil))]
+             {::ical/exdate (mapv #(temporal->date % tzid) (.getDates exdate))})
+           (when-let [notes (some-> event .getDescription .getValue)]
+             {:event/notes notes}))))
 
 (defn parse-calendar
   [s]
@@ -74,8 +75,8 @@
           (event->vevent v)
           (.calculateRecurrenceSet v period)
           (mapv (fn [period]
-                  (merge event #:event{:start (-> period .getStart zdt->date)
-                                       :end   (-> period .getEnd   zdt->date)}))
+                  (merge event #:event{:start (-> period .getStart temporal->date)
+                                       :end   (-> period .getEnd   temporal->date)}))
                 v))))
 
 (def ^:private not-blank? (complement str/blank?))
