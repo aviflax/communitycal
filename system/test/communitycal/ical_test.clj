@@ -1,6 +1,5 @@
 (ns communitycal.ical-test
   (:require
-   [clojure.data :as data :refer [diff]]
    [clojure.string :as str]
    [clojure.test :refer [deftest is testing]]
    [communitycal.ical :as nsut]
@@ -73,8 +72,9 @@
                                ::ical/rrule    "FREQ=WEEKLY;UNTIL=20251112T235959;BYDAY=WE"
                                ::ical/exdate   [#inst "2025-10-29T20:30:00"]
                                :location/name  "School gym"}
-              event (first (nsut/get-events cal))              actual (nsut/vevent->event event)]
-      (is (= expected actual) (take 2 (diff expected actual))))))
+              event (first (nsut/get-events cal))
+              actual (nsut/vevent->event event)]
+      (is (= expected actual)))))
 
 (deftest get-ocurrences-test
   (testing "basic case happy path"

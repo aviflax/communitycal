@@ -1,6 +1,5 @@
 (ns communitycal.llm-test
   (:require
-   [clojure.data :as data :refer [diff]]
    [clojure.string :as str]
    [clojure.test :refer [deftest is testing]]
    [communitycal.config :refer [config]]
