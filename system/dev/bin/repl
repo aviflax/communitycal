@@ -1,5 +1,10 @@
 #!/bin/sh
 
+set -eu
+
+echo "$ANTHROPIC_API_KEY" > /dev/null
+echo "$OPENAI_API_KEY" > /dev/null
+
 clj "-J-Dclojure.server.repl={:port 4242 :accept clojure.core.server/repl :server-daemon false}" \
     -M:dev --eval '(println "Listening on port 4242")' \
            --repl
