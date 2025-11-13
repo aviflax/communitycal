@@ -45,7 +45,7 @@
               event (-> calendar get-events first)
               actual (vevent->event event)
               prep (fn [m] (update-vals m #(if (string? %)
-                                             (-> % str/lower-case (str/split #" ") first)
+                                             (-> % str/lower-case (str/split #"[ ;]") first)
                                              %)))]
           (is (map? actual))
           (is (= (prep expected) (prep actual)))

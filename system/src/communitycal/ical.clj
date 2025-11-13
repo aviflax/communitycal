@@ -41,12 +41,13 @@
 
 (defn vevent->event
   [^VEvent event]
-  (let [tzid (-> event .getStartDate .get (.getParameter Parameter/TZID) .get .getValue)]
+  (let [tzid  (-> event .getStartDate .get (.getParameter Parameter/TZID) .get .getValue)
+        desc  (some-> event .getDescription .getValue)]
     (merge #:event{:name        (-> event .getSummary .getValue)
                    :start       (-> event .getStartDate .get .getDate temporal->date)
                    :end         (-> event .getEndDate   .get .getDate temporal->date)
                    :timezone-id tzid
-                   :notes       (some-> event .getDescription .getValue)}
+                   :notes       (when-not (str/blank? desc) desc)}
            (when-let [loc-name (-> event .getLocation .getValue)]
              {:location/name loc-name})
            (when-let [rrule (some-> event (.getProperty Property/RRULE) (.orElse nil) .getValue)]
