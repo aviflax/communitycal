@@ -1,5 +1,7 @@
 (ns communitycal.db.schemata
-  (:refer-clojure :exclude [ref str]))
+  (:refer-clojure :exclude [ref str])
+  (:require
+   [clojure.core :as core]))
 
 (defn- str
   ([ident]
@@ -38,6 +40,10 @@
   [attr]
   (assoc attr :db/unique :db.unique/identity))
 
+(defn- many
+  [attr]
+  (assoc attr :db/cardinality :db.cardinality/many))
+
 (def schemata
   {:init [(ref     :origin/created-by)
           (instant :origin/created-at)
@@ -65,7 +71,10 @@
 
           ;; iCalendar
           (str :icalendar/rrule "Recurrence Rule")
-          (str :icalendar/exdate "Exception Date(s)")
+          (-> (str :icalendar/exdate
+                   (core/str "This property may be specified multiple times and each instance may"
+                             " include multiple dates."))
+              many)
 
           ;; Event
           (id :event/id)
