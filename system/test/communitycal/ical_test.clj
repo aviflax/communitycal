@@ -45,7 +45,9 @@
       (is (= (::ical/rrule event)
              (some-> vevent (.getProperty Property/RRULE) (.orElse nil) .getValue)))
       (is (= "20250924T163000"
-             (some-> vevent (.getProperty Property/EXDATE) (.orElse nil) .getValue))))))
+             (some-> vevent (.getProperty Property/EXDATE) (.orElse nil) .getValue)))
+      (let [validation-results (-> vevent .validate .getEntries)]
+        (is (empty? validation-results))))))
 
 (deftest vevent->event-test
   (testing "basic case happy path"
@@ -69,6 +71,7 @@
                                :start          #inst "2025-09-17T20:30:00"
                                :end            #inst "2025-09-17T21:30:00"
                                :timezone-id    "America/New_York"
+                               ::ical/uid      "20250917T163000-1@example.com"
                                ::ical/rrule    "FREQ=WEEKLY;UNTIL=20251112T235959;BYDAY=WE"
                                ::ical/exdate   [#inst "2025-10-29T20:30:00"]
                                :location/name  "School gym"}

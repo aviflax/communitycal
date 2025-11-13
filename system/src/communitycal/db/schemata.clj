@@ -70,6 +70,7 @@
           (ref :location/community)
 
           ;; iCalendar
+          (str :icalendar/uid "The persistent, globally unique identifier for a calendar component")
           (str :icalendar/rrule "Recurrence Rule")
           (-> (str :icalendar/exdate
                    (core/str "This property may be specified multiple times and each instance may"

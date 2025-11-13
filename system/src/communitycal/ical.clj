@@ -10,7 +10,7 @@
    (net.fortuna.ical4j.data CalendarBuilder)
    (net.fortuna.ical4j.model Calendar Component DateList Parameter Period Property)
    (net.fortuna.ical4j.model.component VEvent)
-   (net.fortuna.ical4j.model.property Description ExDate Location RRule XProperty)))
+   (net.fortuna.ical4j.model.property Description ExDate Location RRule Uid XProperty)))
 
 (def company-name "Calendrical")
 (def product-name "CommunityCal")
@@ -27,12 +27,13 @@
 
 (defn event->vevent
   [{:event/keys [name start end timezone-id notes]
-    ::ical/keys [rrule exdate]
+    ::ical/keys [rrule exdate uid]
     loc-name    :location/name}]
   (-> (VEvent.
         (date->zdt start timezone-id)
         (date->zdt end timezone-id)
         name)
+      (.withProperty (Uid. uid))
       (.withProperty (Description. notes))
       (.withProperty (Location. loc-name))
       (.withProperty (RRule. rrule))
@@ -46,7 +47,9 @@
     (merge #:event{:name        (-> event .getSummary .getValue)
                    :start       (-> event .getStartDate .get .getDate temporal->date)
                    :end         (-> event .getEndDate   .get .getDate temporal->date)
-                   :timezone-id tzid}
+                   :timezone-id tzid
+                   ::ical/uid   (or (some-> event (.getProperty Property/UID) (.orElse nil) .getValue)
+                                    (str (random-uuid)))}
            (when-not (str/blank? desc)
              {:event/notes desc})
            (when-let [loc-name (-> event .getLocation .getValue)]
