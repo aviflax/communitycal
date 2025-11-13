@@ -46,8 +46,9 @@
     (merge #:event{:name        (-> event .getSummary .getValue)
                    :start       (-> event .getStartDate .get .getDate temporal->date)
                    :end         (-> event .getEndDate   .get .getDate temporal->date)
-                   :timezone-id tzid
-                   :notes       (when-not (str/blank? desc) desc)}
+                   :timezone-id tzid}
+           (when-not (str/blank? desc)
+             {:event/notes desc})
            (when-let [loc-name (-> event .getLocation .getValue)]
              {:location/name loc-name})
            (when-let [rrule (some-> event (.getProperty Property/RRULE) (.orElse nil) .getValue)]
