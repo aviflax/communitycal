@@ -33,8 +33,8 @@
                                              :current-year "2025"
                                              :timezone-id tzid})
         model (make-anthropic-model model-name config)
-        completion (complete! prompt model)
-        event (-> completion parse-calendar get-events first vevent->event)
+        result (complete! prompt model)
+        event (-> result :completion parse-calendar get-events first vevent->event)
         loc-name (:location/name event)
         now (java.util.Date.)
         tmp-loc-id "location"]
