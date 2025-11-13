@@ -1,7 +1,5 @@
 (ns communitycal.db.schemata
-  (:refer-clojure :exclude [ref str])
-  (:require
-   [clojure.core :as core]))
+  (:refer-clojure :exclude [ref str]))
 
 (defn- str
   ([ident]
@@ -73,8 +71,7 @@
           (str :icalendar/uid "The persistent, globally unique identifier for a calendar component")
           (str :icalendar/rrule "Recurrence Rule")
           (-> (str :icalendar/exdate
-                   (core/str "This property may be specified multiple times and each instance may"
-                             " include multiple dates."))
+                   "May be specified multiple times; each instance may include multiple dates")
               many)
 
           ;; Event
