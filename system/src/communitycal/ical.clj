@@ -38,7 +38,7 @@
                     (.withProperty (Location. loc-name))
                     (.withProperty (RRule. rrule)))]
     (doseq [exdate exdates]
-      (.withProperty builder (ExDate. exdate)))
+      (.withProperty builder (ExDate. exdate))) ;; TODO: I think maybe I need to pass in a DateList into the constructor rather than a string
     (.getFluentTarget builder)))
 
 (defn get-prop-val
@@ -87,6 +87,14 @@
         period (Period. start end)]
     (as-> event v
           (event->vevent v)
+          (do
+            ; (println (get-prop-vals v Property/EXDATE))
+            (some-> v
+              (.getProperty Property/EXDATE)
+              (.orElse nil)
+              (.getDates)
+              (println))
+            v)
           (.calculateRecurrenceSet v period)
           (mapv (fn [period]
                   (merge event #:event{:start (-> period .getStart temporal->date)

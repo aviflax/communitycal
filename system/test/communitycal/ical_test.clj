@@ -35,8 +35,8 @@
                         :end            #inst "2025-09-17T21:30:00.000-00:00"
                         :timezone-id    "America/New_York"
                         ::ical/uid      (str (random-uuid))
-                        ::ical/rrule    "FREQ=WEEKLY;COUNT=3;BYDAY=WE"
-                        ::ical/exdates  ["20250924T163000"]
+                        ::ical/rrule    "FREQ=WEEKLY;COUNT=5;BYDAY=WE"
+                        ::ical/exdates  ["20250924T163000" "20251001T163000"]
                         :location/name  "School gym"}
           vevent (nsut/event->vevent event)]
       ;; TODO: add at least one assertion for each property
@@ -79,7 +79,24 @@
       (is (= expected actual)))))
 
 (deftest get-ocurrences-test
-  (testing "basic case happy path"
+  (testing "basic case, no exceptions"
+    (let [event #:event{:name           "Practice"
+                        :start          #inst "2025-09-17T20:30:00.000-00:00"
+                        :end            #inst "2025-09-17T21:30:00.000-00:00"
+                        :timezone-id    "America/New_York"
+                        ::ical/uid      (str (random-uuid))
+                        ::ical/rrule    "FREQ=WEEKLY;COUNT=3;BYDAY=WE"
+                        ::ical/exdates  []
+                        :location/name  "School gym"}
+          expected [event
+                    (merge event #:event{:start #inst "2025-09-24T20:30:00.000-00:00"
+                                         :end   #inst "2025-09-24T21:30:00.000-00:00"})
+                    (merge event #:event{:start #inst "2025-10-01T20:30:00.000-00:00"
+                                         :end   #inst "2025-10-01T21:30:00.000-00:00"})]
+          actual (nsut/get-occurrences event)]
+      (is (= (count expected) (count actual)))
+      (is (= expected actual) (str "ACTUAL START DATES:" (mapv ::e/start actual)))))
+  (testing "one exception"
     (let [event #:event{:name           "Practice"
                         :start          #inst "2025-09-17T20:30:00.000-00:00"
                         :end            #inst "2025-09-17T21:30:00.000-00:00"
