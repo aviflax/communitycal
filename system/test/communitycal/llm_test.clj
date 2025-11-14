@@ -30,10 +30,9 @@
                          :start             (date "2025-09-17T16:30:00-04:00")
                          :end               (date "2025-09-17T17:30:00-04:00")
                          :timezone-id       tzid
-                         :notes             nil
                          :location/name     "School gym"
                          :icalendar/rrule   "FREQ=WEEKLY;UNTIL=20251112T235959;BYDAY=WE"
-                         :icalendar/exdates ["20251029T163000"]}]
+                         :icalendar/exdates [#inst "2025-10-29T20:30:00.000-00:00"]}]
     (println prompt)
     ;; TODO: change this to do the I/O concurrently
     (doseq [[model-name {:keys [f max-duration-secs]}] models]
@@ -43,7 +42,9 @@
               _ (println (format "\n\n-----------\n%s\n-----------\n\n" completion))
               calendar (parse-calendar completion)
               event (-> calendar get-events first)
-              actual (vevent->event event)
+              actual (-> event
+                         (vevent->event)
+                         (dissoc :icalendar/uid))
               prep (fn [m] (update-vals m #(if (string? %)
                                              (-> % str/lower-case (str/split #"[ ;]") first)
                                              %)))]

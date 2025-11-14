@@ -4,7 +4,8 @@
    [clojure.test :refer [deftest is testing]]
    [communitycal.ical :as nsut :refer [get-prop-val get-prop-vals]]
    [event :as-alias e]
-   [icalendar :as-alias ical])
+   [icalendar :as-alias ical]
+   [java-time.api :as jt])
   (:import
    (net.fortuna.ical4j.model Calendar Property)
    (net.fortuna.ical4j.model.property DateListProperty)))
@@ -41,12 +42,14 @@
                                          #inst "2025-10-01T20:30:00.000-00:00"]
                         :location/name  "School gym"}
           vevent (nsut/event->vevent event)]
-      ;; TODO: add at least one assertion for each property
+      ;; TODO: add at least one assertion for each property (or at least most)
       (is (= (:event/name event) (some-> vevent .getSummary .getValue)))
       (is (= (:location/name event) (some-> vevent .getLocation .getValue)))
       (is (= (::ical/uid event) (get-prop-val vevent Property/UID)))
       (is (= (::ical/rrule event) (get-prop-val vevent Property/RRULE)))
-      (is (= (::ical/exdates event) (get-prop-vals vevent Property/EXDATE DateListProperty/.getDates)))
+      (is (= (::ical/exdates event)
+             (->> (get-prop-vals vevent Property/EXDATE DateListProperty/.getDates)
+                  (map jt/java-date))))
       (let [validation-results (-> vevent .validate .getEntries)]
         (is (empty? validation-results))))))
 
@@ -100,12 +103,12 @@
       (is (= expected actual) (str "ACTUAL START DATES:" (mapv ::e/start actual)))))
   (testing "one exception"
     (let [event #:event{:name           "Practice"
-                        :start          #inst "2025-09-17T20:30:00.000-04:00"
-                        :end            #inst "2025-09-17T21:30:00.000-04:00"
+                        :start          #inst "2025-09-17T20:30:00.000-00:00"
+                        :end            #inst "2025-09-17T21:30:00.000-00:00"
                         :timezone-id    "America/New_York"
                         ::ical/uid      (str (random-uuid))
                         ::ical/rrule    "FREQ=WEEKLY;COUNT=3;BYDAY=WE"
-                        ::ical/exdates  [#inst "2025-09-24T20:30:00.000-04:00"]
+                        ::ical/exdates  [#inst "2025-09-24T20:30:00.000-00:00"]
                         :location/name  "School gym"}
           expected [event
                     ;; omitting the middle Wednesday on Sep 24 as per the exdate
