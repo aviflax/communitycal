@@ -3,9 +3,9 @@
 
 (defn- str
   [ident]
-   #:db{:ident       ident
-        :valueType   :db.type/string
-        :cardinality :db.cardinality/one})
+  #:db{:ident       ident
+       :valueType   :db.type/string
+       :cardinality :db.cardinality/one})
 
 (defn- bool
   [ident]

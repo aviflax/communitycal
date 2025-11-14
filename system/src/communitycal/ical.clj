@@ -8,7 +8,7 @@
   (:import
    (java.io StringReader)
    (net.fortuna.ical4j.data CalendarBuilder)
-   (net.fortuna.ical4j.model Calendar Component Parameter Period Property)
+   (net.fortuna.ical4j.model Calendar Component DateList Parameter Period Property)
    (net.fortuna.ical4j.model.component VEvent)
    (net.fortuna.ical4j.model.property DateListProperty Description ExDate Location RRule Uid XProperty)))
 
@@ -37,8 +37,7 @@
                     (.withProperty (Description. notes))
                     (.withProperty (Location. loc-name))
                     (.withProperty (RRule. rrule)))]
-    (doseq [exdate exdates]
-      (.withProperty builder (ExDate. exdate))) ;; TODO: I think maybe I need to pass in a DateList into the constructor rather than a string
+    (.withProperty builder (ExDate. (DateList. (map #(date->zdt % timezone-id) exdates))))
     (.getFluentTarget builder)))
 
 (defn get-prop-val
@@ -47,10 +46,12 @@
 
 (defn get-prop-vals
   ([vevent prop]
-    (get-prop-vals vevent prop Property/.getValue))
+   (get-prop-vals vevent prop Property/.getValue))
   ([vevent prop getter]
-    (->> (.getProperties vevent (into-array String [prop]))
-         (mapv getter))))
+   (->> (.getProperties vevent (into-array String [prop]))
+        (mapcat getter)
+        (doall)
+        (seq))))
 
 (defn vevent->event
   [^VEvent event]
@@ -69,7 +70,7 @@
            (when-let [rrule (get-prop-val event Property/RRULE)]
              {::ical/rrule rrule})
            (when-let [exdates (get-prop-vals event Property/EXDATE DateListProperty/.getDates)]
-             {::ical/exdates (map #(temporal->date % tzid) (first exdates))}))))
+             {::ical/exdates (map #(temporal->date % tzid) exdates)}))))
 
 (defn parse-calendar
   [s]

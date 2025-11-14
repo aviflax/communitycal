@@ -6,7 +6,8 @@
    [event :as-alias e]
    [icalendar :as-alias ical])
   (:import
-   (net.fortuna.ical4j.model Calendar Property)))
+   (net.fortuna.ical4j.model Calendar Property)
+   (net.fortuna.ical4j.model.property DateListProperty)))
 
 (deftest parse-calendar-test
   (testing "Valid iCalendar Documents"
@@ -45,7 +46,7 @@
       (is (= (:location/name event) (some-> vevent .getLocation .getValue)))
       (is (= (::ical/uid event) (get-prop-val vevent Property/UID)))
       (is (= (::ical/rrule event) (get-prop-val vevent Property/RRULE)))
-      (is (= (::ical/exdates event) (get-prop-vals vevent Property/EXDATE)))
+      (is (= (::ical/exdates event) (get-prop-vals vevent Property/EXDATE DateListProperty/.getDates)))
       (let [validation-results (-> vevent .validate .getEntries)]
         (is (empty? validation-results))))))
 
@@ -79,7 +80,7 @@
               actual (nsut/vevent->event event)]
       (is (= expected actual)))))
 
-#_(deftest get-ocurrences-test
+(deftest get-ocurrences-test
   (testing "basic case, no exceptions"
     (let [event #:event{:name           "Practice"
                         :start          #inst "2025-09-17T20:30:00.000-00:00"
