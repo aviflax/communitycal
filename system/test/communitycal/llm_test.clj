@@ -33,7 +33,7 @@
                          :notes             nil
                          :location/name     "School gym"
                          :icalendar/rrule   "FREQ=WEEKLY;UNTIL=20251112T235959;BYDAY=WE"
-                         :icalendar/exdate  [#inst "2025-10-29T20:30:00.000-00:00"]}]
+                         :icalendar/exdates ["20251029T163000"]}]
     (println prompt)
     ;; TODO: change this to do the I/O concurrently
     (doseq [[model-name {:keys [f max-duration-secs]}] models]

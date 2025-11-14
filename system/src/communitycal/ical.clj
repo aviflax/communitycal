@@ -8,7 +8,7 @@
   (:import
    (java.io StringReader)
    (net.fortuna.ical4j.data CalendarBuilder)
-   (net.fortuna.ical4j.model Calendar Component DateList Parameter Period Property)
+   (net.fortuna.ical4j.model Calendar Component Parameter Period Property)
    (net.fortuna.ical4j.model.component VEvent)
    (net.fortuna.ical4j.model.property Description ExDate Location RRule Uid XProperty)))
 
@@ -27,18 +27,28 @@
 
 (defn event->vevent
   [{:event/keys [name start end timezone-id notes]
-    ::ical/keys [rrule exdate uid]
+    ::ical/keys [rrule exdates uid]
     loc-name    :location/name}]
-  (-> (VEvent.
-        (date->zdt start timezone-id)
-        (date->zdt end timezone-id)
-        name)
-      (.withProperty (Uid. uid))
-      (.withProperty (Description. notes))
-      (.withProperty (Location. loc-name))
-      (.withProperty (RRule. rrule))
-      (.withProperty (ExDate. (DateList. (map #(date->zdt % timezone-id) exdate))))
-      (.getFluentTarget)))
+  (let [builder (-> (VEvent.
+                      (date->zdt start timezone-id)
+                      (date->zdt end timezone-id)
+                      name)
+                    (.withProperty (Uid. uid))
+                    (.withProperty (Description. notes))
+                    (.withProperty (Location. loc-name))
+                    (.withProperty (RRule. rrule)))]
+    (doseq [exdate exdates]
+      (.withProperty builder (ExDate. exdate)))
+    (.getFluentTarget builder)))
+
+(defn get-prop-val
+  [vevent prop]
+  (some-> vevent (.getProperty prop) (.orElse nil) (.getValue)))
+
+(defn get-prop-vals
+  [vevent prop]
+  (->> (.getProperties vevent (into-array String [prop]))
+       (mapv Property/.getValue)))
 
 (defn vevent->event
   [^VEvent event]
@@ -48,16 +58,16 @@
                    :start       (-> event .getStartDate .get .getDate temporal->date)
                    :end         (-> event .getEndDate   .get .getDate temporal->date)
                    :timezone-id tzid
-                   ::ical/uid   (or (some-> event (.getProperty Property/UID) (.orElse nil) .getValue)
+                   ::ical/uid   (or (get-prop-val event Property/UID)
                                     (str (random-uuid)))}
            (when-not (str/blank? desc)
              {:event/notes desc})
            (when-let [loc-name (-> event .getLocation .getValue)]
              {:location/name loc-name})
-           (when-let [rrule (some-> event (.getProperty Property/RRULE) (.orElse nil) .getValue)]
+           (when-let [rrule (get-prop-val event Property/RRULE)]
              {::ical/rrule rrule})
-           (when-let [exdate (some-> event (.getProperty Property/EXDATE) (.orElse nil))]
-             {::ical/exdate (mapv #(temporal->date % tzid) (.getDates exdate))}))))
+           (when-let [exdates (get-prop-vals event Property/EXDATE)]
+             {::ical/exdates exdates}))))
 
 (defn parse-calendar
   [s]
@@ -89,8 +99,8 @@
   [event]
   (boolean
     (cond
-      (instance? VEvent event) (some-> event (.getProperty Property/RRULE) (.orElse nil) .getValue)
-      (map? event) (some-> event ::ical/rrule not-blank?))))
+      (instance? VEvent event)  (get-prop-val event Property/RRULE)
+      (map? event)              (some-> event ::ical/rrule not-blank?))))
 
 (comment
   (make-calendar "Foo Bar")

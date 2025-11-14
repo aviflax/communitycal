@@ -2,7 +2,7 @@
   (:require
    [clojure.string :as str]
    [clojure.test :refer [deftest is testing]]
-   [communitycal.ical :as nsut]
+   [communitycal.ical :as nsut :refer [get-prop-val get-prop-vals]]
    [event :as-alias e]
    [icalendar :as-alias ical])
   (:import
@@ -16,6 +16,7 @@
                  CALSCALE:GREGORIAN
                  PRODID:-//Your Organization//Your Product//EN
                  BEGIN:VEVENT
+                 UID:20250917T163000-1@example.com
                  SUMMARY:Practice
                  DTSTART;TZID=America/New_York:20231101T163000
                  DTEND;TZID=America/New_York:20231101T173000
@@ -33,19 +34,17 @@
                         :start          #inst "2025-09-17T20:30:00.000-00:00"
                         :end            #inst "2025-09-17T21:30:00.000-00:00"
                         :timezone-id    "America/New_York"
+                        ::ical/uid      (str (random-uuid))
                         ::ical/rrule    "FREQ=WEEKLY;COUNT=3;BYDAY=WE"
-                        ::ical/exdate   [#inst "2025-09-24T20:30:00.000-00:00"]
+                        ::ical/exdates  ["20250924T163000"]
                         :location/name  "School gym"}
           vevent (nsut/event->vevent event)]
       ;; TODO: add at least one assertion for each property
-      (is (= (:event/name event)
-             (some-> vevent .getSummary .getValue)))
-      (is (= (:location/name event)
-             (some-> vevent .getLocation .getValue)))
-      (is (= (::ical/rrule event)
-             (some-> vevent (.getProperty Property/RRULE) (.orElse nil) .getValue)))
-      (is (= "20250924T163000"
-             (some-> vevent (.getProperty Property/EXDATE) (.orElse nil) .getValue)))
+      (is (= (:event/name event) (some-> vevent .getSummary .getValue)))
+      (is (= (:location/name event) (some-> vevent .getLocation .getValue)))
+      (is (= (::ical/uid event) (get-prop-val vevent Property/UID)))
+      (is (= (::ical/rrule event) (get-prop-val vevent Property/RRULE)))
+      (is (= (::ical/exdates event) (get-prop-vals vevent Property/EXDATE)))
       (let [validation-results (-> vevent .validate .getEntries)]
         (is (empty? validation-results))))))
 
@@ -73,7 +72,7 @@
                                :timezone-id    "America/New_York"
                                ::ical/uid      "20250917T163000-1@example.com"
                                ::ical/rrule    "FREQ=WEEKLY;UNTIL=20251112T235959;BYDAY=WE"
-                               ::ical/exdate   [#inst "2025-10-29T20:30:00"]
+                               ::ical/exdates  ["20251029T163000"]
                                :location/name  "School gym"}
               event (first (nsut/get-events cal))
               actual (nsut/vevent->event event)]
@@ -85,8 +84,9 @@
                         :start          #inst "2025-09-17T20:30:00.000-00:00"
                         :end            #inst "2025-09-17T21:30:00.000-00:00"
                         :timezone-id    "America/New_York"
+                        ::ical/uid      (str (random-uuid))
                         ::ical/rrule    "FREQ=WEEKLY;COUNT=3;BYDAY=WE"
-                        ::ical/exdate   [#inst "2025-09-24T20:30:00.000-00:00"]
+                        ::ical/exdates  ["20250924T203000"]
                         :location/name  "School gym"}
           expected [event
                     ;; omitting the middle Wednesday on Sep 24 as per the exdate
