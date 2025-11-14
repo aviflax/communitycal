@@ -61,7 +61,7 @@
                    :start       (-> event .getStartDate .get .getDate temporal->date)
                    :end         (-> event .getEndDate   .get .getDate temporal->date)
                    :timezone-id tzid
-                   ::ical/uid   (or (get-prop-val event Property/UID)
+                   ::ical/uid   (or (get-prop-val event Property/UID) ;; TODO: if UID is missing/blank that’s invalid; should we throw instead?
                                     (str (random-uuid)))}
            (when-not (str/blank? desc)
              {:event/notes desc})
