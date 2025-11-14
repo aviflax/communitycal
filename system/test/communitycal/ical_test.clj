@@ -100,12 +100,12 @@
       (is (= expected actual) (str "ACTUAL START DATES:" (mapv ::e/start actual)))))
   (testing "one exception"
     (let [event #:event{:name           "Practice"
-                        :start          #inst "2025-09-17T20:30:00.000-00:00"
-                        :end            #inst "2025-09-17T21:30:00.000-00:00"
+                        :start          #inst "2025-09-17T20:30:00.000-04:00"
+                        :end            #inst "2025-09-17T21:30:00.000-04:00"
                         :timezone-id    "America/New_York"
                         ::ical/uid      (str (random-uuid))
                         ::ical/rrule    "FREQ=WEEKLY;COUNT=3;BYDAY=WE"
-                        ::ical/exdates  ["20250924T203000"]
+                        ::ical/exdates  [#inst "2025-09-24T20:30:00.000-04:00"]
                         :location/name  "School gym"}
           expected [event
                     ;; omitting the middle Wednesday on Sep 24 as per the exdate
