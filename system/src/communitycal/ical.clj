@@ -10,7 +10,7 @@
    (net.fortuna.ical4j.data CalendarBuilder)
    (net.fortuna.ical4j.model Calendar Component Parameter Period Property)
    (net.fortuna.ical4j.model.component VEvent)
-   (net.fortuna.ical4j.model.property Description ExDate Location RRule Uid XProperty)))
+   (net.fortuna.ical4j.model.property DateListProperty Description ExDate Location RRule Uid XProperty)))
 
 (def company-name "Calendrical")
 (def product-name "CommunityCal")
@@ -46,9 +46,11 @@
   (some-> vevent (.getProperty prop) (.orElse nil) (.getValue)))
 
 (defn get-prop-vals
-  [vevent prop]
-  (->> (.getProperties vevent (into-array String [prop]))
-       (mapv Property/.getValue)))
+  ([vevent prop]
+    (get-prop-vals vevent prop Property/.getValue))
+  ([vevent prop getter]
+    (->> (.getProperties vevent (into-array String [prop]))
+         (mapv getter))))
 
 (defn vevent->event
   [^VEvent event]
@@ -66,8 +68,8 @@
              {:location/name loc-name})
            (when-let [rrule (get-prop-val event Property/RRULE)]
              {::ical/rrule rrule})
-           (when-let [exdates (get-prop-vals event Property/EXDATE)]
-             {::ical/exdates exdates}))))
+           (when-let [exdates (get-prop-vals event Property/EXDATE DateListProperty/.getDates)]
+             {::ical/exdates (map #(temporal->date % tzid) (first exdates))}))))
 
 (defn parse-calendar
   [s]

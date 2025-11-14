@@ -2,12 +2,10 @@
   (:refer-clojure :exclude [ref str]))
 
 (defn- str
-  ([ident]
+  [ident]
    #:db{:ident       ident
         :valueType   :db.type/string
         :cardinality :db.cardinality/one})
-  ([ident doc]
-   (assoc (str ident) :db/doc doc)))
 
 (defn- bool
   [ident]
@@ -33,6 +31,10 @@
   #:db{:ident       ident
        :valueType   :db.type/ref
        :cardinality :db.cardinality/one})
+
+(defn- doc
+  [attr docstring]
+  (assoc attr :db/doc docstring))
 
 (defn- unique
   [attr]
@@ -68,18 +70,20 @@
           (ref :location/community)
 
           ;; iCalendar
-          (str :icalendar/uid "The persistent, globally unique identifier for a calendar component")
-          (str :icalendar/rrule "Recurrence Rule")
-          (-> (str :icalendar/exdates
-                   "May be specified multiple times; each instance may include multiple dates")
-              many)
+          (-> (str :icalendar/uid)
+              (doc "The persistent, globally unique identifier for a calendar component"))
+          (-> (str :icalendar/rrule)
+              (doc "Recurrence Rule"))
+          (-> (instant :icalendar/exdates)
+              (doc "A simplification of the iCalendar EXDATE property.")
+              (many))
 
           ;; Event
           (id :event/id)
           (ref :event/calendar)
           (str :event/name)
           (ref :event/location)
-          (str :event/timezone-id "IANA region-based time zone ID such as Asia/Tel_Aviv")
+          (-> (str :event/timezone-id) (doc "IANA region-based time zone ID such as Asia/Tel_Aviv"))
           (instant :event/start)
           (instant :event/end)
           (bool :event/all-day)
