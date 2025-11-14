@@ -72,6 +72,15 @@
            (when-let [exdates (get-prop-vals event Property/EXDATE DateListProperty/.getDates)]
              {::ical/exdates (map #(temporal->date % tzid) exdates)}))))
 
+(defn validate
+  "Returns a collection of errors."
+  [component]
+  (-> component .validate .getEntries))
+
+(defn valid?
+  [component]
+  (-> component validate seq boolean not))
+
 (defn parse-calendar
   [s]
   (-> (CalendarBuilder.)
@@ -90,14 +99,6 @@
         period (Period. start end)]
     (as-> event v
           (event->vevent v)
-          (do
-            ; (println (get-prop-vals v Property/EXDATE))
-            (some-> v
-              (.getProperty Property/EXDATE)
-              (.orElse nil)
-              (.getDates)
-              (println))
-            v)
           (.calculateRecurrenceSet v period)
           (mapv (fn [period]
                   (merge event #:event{:start (-> period .getStart temporal->date)

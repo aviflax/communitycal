@@ -83,6 +83,49 @@
               actual (nsut/vevent->event event)]
       (is (= expected actual)))))
 
+(deftest validate-test
+  (testing "valid"
+    (let [event #:event{:name           "Practice"
+                        :start          #inst "2025-09-17T20:30:00.000-00:00"
+                        :end            #inst "2025-11-17T21:30:00.000-00:00"
+                        :timezone-id    "America/New_York"
+                        ::ical/uid      (str (random-uuid))
+                        ::ical/rrule    "FREQ=WEEKLY;COUNT=5;BYDAY=WE"
+                        ::ical/exdates  [#inst "2025-09-24T20:30:00.000-00:00"
+                                         #inst "2025-10-01T20:30:00.000-00:00"]
+                        :location/name  "School gym"}
+          vevent (nsut/event->vevent event)]
+      (is (empty? (nsut/validate vevent)))))
+  (testing "invalid"
+    (let [event #:event{:name           "Practice"
+                        :start          #inst "2025-09-17T20:30:00.000-00:00"
+                        :end            #inst "2025-11-17T21:30:00.000-00:00"
+                        :timezone-id    "America/New_York"
+                        ::ical/uid      (str (random-uuid))
+                        ::ical/rrule    "FREQ=WEEKLY;COUNT=5;BYDAY=WE"
+                        ::ical/exdates  [#inst "2025-09-24T20:30:00.000-00:00"
+                                         #inst "2025-10-01T20:30:00.000-00:00"]
+                        :location/name  "School gym"}
+          vevent (nsut/event->vevent event)
+          updated-props (-> vevent .getPropertyList (.removeAll (into-array String [Property/UID])))
+          _ (.setPropertyList vevent updated-props)
+          actual (nsut/validate vevent)]
+      (is (= 1 (count actual)))
+      (is (str/includes? (first actual) "REQUIRED, but MUST NOT occur more than once: UID")))))
+
+(deftest valid?-test
+  (let [event #:event{:name           "Practice"
+                      :start          #inst "2025-09-17T20:30:00.000-00:00"
+                      :end            #inst "2025-11-17T21:30:00.000-00:00"
+                      :timezone-id    "America/New_York"
+                      ::ical/uid      (str (random-uuid))
+                      ::ical/rrule    "FREQ=WEEKLY;COUNT=5;BYDAY=WE"
+                      ::ical/exdates  [#inst "2025-09-24T20:30:00.000-00:00"
+                                       #inst "2025-10-01T20:30:00.000-00:00"]
+                      :location/name  "School gym"}
+        vevent (nsut/event->vevent event)]
+    (is (nsut/valid? vevent))))
+
 (deftest get-ocurrences-test
   (testing "basic case, no exceptions"
     (let [event #:event{:name           "Practice"
