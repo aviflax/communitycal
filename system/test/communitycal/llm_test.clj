@@ -3,7 +3,7 @@
    [clojure.string :as str]
    [clojure.test :refer [deftest is testing]]
    [communitycal.config :as config :refer [config]]
-   [communitycal.ical :refer [get-events parse-calendar vevent->event]]
+   [communitycal.ical :refer [get-events parse-calendar validate vevent->event]]
    [communitycal.llm :as llm :refer [complete! make-anthropic-model make-openai-model]]
    [communitycal.string :refer [interpolate]])
   (:import
@@ -50,6 +50,7 @@
                                              %)))]
           (is (map? actual))
           (is (= (prep expected) (prep actual)))
+          (is (empty? (validate calendar)))
           (is (str/includes? (or (some-> actual :location/name str/lower-case) "") "gym"))
           (is (< duration-ms (* max-duration-secs 1000))))))))
 
