@@ -77,6 +77,12 @@
   [component]
   (-> component .validate .getEntries))
 
+(defn validate!
+  "Throws if invalid, otherwise returns nil."
+  [component]
+  (when-let [errs (validate component)]
+    (throw (ex-info "iCalendar object is invalid" {:errors errs}))))
+
 (defn valid?
   [component]
   (-> component validate seq boolean not))

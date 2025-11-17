@@ -11,7 +11,7 @@
    [communitycal.config :refer [config]]
    [communitycal.db :as db]
    [communitycal.db.queries :as q]
-   [communitycal.ical :refer [get-events get-occurrences parse-calendar recurring? vevent->event]]
+   [communitycal.ical :refer [get-events get-occurrences parse-calendar recurring? validate! vevent->event]]
    [communitycal.llm :refer [complete! make-anthropic-model]]
    [communitycal.slugs :refer [slugify]]
    [communitycal.string :refer [interpolate]]
@@ -34,7 +34,9 @@
                                              :timezone-id tzid})
         model (make-anthropic-model model-name config)
         result (complete! prompt model)
-        event (-> result :completion parse-calendar get-events first vevent->event)
+        calendar (-> result :completion parse-calendar)
+        _ (validate! calendar)
+        event (-> calendar get-events first vevent->event)
         loc-name (:location/name event)
         now (java.util.Date.)
         tmp-loc-id "location"]
