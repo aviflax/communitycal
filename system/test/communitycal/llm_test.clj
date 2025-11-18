@@ -52,7 +52,7 @@
           (is (= (prep expected) (prep actual)))
           (is (empty? (validate calendar)))
           (is (str/includes? (or (some-> actual :location/name str/lower-case) "") "gym"))
-          (is (= 3 (count occurrences)))
+          (is (= 8 (count occurrences)))
           (is (< duration-ms (* max-duration-secs 1000))))))))
 
 (comment
