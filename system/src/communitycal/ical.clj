@@ -102,13 +102,18 @@
   (let [now (jt/zoned-date-time) ;; TODO: use time zone id from event
         start (jt/minus now (jt/years 1))
         end (jt/plus now (jt/years 1))
-        period (Period. start end)]
-    (as-> event v
-          (event->vevent v)
+        period (Period. start end)
+        vevent (cond
+                 (map? event)              (event->vevent event)
+                 (instance? VEvent event)  event)
+        out    (cond
+                 (map? event) event
+                 (instance? VEvent event) (vevent->event event))]
+    (as-> vevent v
           (.calculateRecurrenceSet v period)
           (mapv (fn [period]
-                  (merge event #:event{:start (-> period .getStart temporal->date)
-                                       :end   (-> period .getEnd   temporal->date)}))
+                  (merge out #:event{:start (-> period .getStart temporal->date)
+                                     :end   (-> period .getEnd   temporal->date)}))
                 v))))
 
 (def ^:private not-blank? (complement str/blank?))

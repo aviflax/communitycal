@@ -3,7 +3,7 @@
    [clojure.string :as str]
    [clojure.test :refer [deftest is testing]]
    [communitycal.config :as config :refer [config]]
-   [communitycal.ical :refer [get-events parse-calendar validate vevent->event]]
+   [communitycal.ical :as ical :refer [get-events parse-calendar validate vevent->event]]
    [communitycal.llm :as llm :refer [complete! make-anthropic-model make-openai-model]]
    [communitycal.string :refer [interpolate]])
   (:import
@@ -23,7 +23,7 @@
         tzid "America/New_York"
         prompt (interpolate
                  prompt-template
-                 {:event-description "Practice in the school gym every Wednesday at 4:30 from 9/17 to 11/12 except Oct 29"
+                 {:event-description "Practice in the school gym every Wednesday from 4:30pm to 6pm, from 9/17 to 11/12 except Oct 29"
                   :current-year "2025"
                   :timezone-id tzid})
         expected #:event{:name              "Practice"
@@ -41,17 +41,18 @@
               {:keys [completion duration-ms]} (complete! prompt model)
               _ (println (format "\n\n-----------\n%s\n-----------\n\n" completion))
               calendar (parse-calendar completion)
-              event (-> calendar get-events first)
-              actual (-> event
-                         (vevent->event)
-                         (dissoc :icalendar/uid))
+              vevent (-> calendar get-events first)
+              event (vevent->event vevent)
+              actual (dissoc event :icalendar/uid)
               prep (fn [m] (update-vals m #(if (string? %)
                                              (-> % str/lower-case (str/split #"[ ;]") first)
-                                             %)))]
+                                             %)))
+              occurrences (ical/get-occurrences vevent)]
           (is (map? actual))
           (is (= (prep expected) (prep actual)))
           (is (empty? (validate calendar)))
           (is (str/includes? (or (some-> actual :location/name str/lower-case) "") "gym"))
+          (is (= 3 (count occurrences)))
           (is (< duration-ms (* max-duration-secs 1000))))))))
 
 (comment
